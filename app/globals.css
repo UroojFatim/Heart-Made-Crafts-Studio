@@ -1,26 +1,653 @@
 @import "tailwindcss";
 
+/* ============================================================
+   HeartMade Craft — "The Unwrapping"
+   Paper, satin, and candlelight.
+
+   Motion character: tactile & unhurried — things settle, they
+   never bounce. But the page is never completely still: warm
+   light drifts, gold catches, petals fall.
+   ============================================================ */
+
+@theme {
+  /* --- Paper ----------------------------------------------- */
+  --color-paper: #fdf9f3;
+  --color-paper-2: #f7ecdf;
+  --color-paper-3: #ecdcc9;
+  --color-paper-4: #e0cab1;
+
+  /* --- Ink ------------------------------------------------- */
+  --color-ink: #17120f;
+  --color-espresso: #241a15;
+  --color-ink-2: #453931;
+  --color-ink-3: #786758;
+
+  /* --- Accents --------------------------------------------- */
+  --color-rose: #c4695e;
+  --color-rose-deep: #96453c;
+  --color-rose-soft: #e0a89e;
+  --color-blush: #f3dcd3;
+  --color-gold: #b78b4b;
+  --color-gold-soft: #e6cfa4;
+  --color-candle: #ffe4bc;
+
+  /* --- Type ------------------------------------------------ */
+  --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+
+  /* --- Motion ---------------------------------------------- */
+  --ease-settle: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-satin: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --nav-h: 4.5rem;
+  --shadow-lift: 0 1px 2px rgb(23 18 15 / 0.05),
+    0 10px 26px -14px rgb(23 18 15 / 0.28),
+    0 30px 60px -40px rgb(23 18 15 / 0.34);
+  --shadow-lift-hi: 0 2px 5px rgb(23 18 15 / 0.07),
+    0 26px 48px -18px rgb(23 18 15 / 0.34),
+    0 54px 90px -46px rgb(150 69 60 / 0.4);
+  --shadow-deep: 0 30px 70px -40px rgb(23 18 15 / 0.55);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-synthesis-weight: none;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+/* Warm light washing the top of the page — the room the box sits in.
+   Fixed so it stays put while content scrolls past it. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      120% 62% at 72% -6%,
+      rgb(255 228 188 / 0.62) 0%,
+      rgb(255 228 188 / 0) 60%
+    ),
+    radial-gradient(
+      90% 48% at 8% 4%,
+      rgb(243 220 211 / 0.55) 0%,
+      rgb(243 220 211 / 0) 62%
+    );
+}
+
+/* Paper grain.
+   NOTE: this used to be an <svg> element. An absolutely positioned
+   replaced element with inset:0 but width:auto keeps its *intrinsic*
+   300×150 size — which is why it rendered as a grey block in the
+   corner. As a background-image on a pseudo-element it simply can't
+   go wrong. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  pointer-events: none;
+  opacity: 0.42;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.86' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='0.42'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+::selection {
+  background: var(--color-rose);
+  color: var(--color-paper);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-rose);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ============================================================
+   Typography
+   ============================================================ */
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.022em;
+  line-height: 0.98;
+}
+
+.display-tight {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.038em;
+  line-height: 0.9;
+}
+
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-ink-3);
+}
+
+.italic-serif {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 300;
+}
+
+/* Ink-wash gradient on key display words — warm, not neon */
+.ink-wash {
+  background: linear-gradient(
+    96deg,
+    var(--color-rose-deep) 0%,
+    var(--color-rose) 44%,
+    var(--color-gold) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.underline-draw {
+  background-image: linear-gradient(
+    var(--color-rose) 0%,
+    var(--color-rose) 100%
+  );
+  background-repeat: no-repeat;
+  background-position: 0 90%;
+  background-size: 0% 2px;
+  transition: background-size 900ms var(--ease-settle) 220ms;
+}
+[data-revealed="true"] .underline-draw {
+  background-size: 100% 2px;
+}
+
+/* ============================================================
+   Reveal
+   ============================================================ */
+
+[data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+  transition:
+    opacity 760ms var(--ease-settle),
+    transform 880ms var(--ease-settle);
+  will-change: opacity, transform;
+}
+[data-reveal="left"] {
+  transform: translate3d(-24px, 0, 0);
+}
+[data-reveal="right"] {
+  transform: translate3d(24px, 0, 0);
+}
+[data-reveal="scale"] {
+  transform: scale(0.955);
+}
+[data-reveal="lid"] {
+  transform: translate3d(0, 34px, 0) rotate(-1.2deg);
+}
+[data-reveal][data-revealed="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Above-the-fold intro.
+   Runs on its own CSS timeline rather than waiting for React state,
+   so the hero is readable even if JS never arrives. Motion is an
+   enhancement here; visibility is not. */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.rise {
+  animation: rise 900ms var(--ease-settle) both;
+}
+
+@keyframes line-up {
+  from {
+    transform: translate3d(0, 105%, 0);
+  }
+  to {
+    transform: none;
+  }
+}
+
+.line-mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.09em;
+  margin-bottom: -0.09em;
+}
+/* Self-animating variant for the hero headline */
+.line-mask.auto > span {
+  transform: translate3d(0, 105%, 0);
+  animation: line-up 1000ms var(--ease-settle) both;
+}
+.line-mask > span {
+  display: block;
+  transform: translate3d(0, 105%, 0);
+  transition: transform 1000ms var(--ease-settle);
+}
+[data-revealed="true"] .line-mask > span {
+  transform: none;
+}
+[data-revealed="true"] .line-mask:nth-child(2) > span {
+  transition-delay: 85ms;
+}
+[data-revealed="true"] .line-mask:nth-child(3) > span {
+  transition-delay: 170ms;
+}
+[data-revealed="true"] .line-mask:nth-child(4) > span {
+  transition-delay: 255ms;
+}
+
+/* ============================================================
+   Materials
+   ============================================================ */
+
+/* Soft candlelight orbs. Warm and low-contrast — atmosphere, not
+   the generic purple blob. */
+.orb {
+  position: absolute;
+  border-radius: 999px;
+  pointer-events: none;
+  filter: blur(56px);
+  opacity: 0.5;
+}
+
+/* Gold hairline with a sheen that travels along it */
+.rule-gold {
+  position: relative;
+  height: 1px;
+  overflow: hidden;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-gold-soft) 12%,
+    var(--color-gold-soft) 88%,
+    transparent
+  );
+}
+.rule-gold::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgb(255 255 255 / 0.95),
+    transparent
+  );
+  transform: translateX(-100%);
+  animation: sheen 4.5s var(--ease-satin) infinite;
+}
+
+@keyframes sheen {
+  0% {
+    transform: translateX(-100%);
+  }
+  55%,
+  100% {
+    transform: translateX(200%);
+  }
+}
+
+/* Card surface */
+.surface {
+  background: var(--color-paper);
+  box-shadow: var(--shadow-lift);
+  transition:
+    transform 680ms var(--ease-settle),
+    box-shadow 680ms var(--ease-settle);
+}
+.surface:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lift-hi);
+}
+
+/* Dark section — the contrast beat the page needs */
+.stage-dark {
+  position: relative;
+  background:
+    radial-gradient(
+      100% 70% at 50% 0%,
+      rgb(150 69 60 / 0.34) 0%,
+      transparent 62%
+    ),
+    linear-gradient(180deg, var(--color-espresso) 0%, var(--color-ink) 100%);
+  color: var(--color-paper);
+  isolation: isolate;
+}
+.stage-dark::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    58% 42% at 50% 42%,
+    rgb(255 228 188 / 0.16) 0%,
+    transparent 70%
+  );
+}
+
+/* ============================================================
+   Ribbon (signature visual)
+   ============================================================ */
+
+.ribbon-path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ============================================================
+   Ambient motion
+   ============================================================ */
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(6px, -16px, 0) rotate(4deg);
+  }
+}
+.drift {
+  animation: drift 9s var(--ease-satin) infinite;
+}
+.drift-slow {
+  animation: drift 15s var(--ease-satin) infinite;
+}
+
+@keyframes float-orb {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(3%, -7%, 0) scale(1.1);
+  }
+}
+.float-orb {
+  animation: float-orb 17s ease-in-out infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 44s linear infinite;
+}
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* The light inside the hero box, breathing */
+@keyframes lamp {
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.07);
+  }
+}
+.lamp {
+  animation: lamp 6.5s ease-in-out infinite;
+}
+
+/* Fairy-light twinkle */
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.twinkle {
+  animation: twinkle 2.6s ease-in-out infinite;
+}
+
+/* ============================================================
+   Interface motion
+   ============================================================ */
+
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  isolation: isolate;
+  overflow: hidden;
+  transition:
+    transform 460ms var(--ease-settle),
+    color 380ms var(--ease-settle),
+    box-shadow 460ms var(--ease-settle);
+}
+.btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  transform: translate3d(0, 101%, 0);
+  transition: transform 600ms var(--ease-settle);
+}
+.btn:hover::after,
+.btn:focus-visible::after {
+  transform: translate3d(0, 0, 0);
+}
+.btn:hover {
+  box-shadow: 0 14px 30px -14px rgb(150 69 60 / 0.55);
+}
+.btn:active {
+  transform: scale(0.98);
+}
+
+.link-wipe {
+  position: relative;
+}
+.link-wipe::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 1px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 500ms var(--ease-settle);
+}
+.link-wipe:hover::after,
+.link-wipe:focus-visible::after,
+.link-wipe[data-active="true"]::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Product card: lid lifts, light spills, whole plate warms */
+.lid-group .lid {
+  transform-origin: 50% 100%;
+  transition: transform 780ms var(--ease-settle);
+}
+.lid-group:hover .lid {
+  transform: translateY(-15%) rotate(-3.6deg);
+}
+.lid-group .glow {
+  opacity: 0;
+  transition: opacity 780ms var(--ease-settle);
+}
+.lid-group:hover .glow {
+  opacity: 1;
+}
+.lid-group .plate-wash {
+  opacity: 0;
+  transition: opacity 780ms var(--ease-settle);
+}
+.lid-group:hover .plate-wash {
+  opacity: 1;
+}
+
+/* Range input as satin ribbon */
+.ribbon-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 34px;
+  background: transparent;
+  cursor: pointer;
+}
+.ribbon-range::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--color-paper-3);
+}
+.ribbon-range::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--color-paper-3);
+}
+.ribbon-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 26px;
+  height: 26px;
+  margin-top: -10px;
+  border-radius: 999px;
+  background: var(--color-rose);
+  border: 4px solid var(--color-paper);
+  box-shadow: 0 4px 16px -4px rgb(150 69 60 / 0.75);
+  transition: transform 380ms var(--ease-settle);
+}
+.ribbon-range::-moz-range-thumb {
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  background: var(--color-rose);
+  border: 4px solid var(--color-paper);
+  box-shadow: 0 4px 16px -4px rgb(150 69 60 / 0.75);
+}
+.ribbon-range:active::-webkit-slider-thumb {
+  transform: scale(1.16);
+}
+
+/* Accordion */
+.acc-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 600ms var(--ease-settle);
+}
+.acc-panel[data-open="true"] {
+  grid-template-rows: 1fr;
+}
+.acc-panel > div {
+  overflow: hidden;
+}
+
+/* ============================================================
+   Utilities
+   ============================================================ */
+
+.shell {
+  width: 100%;
+  max-width: 84rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+@media (min-width: 768px) {
+  .shell {
+    padding-inline: 2.5rem;
+  }
+}
+@media (min-width: 1280px) {
+  .shell {
+    padding-inline: 3.5rem;
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+/* ============================================================
+   Reduced motion
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .line-mask > span,
+  .line-mask.auto > span {
+    transform: none !important;
+  }
+  .rise {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .underline-draw {
+    background-size: 100% 2px !important;
+  }
+  .drift,
+  .drift-slow,
+  .lamp,
+  .twinkle,
+  .float-orb,
+  .marquee-track,
+  .rule-gold::after {
+    animation: none !important;
+  }
+  .rule-gold::after {
+    display: none;
+  }
 }
