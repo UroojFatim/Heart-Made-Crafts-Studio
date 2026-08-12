@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { nav, site, waLink } from "@/lib/site";
 import Reveal from "./Reveal";
@@ -52,7 +53,15 @@ export default function Footer() {
 
         <div className="mt-24 grid gap-10 border-t border-paper/12 pt-10 sm:grid-cols-2 lg:grid-cols-4">
           <div>
-            <p className="display text-xl">HeartMade Craft</p>
+            <Link href="/" className="group inline-flex items-center gap-3 hover:opacity-80 transition-opacity duration-300">
+              <Image
+                src="/logo.png"
+                alt="HeartMade Craft logo"
+                width={50}
+                height={50}
+                className="h-16 w-auto"
+              />
+            </Link>
             <p className="mt-3 max-w-[30ch] text-sm leading-relaxed text-paper/52">
               {site.promise}
             </p>

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -38,15 +39,17 @@ export default function Nav() {
         <div className="shell flex h-[var(--nav-h)] items-center justify-between gap-6">
           <Link
             href="/"
-            className="group flex items-baseline gap-2.5"
+            className="group flex items-baseline gap-2.5 hover:opacity-80 transition-opacity duration-300"
             aria-label="HeartMade Craft, home"
           >
-            <span className="display text-[1.4rem] tracking-[-0.03em]">
-              HeartMade
-            </span>
-            <span className="eyebrow hidden translate-y-[-1px] transition-colors duration-500 group-hover:text-rose sm:block">
-              Craft
-            </span>
+            <Image
+              src="/logo.png"
+              alt="HeartMade Craft logo"
+              width={60}
+              height={60}
+              className="h-14 w-auto"
+              priority
+            />
           </Link>
 
           <nav className="hidden items-center gap-9 md:flex" aria-label="Main">

@@ -27,6 +27,11 @@ export const metadata: Metadata = {
   },
   description:
     "Handmade gift boxes and hampers from Karachi. Every box carries one piece made only for them — a handwritten card, a painted keepsake, something that can't be bought off a shelf. Delivery across Pakistan.",
+  icons: {
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
+  },
   keywords: [
     "gift boxes Karachi",
     "handmade gifts Pakistan",
