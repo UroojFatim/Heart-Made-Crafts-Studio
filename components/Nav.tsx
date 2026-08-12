@@ -45,9 +45,9 @@ export default function Nav() {
             <Image
               src="/logo.png"
               alt="HeartMade Craft logo"
-              width={60}
-              height={60}
-              className="h-14 w-auto"
+              width={80}
+              height={80}
+              className="h-18 w-auto"
               priority
             />
           </Link>
