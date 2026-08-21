@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { motion, useSpring, useTransform } from "motion/react";
 import {
   allItems,
   delivery,
@@ -377,14 +378,14 @@ export default function BoxBuilder() {
                 </span>
               </div>
               <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-paper-3">
-                <div
-                  className="h-full rounded-full transition-[width,background-color] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
-                  style={{
+                <motion.div
+                  className="h-full rounded-full"
+                  initial={false}
+                  animate={{
                     width: `${usage}%`,
-                    background: overBudget
-                      ? "var(--color-rose-deep)"
-                      : "var(--color-rose)",
+                    backgroundColor: overBudget ? "#96453C" : "#C4695E",
                   }}
+                  transition={{ type: "spring", stiffness: 180, damping: 26 }}
                 />
               </div>
             </div>
@@ -421,9 +422,7 @@ export default function BoxBuilder() {
 
             <div className="flex items-baseline justify-between">
               <span className="eyebrow">Estimated</span>
-              <span className="display text-[2.1rem] tabular-nums text-rose">
-                {pkr(total)}
-              </span>
+              <AnimatedPrice value={total} />
             </div>
             <p className="mt-2 text-[0.75rem] leading-relaxed text-ink-3">
               An estimate, not an invoice. We confirm the final figure with you
@@ -468,5 +467,30 @@ export default function BoxBuilder() {
         </div>
       </div>
     </div>
+  );
+}
+
+/**
+ * The total counts to its new value instead of snapping.
+ *
+ * It reads as polish, but it's doing something useful: when you tick an
+ * item and the number travels, you *see* what that choice cost. A number
+ * that teleports gives you no sense of the size of the change.
+ *
+ * The spring drives a MotionValue that renders straight into the DOM —
+ * no React state, so toggling items doesn't re-render on every frame.
+ */
+function AnimatedPrice({ value }: { value: number }) {
+  const spring = useSpring(value, { stiffness: 150, damping: 26, mass: 0.8 });
+  const text = useTransform(spring, (v) => pkr(Math.round(v)));
+
+  useEffect(() => {
+    spring.set(value);
+  }, [spring, value]);
+
+  return (
+    <motion.span className="display text-[2.1rem] tabular-nums text-rose">
+      {text}
+    </motion.span>
   );
 }

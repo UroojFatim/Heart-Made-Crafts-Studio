@@ -54,12 +54,22 @@ export default function Footer() {
         <div className="mt-24 grid gap-10 border-t border-paper/12 pt-10 sm:grid-cols-2 lg:grid-cols-4">
           <div>
             <Link href="/" className="group inline-flex items-center gap-3 hover:opacity-80 transition-opacity duration-300">
+              {/* logo1.png is 1194×1317 and ~240 kB — far heavier than a
+                  48px mark needs. Two options, in order of preference:
+                    1. Re-export both logos as SVG, or as PNG ~150px tall
+                       (drops them to ~10 kB), then this stays as-is.
+                    2. `npm install sharp` and delete `unoptimized` here
+                       and in Nav.tsx to put them back through Next's
+                       optimizer.
+                  Until then this ships the full file, which matters on a
+                  Pakistani mobile connection. */}
               <Image
                 src="/logo1.png"
-                alt="HeartMade Craft logo1"
-                width={60}
-                height={60}
-                className="h-14 w-auto"
+                alt="HeartMade Craft"
+                width={1194}
+                height={1317}
+                className="h-12 w-auto"
+                unoptimized
               />
             </Link>
             <p className="mt-3 max-w-[30ch] text-sm leading-relaxed text-paper/52">

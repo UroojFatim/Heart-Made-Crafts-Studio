@@ -56,8 +56,26 @@
 }
 
 html {
+  /* Fallback for when JS hasn't loaded. Lenis takes over below. */
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+}
+
+/* Lenis puts these classes on <html> once it's running. Both engines
+   trying to animate the same scroll is what causes the stuttering
+   people blame on the library. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
 }
 
 body {

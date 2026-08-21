@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 /**
  * ── THE SIGNATURE VISUAL ──────────────────────────────────────────
@@ -35,7 +35,6 @@ export default function RibbonSpine() {
   const ribbonRef = useRef<SVGPathElement>(null);
   const sheenRef = useRef<SVGPathElement>(null);
   const glintRef = useRef<SVGPathElement>(null);
-  const [height, setHeight] = useState(0);
 
   useEffect(() => {
     const ribbon = ribbonRef.current;
@@ -88,37 +87,30 @@ export default function RibbonSpine() {
       if (!raf) raf = requestAnimationFrame(draw);
     };
 
-    const measure = () => {
-      const h = document.documentElement.scrollHeight;
-      // Guard against a ResizeObserver feedback loop: this element is
-      // sized *from* the document height and also sits inside it.
-      setHeight((prev) => (Math.abs(prev - h) > 2 ? h : prev));
-      onScroll();
-    };
-
-    measure();
+    draw();
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", measure);
-
-    // Page height changes when fonts land, images decode, or an
-    // accordion opens — re-measure rather than assume.
-    const ro = new ResizeObserver(measure);
-    ro.observe(document.body);
+    window.addEventListener("resize", onScroll);
 
     return () => {
       if (raf) cancelAnimationFrame(raf);
       window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", measure);
-      ro.disconnect();
+      window.removeEventListener("resize", onScroll);
     };
   }, []);
 
   return (
+    /* Sized by CSS, not JS.
+       This used to set an explicit pixel height from
+       documentElement.scrollHeight — but an absolutely positioned child
+       *contributes* to that same scrollHeight, so each measurement grew
+       the page a little and the next measurement grew it again. The
+       result was a few hundred pixels of dead space below the footer.
+       `inset-0` resolves against body's own height instead, which is
+       driven by content, so there's no loop to guard against. */
     <div
       ref={wrapRef}
       aria-hidden="true"
-      className="pointer-events-none absolute inset-x-0 top-0 z-0 select-none"
-      style={{ height: height || "100%" }}
+      className="pointer-events-none absolute inset-0 z-0 select-none"
     >
       <svg
         className="h-full w-full"

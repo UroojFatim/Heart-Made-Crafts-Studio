@@ -5,6 +5,7 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import AmbientField from "@/components/AmbientField";
 import RibbonSpine from "@/components/RibbonSpine";
+import SmoothScroll from "@/components/SmoothScroll";
 import { site } from "@/lib/site";
 
 const fraunces = Fraunces({
@@ -70,6 +71,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Skip to content
         </a>
 
+        <SmoothScroll />
         <AmbientField />
         <RibbonSpine />
         <Nav />

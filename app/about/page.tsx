@@ -23,14 +23,10 @@ export default function AboutPage() {
         <div className="mt-14 grid gap-14 lg:grid-cols-[1fr_0.85fr] lg:gap-20">
           <Reveal variant="left">
             <div className="max-w-[58ch] space-y-6 text-[1.06rem] leading-relaxed text-ink-2">
-              {/* ─────────────────────────────────────────────────
-                  👋 ADNAN — replace the next two paragraphs with your
-                  own words. Say how it started, who you make these for,
-                  what you were doing before. It doesn't need to be
-                  polished. First-person and specific beats well-written
-                  and vague, every time — this is the page people read
-                  before deciding whether to send you money.
-                  ───────────────────────────────────────────────── */}
+              {/* PLACEHOLDER COPY — replace with the studio's own words.
+                  First-person and specific outperforms polished and vague
+                  here: this is the page a visitor reads before deciding
+                  whether to send money to a business they don't know. */}
               <p className="text-ink">
                 HeartMade Craft started the way most of these do: making
                 something for one person, properly, because buying something
@@ -60,15 +56,13 @@ export default function AboutPage() {
           <Reveal variant="right" delay={100}>
             <figure className="relative">
               <div className="relative aspect-[4/5] overflow-hidden border border-paper-3 bg-paper-2">
-                {/* ─────────────────────────────────────────────────
-                    👋 ADNAN — put a real photo of yourself here.
-                    Drop it in /public and swap this block for:
-                      <Image src="/adnan.jpg" alt="Adnan, HeartMade Craft"
-                             fill className="object-cover" />
-                    A face on this page does more for conversion than
-                    any other single change you can make. Faceless
-                    pages read as scams in this market.
-                    ───────────────────────────────────────────────── */}
+                {/* PORTRAIT SLOT — drop a photo in /public and replace
+                    this block with:
+                      <Image src="/portrait.jpg" alt="…" fill
+                             className="object-cover" />
+                    A real face is the highest-impact single change
+                    available on this page; faceless storefronts read as
+                    untrustworthy in this market. */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-8 text-center">
                   <svg width="64" height="64" viewBox="0 0 64 64" fill="none" aria-hidden="true">
                     <circle cx="32" cy="24" r="11" stroke="var(--color-gold-soft)" strokeWidth="1.5" />

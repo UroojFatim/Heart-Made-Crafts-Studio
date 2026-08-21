@@ -42,13 +42,21 @@ export default function Nav() {
             className="group flex items-baseline gap-2.5 hover:opacity-80 transition-opacity duration-300"
             aria-label="HeartMade Craft, home"
           >
+            {/* Intrinsic size is the file's real 476×525 — the previous
+                80×80 was squashing a portrait mark into a square.
+
+                `unoptimized` is deliberate: a logo shown at 40px gains
+                nothing from the image pipeline, and routing it through
+                /_next/image was the thing stopping it rendering at all.
+                See the note in Footer.tsx before removing it. */}
             <Image
               src="/logo.png"
-              alt="HeartMade Craft logo"
-              width={80}
-              height={80}
-              className="h-18 w-auto"
+              alt="HeartMade Craft"
+              width={476}
+              height={525}
+              className="h-10 w-auto"
               priority
+              unoptimized
             />
           </Link>
 

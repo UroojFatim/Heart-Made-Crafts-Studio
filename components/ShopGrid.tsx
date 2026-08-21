@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
 import { occasions, type Occasion, type Product } from "@/lib/products";
 import { pkr } from "@/lib/site";
 import ProductCard from "./ProductCard";
@@ -117,13 +118,35 @@ export default function ShopGrid({ products }: { products: Product[] }) {
           </button>
         </div>
       ) : (
-        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {list.map((p, i) => (
-            <Reveal key={p.slug} delay={(i % 3) * 90} className="h-full">
-              <ProductCard product={p} index={i} />
-            </Reveal>
-          ))}
-        </div>
+        /* `layout` is doing the real work here: when a filter changes,
+           surviving cards animate from their old grid position to the
+           new one instead of teleporting. That single behaviour is most
+           of what separates a real storefront from a static page. */
+        <motion.div layout className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <AnimatePresence mode="popLayout" initial={false}>
+            {list.map((p, i) => (
+              <motion.div
+                key={p.slug}
+                layout
+                initial={{ opacity: 0, scale: 0.94, y: 16 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.94, transition: { duration: 0.2 } }}
+                transition={{
+                  type: "spring",
+                  stiffness: 260,
+                  damping: 30,
+                  mass: 0.9,
+                  // Stagger only on entry, and only across a row, so a
+                  // filter change doesn't turn into a long wave.
+                  delay: (i % 3) * 0.05,
+                }}
+                className="h-full"
+              >
+                <ProductCard product={p} index={i} />
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
       )}
     </>
   );
