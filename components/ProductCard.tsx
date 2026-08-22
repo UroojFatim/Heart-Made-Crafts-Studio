@@ -1,7 +1,6 @@
 import Link from "next/link";
 import type { Product } from "@/lib/products";
-import { pkr } from "@/lib/site";
-import BoxArt from "./BoxArt";
+import ProductMedia from "./ProductMedia";
 
 export default function ProductCard({
   product,
@@ -15,11 +14,8 @@ export default function ProductCard({
       href={`/product/${product.slug}`}
       className="lid-group surface group relative flex h-full flex-col overflow-hidden rounded-[4px] ring-1 ring-paper-3 focus-visible:outline-offset-4"
     >
-      {/* ── Art plate ─────────────────────────────────────────
-          Two stacked washes: a resting one, and a warmer one that
-          fades in on hover at the same moment the lid lifts, so the
-          whole plate looks lit from inside rather than just tinted. */}
-      <div className="relative overflow-hidden">
+      {/* ── Media plate ───────────────────────────────────────── */}
+      <div className="relative aspect-[4/5] overflow-hidden">
         <div
           className="absolute inset-0"
           style={{
@@ -35,31 +31,22 @@ export default function ProductCard({
           aria-hidden="true"
         />
 
-        <BoxArt
-          palette={product.palette}
-          id={product.slug}
-          variant={index}
-          className="relative h-auto w-full"
-        />
-
-        {/* Price on a tag that swings a little */}
-        <div className="absolute right-4 top-4 origin-top-right rotate-[-2.5deg] bg-paper px-3.5 py-2 shadow-[0_8px_20px_-10px_rgb(23_18_15/0.55)] ring-1 ring-paper-3 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:rotate-[2deg]">
-          <span className="text-[0.78rem] font-medium tracking-wide">
-            {product.from && <span className="text-ink-3">from </span>}
-            {pkr(product.price)}
-          </span>
+        <div className="relative h-full w-full">
+          <ProductMedia
+            media={product.media}
+            palette={product.palette}
+            id={product.slug}
+            variant={index}
+            className="h-full w-full object-cover"
+          />
         </div>
 
-        {/* Occasion, bottom-left, slides up on hover */}
-        <div className="absolute bottom-4 left-5 flex gap-1.5 opacity-0 transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-y-0 group-hover:opacity-100 [transform:translateY(8px)]">
-          {product.occasions.slice(0, 2).map((o) => (
-            <span
-              key={o}
-              className="bg-ink/85 px-2.5 py-1 text-[0.66rem] uppercase tracking-[0.14em] text-paper backdrop-blur-sm"
-            >
-              {o}
-            </span>
-          ))}
+        {/* Lead time, hung like a tag. Prices are quoted on WhatsApp,
+            so the card promises turnaround instead of a number. */}
+        <div className="absolute right-4 top-4 origin-top-right rotate-[-2.5deg] bg-paper px-3.5 py-2 shadow-[0_8px_20px_-10px_rgb(23_18_15/0.55)] ring-1 ring-paper-3 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:rotate-[2deg]">
+          <span className="text-[0.72rem] font-medium uppercase tracking-[0.12em]">
+            {product.leadTimeDays[0]}–{product.leadTimeDays[1]} days
+          </span>
         </div>
       </div>
 
@@ -80,9 +67,7 @@ export default function ProductCard({
         </p>
 
         <div className="mt-5 flex items-center justify-between pt-1">
-          <span className="eyebrow">
-            {product.leadTimeDays[0]}–{product.leadTimeDays[1]} days
-          </span>
+          <span className="eyebrow">Made to order</span>
           <span className="flex items-center gap-2 text-[0.82rem] text-ink transition-transform duration-600 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-1.5">
             Look inside
             <svg width="16" height="10" viewBox="0 0 16 10" fill="none" aria-hidden="true">

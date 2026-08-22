@@ -1,14 +1,16 @@
 const ITEMS = [
   "Birthdays",
   "Anniversaries",
-  "Nikah & mayoun",
+  "Sorry",
+  "Engagements",
   "Eid",
+  "Congratulations",
+  "14 February",
+  "14 August",
   "New baby",
   "Graduation",
-  "Just because",
-  "Get well soon",
-  "Thank you",
   "Corporate gifting",
+  "Just because",
 ];
 
 /**

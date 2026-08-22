@@ -23,14 +23,9 @@ export function waLink(message: string) {
 }
 
 export const nav = [
-  { href: "/shop", label: "Shop" },
+  { href: "/shop", label: "Occasions" },
   { href: "/build-your-box", label: "Build your box" },
   { href: "/about", label: "About" },
   { href: "/faq", label: "FAQ" },
   { href: "/contact", label: "Contact" },
 ] as const;
-
-/** PKR formatter — no decimals, thin space grouping. */
-export function pkr(n: number) {
-  return `Rs ${n.toLocaleString("en-PK")}`;
-}

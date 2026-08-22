@@ -1,4 +1,4 @@
-import type { Palette } from "@/lib/products";
+import type { Palette } from "@/lib/palette";
 
 /**
  * Procedural gift-box illustration.

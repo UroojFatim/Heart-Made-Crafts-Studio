@@ -102,7 +102,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                 addressCountry: "PK",
               },
               areaServed: "Pakistan",
-              priceRange: "PKR 600 – 35,000",
               sameAs: [`https://instagram.com/${site.instagram}`],
             }),
           }}

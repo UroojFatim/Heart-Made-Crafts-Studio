@@ -4,28 +4,92 @@ import Marquee from "@/components/Marquee";
 import Reveal from "@/components/Reveal";
 import Reviews from "@/components/Reviews";
 import ProductCard from "@/components/ProductCard";
-import { products, type Product } from "@/lib/products";
+import { occasions } from "@/lib/occasions";
+import { featuredProducts, productsForOccasion, type Product } from "@/lib/products";
 import { site, waLink } from "@/lib/site";
 
 export default function Home() {
-  const featured = products.filter((p) =>
-    [
-      "the-signature-box",
-      "the-little-note",
-      "the-story-hamper",
-      "the-countdown",
-    ].includes(p.slug),
-  );
+  // Home shows the first four featured pieces. Mark a product
+  // `featured: true` in lib/products.ts to put it in the running;
+  // order follows the order of that file.
+  const featured = featuredProducts().slice(0, 4);
 
   return (
     <>
       <Hero />
       <Marquee />
       <TheOnePiece />
+      <Occasions />
       <Featured products={featured} />
       <HowItWorks />
       <Reviews />
     </>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════
+   Occasions — the main way in
+   ══════════════════════════════════════════════════════════════ */
+
+function Occasions() {
+  return (
+    <section className="relative py-24 lg:py-32">
+      <div className="shell">
+        <Reveal className="flex flex-wrap items-end justify-between gap-6">
+          <div>
+            <p className="eyebrow">Start here</p>
+            <h2 className="display mt-5 max-w-[18ch] text-[clamp(2.1rem,4.6vw,3.4rem)]">
+              What&rsquo;s the occasion?
+            </h2>
+          </div>
+          <Link
+            href="/shop"
+            className="link-wipe mb-2 flex items-center gap-2.5 text-[0.9rem] text-ink"
+          >
+            See everything
+            <Arrow />
+          </Link>
+        </Reveal>
+
+        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {occasions.map((o, i) => {
+            const count = productsForOccasion(o.slug).length;
+            return (
+              <Reveal key={o.slug} delay={i * 60} className="h-full">
+                <Link
+                  href={`/occasions/${o.slug}`}
+                  className="group relative flex h-full flex-col justify-between overflow-hidden rounded-[4px] border border-paper-3 p-6 transition-[transform,border-color] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1.5 hover:border-rose"
+                >
+                  <div
+                    className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full opacity-0 transition-opacity duration-700 group-hover:opacity-100"
+                    style={{
+                      background: `radial-gradient(circle, ${o.palette.glow}, transparent 70%)`,
+                    }}
+                    aria-hidden="true"
+                  />
+                  <div className="relative">
+                    <span
+                      className="block h-1 w-8 rounded-full transition-[width] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:w-14"
+                      style={{ background: o.palette.ribbon }}
+                      aria-hidden="true"
+                    />
+                    <h3 className="display mt-4 text-[1.5rem] leading-none">
+                      {o.name}
+                    </h3>
+                    <p className="italic-serif mt-2 text-[0.94rem] leading-snug text-ink-2">
+                      {o.tagline}
+                    </p>
+                  </div>
+                  <p className="eyebrow relative mt-6 text-[0.6rem]">
+                    {count} {count === 1 ? "piece" : "pieces"}
+                  </p>
+                </Link>
+              </Reveal>
+            );
+          })}
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -189,9 +253,9 @@ function Featured({ products: list }: { products: Product[] }) {
               Start from one of these.
             </h2>
             <p className="mt-4 max-w-[46ch] leading-relaxed text-ink-2">
-              Every one is made to order and adjusted to your brief. Prices are
-              real and printed here — you shouldn&rsquo;t have to DM to find out
-              what something costs.
+              Every one is made to order and adjusted to your brief. Tell us
+              roughly what you want to spend and we&rsquo;ll build to it —
+              nothing owed until you&rsquo;ve seen options.
             </p>
           </div>
           <Link
@@ -224,9 +288,9 @@ function Featured({ products: list }: { products: Product[] }) {
             <div className="relative">
               <h3 className="display text-[1.7rem]">None of them quite right?</h3>
               <p className="mt-2.5 max-w-[46ch] text-[0.96rem] leading-relaxed text-ink-2">
-                Set a budget, pick what goes in, and see the total as you build.
-                Takes about a minute — and no competitor in this market lets you
-                do it.
+                Design your own in about a minute — pick the box, the handmade
+                piece and what goes in. One button sends the whole brief to us,
+                already written out.
               </p>
             </div>
             <Link

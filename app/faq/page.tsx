@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 const ordering: QA[] = [
   {
     q: "How do I actually order?",
-    a: "Message us on WhatsApp with who it's for, the occasion and a budget — two lines is enough. We come back with two or three options and honest pricing, usually the same day. Nothing is paid until you've seen what you're getting. If you'd rather work it out yourself first, the box builder prices everything for you and sends the whole brief across in one message.",
+    a: "Message us on WhatsApp with who it's for, the occasion and a budget — two lines is enough. We come back with two or three options and honest pricing, usually the same day. Nothing is paid until you've seen what you're getting. If you'd rather work it out yourself first, the box builder walks you through every choice and sends the whole brief across in one message.",
   },
   {
     q: "How far in advance should I order?",
@@ -39,8 +39,12 @@ const money: QA[] = [
     a: "Raast, JazzCash, EasyPaisa or bank transfer. Cash on delivery where the courier supports it. We don't take card payments on the site yet — when we do, it'll be through a proper gateway, not a link in a DM.",
   },
   {
-    q: "Are the prices on the site the final prices?",
-    a: "They're honest starting points. Every box is made to order, so the final figure depends on what actually goes in — we confirm it with you in writing before a single thing is bought. What we won't do is make you DM to find out roughly what something costs.",
+    q: "Why aren't there any prices on the website?",
+    a: "Because every piece is made to order, and the same box at two budgets is genuinely two different boxes. A printed number stops being true the moment you change one thing in it. So instead of a price list, tell us the occasion and roughly what you want to spend — we come back with two or three options and an honest figure, usually within the hour. Nothing is owed until you've seen them and agreed.",
+  },
+  {
+    q: "Can you work to my budget?",
+    a: "Almost always, and we'd rather you said the number out loud. We build to budgets far more often than we build to a menu. If what you want genuinely can't be done well for what you want to spend, we'll say so and suggest what would work instead — rather than take the order and disappoint you.",
   },
   {
     q: "What if something arrives damaged or wrong?",

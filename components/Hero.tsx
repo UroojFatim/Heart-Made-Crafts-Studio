@@ -166,7 +166,7 @@ export default function Hero() {
             style={{ animationDelay: "770ms" }}
           >
             {[
-              ["From", "Rs 600"],
+              ["Made", "To order"],
               ["Ready in", "2–3 days"],
               ["Delivery", "All Pakistan"],
               ["Payment", "COD available"],
