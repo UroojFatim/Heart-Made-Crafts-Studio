@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import BrandFilm from "@/components/BrandFilm";
 import Reveal from "@/components/Reveal";
 import { site, waLink } from "@/lib/site";
 
@@ -52,37 +53,12 @@ export default function AboutPage() {
             </div>
           </Reveal>
 
-          {/* Portrait slot */}
+          {/* The brand film sits where a portrait would. This is the one
+              place on the site it belongs — the home page already has its
+              own signature visual (the box whose lid lifts), and two brand
+              moments competing on one screen makes both weaker. */}
           <Reveal variant="right" delay={100}>
-            <figure className="relative">
-              <div className="relative aspect-[4/5] overflow-hidden border border-paper-3 bg-paper-2">
-                {/* PORTRAIT SLOT — drop a photo in /public and replace
-                    this block with:
-                      <Image src="/portrait.jpg" alt="…" fill
-                             className="object-cover" />
-                    A real face is the highest-impact single change
-                    available on this page; faceless storefronts read as
-                    untrustworthy in this market. */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-8 text-center">
-                  <svg width="64" height="64" viewBox="0 0 64 64" fill="none" aria-hidden="true">
-                    <circle cx="32" cy="24" r="11" stroke="var(--color-gold-soft)" strokeWidth="1.5" />
-                    <path
-                      d="M12 56c0-11 9-19 20-19s20 8 20 19"
-                      stroke="var(--color-gold-soft)"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                    />
-                  </svg>
-                  <p className="eyebrow">Photograph goes here</p>
-                  <p className="max-w-[26ch] text-[0.85rem] leading-relaxed text-ink-3">
-                    A picture of the person who makes the boxes.
-                  </p>
-                </div>
-              </div>
-              <figcaption className="mt-4 text-[0.82rem] leading-relaxed text-ink-3">
-                Made by hand in {site.city}. Delivered across Pakistan.
-              </figcaption>
-            </figure>
+            <BrandFilm />
           </Reveal>
         </div>
       </section>
