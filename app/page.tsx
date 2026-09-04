@@ -7,6 +7,7 @@ import Reviews from "@/components/Reviews";
 import ProductCard from "@/components/ProductCard";
 import { occasions } from "@/lib/occasions";
 import { featuredProducts, productsForOccasion, type Product } from "@/lib/products";
+import { priceFloor } from "@/lib/pricing";
 import { site, waLink } from "@/lib/site";
 
 export default function Home() {
@@ -220,7 +221,7 @@ function TheOnePiece() {
             {[
               ["1", "handmade piece in every single box, minimum"],
               ["8", "orders a week, maximum — so nothing is rushed"],
-              ["Rs 900", "the smallest thing we&rsquo;ll make for you"],
+              [priceFloor, "the smallest thing we&rsquo;ll make for you"],
               ["2–3 days", "from your message to their hands, in Karachi"],
             ].map(([n, label]) => (
               <div
@@ -439,7 +440,7 @@ function HowItWorks() {
 const faqs: QA[] = [
   {
     q: "Gift box ki price kya hoti hai Pakistan mein?",
-    a: "Hamare boxes Rs 900 se shuru hote hain — ek akela hand-lettered card. Signature Box Rs 2,500–4,000 ke beech aata hai, aur bare hampers isse upar. Aap budget batayein, hum usi ke andar do-teen options bana kar bhejte hain.",
+    a: "Hamare boxes Rs 900 se shuru hote hain — ek akela hand-lettered card. Chhota box Rs 1,500–2,500, Signature Box Rs 2,500–4,000 ke beech aata hai, aur bare hampers Rs 5,000 se upar. Aap budget batayein, hum usi ke andar do-teen options bana kar bhejte hain.",
   },
   {
     q: "Karachi mein gift box delivery kitne din mein hoti hai?",

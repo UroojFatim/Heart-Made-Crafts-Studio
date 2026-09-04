@@ -91,10 +91,12 @@ export default async function OccasionPage({ params }: Params) {
                 Every piece is built to your brief.
               </h2>
               <p className="mt-2.5 max-w-[50ch] leading-relaxed text-ink-2">
-                That&rsquo;s why there are no prices on the page — the same box
-                at two budgets is two different boxes. Tell us the occasion and
-                roughly what you want to spend, and we&rsquo;ll come back with
-                options and an honest figure.
+                That&rsquo;s why the cards here carry a lead time rather than a
+                price — the same box at two budgets is two different boxes. The{" "}
+                <Link href="/shop" className="link-wipe text-ink">
+                  bands we work in
+                </Link>{" "}
+                are on the shop page; the exact figure comes back on your brief.
               </p>
             </div>
             <a

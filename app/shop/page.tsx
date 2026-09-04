@@ -1,137 +1,315 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import FilteredGrid from "@/components/FilteredGrid";
 import Reveal from "@/components/Reveal";
-import ProductCard from "@/components/ProductCard";
-import { occasions } from "@/lib/occasions";
-import { featuredProducts, productsForOccasion } from "@/lib/products";
-import { site } from "@/lib/site";
+import { occasions, shopFilters } from "@/lib/occasions";
+import { products } from "@/lib/products";
+import { priceBands } from "@/lib/pricing";
+import { site, waLink } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Occasions",
+  // `absolute` because the layout template would otherwise append
+  // "· HeartMade Craft" to a title that already names the brand.
+  title: {
+    absolute:
+      "Gift Boxes in Pakistan | Handmade & Personalised Gift Boxes Online",
+  },
   description:
-    "Handmade gift boxes, bouquets and keepsakes for birthdays, anniversaries, nikah and weddings, a new baby, Eid, graduations and apologies. Made to order in Karachi, delivered across Pakistan.",
+    "Handmade gift boxes for birthdays, anniversaries, nikah and Eid. Every box made to order in Karachi with one hand-made piece inside. From Rs 900, COD, nationwide delivery.",
 };
 
 export default function ShopPage() {
   return (
     <>
+      {/* ── Intro ──────────────────────────────────────────────── */}
       <section className="shell pt-14 lg:pt-20">
         <Reveal>
-          <p className="eyebrow">Everything we make</p>
+          <p className="eyebrow">Handmade in {site.city} · Delivered nationwide</p>
           <h1 className="display-tight mt-5 max-w-[15ch] text-[clamp(2.6rem,6.4vw,4.6rem)]">
-            Start with the occasion.
+            Gift boxes, made by hand in Karachi
           </h1>
-          <p className="mt-6 max-w-[52ch] text-[1.02rem] leading-relaxed text-ink-2">
-            Everything is made to order, so treat these as starting points rather
-            than a fixed menu. Pick the occasion and narrow it down from there —
-            or just message us and skip the browsing.
-          </p>
-        </Reveal>
-      </section>
-
-      {/* ── Occasion tiles ─────────────────────────────────────── */}
-      <section className="shell mt-14">
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {occasions.map((o, i) => {
-            const count = productsForOccasion(o.slug).length;
-            return (
-              <Reveal key={o.slug} delay={i * 70} className="h-full">
-                <Link
-                  href={`/occasions/${o.slug}`}
-                  className="surface group relative flex h-full flex-col justify-between overflow-hidden rounded-[4px] p-7 ring-1 ring-paper-3 lg:p-8"
-                >
-                  <div
-                    className="pointer-events-none absolute -right-16 -top-16 h-52 w-52 rounded-full opacity-70 transition-opacity duration-700 group-hover:opacity-100"
-                    style={{
-                      background: `radial-gradient(circle, ${o.palette.glow}, transparent 70%)`,
-                    }}
-                    aria-hidden="true"
-                  />
-
-                  <div className="relative">
-                    <span
-                      className="block h-1 w-10 rounded-full transition-[width] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:w-16"
-                      style={{ background: o.palette.ribbon }}
-                      aria-hidden="true"
-                    />
-                    <h2 className="display mt-5 text-[1.9rem] leading-none">
-                      {o.name}
-                    </h2>
-                    <p className="italic-serif mt-2.5 text-[1rem] leading-snug text-ink-2">
-                      {o.tagline}
-                    </p>
-                  </div>
-
-                  <div className="relative mt-8 flex items-center justify-between">
-                    <span className="eyebrow">
-                      {count} {count === 1 ? "piece" : "pieces"}
-                    </span>
-                    <span className="flex items-center gap-2 text-[0.84rem] transition-transform duration-600 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-1.5">
-                      Browse
-                      <svg width="16" height="10" viewBox="0 0 16 10" fill="none" aria-hidden="true">
-                        <path
-                          d="M0 5h14M10 1l4 4-4 4"
-                          stroke="currentColor"
-                          strokeWidth="1.2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </span>
-                  </div>
-                </Link>
-              </Reveal>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* ── Everything, ungrouped ──────────────────────────────── */}
-      <section className="shell mt-28">
-        <Reveal>
-          <div className="rule-gold" />
-          <h2 className="display mt-10 text-[clamp(1.9rem,4vw,2.8rem)]">
-            A few we&rsquo;d start you with.
-          </h2>
-          <p className="mt-3 max-w-[48ch] leading-relaxed text-ink-2">
-            Some pieces suit almost any occasion — the chocolate bouquet and the
-            handwritten card turn up everywhere. There&rsquo;s more inside each
-            occasion than we show here.
-          </p>
         </Reveal>
 
-        {/* Featured only. Everything else lives inside its occasion —
-            see `featured` in lib/products.ts. */}
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {featuredProducts().map((p, i) => (
-            <Reveal key={p.slug} delay={(i % 4) * 70} className="h-full">
-              <ProductCard product={p} index={i} />
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {/* ── Why no prices ──────────────────────────────────────── */}
-      <section className="shell mt-24">
-        <Reveal>
-          <div className="border-l-2 border-rose bg-paper-2/60 py-7 pl-8 pr-7">
-            <h2 className="display text-[1.6rem]">
-              Why there are no prices here
-            </h2>
-            <p className="mt-3 max-w-[56ch] leading-relaxed text-ink-2">
-              Every piece is made to order, and the same box at two budgets is
-              genuinely two different boxes. Rather than print a number that
-              stops being true the moment you change one thing, we quote on your
-              actual brief — usually within the hour. Nothing is owed until
-              you&rsquo;ve seen options and agreed a figure.
+        <Reveal delay={70}>
+          <div className="mt-8 max-w-[58ch] space-y-4 text-[1.02rem] leading-relaxed text-ink-2">
+            <p>
+              Har gift box yahan order milne ke baad banta hai — pehle se packed
+              shelf pe nahi para hota. Aap bataty hain kis ke liye hai, kis
+              occasion pe, aur kitna kharch karna hai; hum us brief pe box banate
+              hain aur andar kam az kam ek cheez haath se banate hain.
             </p>
-            <p className="mt-4 text-[0.86rem] text-ink-3">
-              Message us on WhatsApp or Instagram (@{site.instagram}) with the
-              occasion, who it&rsquo;s for and roughly what you want to spend.
+            <p>
+              Wo ek cheez — aapke alfaz mein likha calligraphy card, unke naam ka
+              hand-painted plaque, ya ek resin keepsake — hi wajah hai ke box
+              saal bhar baad bhi unke paas hota hai. Chocolates khatam ho jate
+              hain.
+            </p>
+            <p>
+              Neeche ready-to-order boxes hain. Koi theek na lage to{" "}
+              <Link href="/build-your-box" className="link-wipe text-ink">
+                Build Your Box
+              </Link>{" "}
+              se apna bana lein, ya{" "}
+              <a
+                href={waLink(
+                  "Assalam o alaikum! Gift box banwana tha.\n\nKis ke liye: \nOccasion: \nBudget: ",
+                )}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="link-wipe text-ink"
+              >
+                WhatsApp
+              </a>{" "}
+              pe budget bhej dein.
             </p>
           </div>
         </Reveal>
       </section>
+
+      {/* ── Browse by occasion ─────────────────────────────────────
+          Real links, not filters — each of these is a page Google can
+          rank on its own. The recipient and type cuts are filters on
+          the grid below instead; they have no pages yet. */}
+      <section className="shell mt-12">
+        <Reveal>
+          <h2 className="eyebrow">Browse by occasion</h2>
+          <div className="mt-5 flex flex-wrap gap-2.5">
+            {occasions.map((o) => (
+              <Link
+                key={o.slug}
+                href={`/occasions/${o.slug}`}
+                className="group flex items-center gap-2.5 border border-paper-3 px-4 py-2.5 text-[0.88rem] text-ink-2 transition-colors duration-500 hover:border-rose hover:text-ink"
+              >
+                <span
+                  className="h-2 w-2 rounded-full"
+                  style={{ background: o.palette.ribbon }}
+                  aria-hidden="true"
+                />
+                {o.name}
+              </Link>
+            ))}
+          </div>
+        </Reveal>
+
+        <Reveal delay={60}>
+          <div className="rule-gold mt-10" />
+        </Reveal>
+      </section>
+
+      {/* ── The grid ───────────────────────────────────────────────
+          Every product, not just the featured ones — this is the page
+          people land on from "gift boxes pakistan", so it should be the
+          whole catalogue. */}
+      <section className="shell mt-12">
+        <FilteredGrid products={products} filters={shopFilters} />
+      </section>
+
+      {/* ── What's inside ──────────────────────────────────────── */}
+      <section className="shell mt-28">
+        <Reveal>
+          <h2 className="display max-w-[20ch] text-[clamp(1.9rem,4vw,2.8rem)]">
+            What&rsquo;s inside a HeartMade gift box
+          </h2>
+        </Reveal>
+
+        <div className="mt-8 grid gap-8 lg:grid-cols-3 lg:gap-10">
+          <Reveal delay={60}>
+            <h3 className="display text-[1.4rem]">The handmade piece</h3>
+            <p className="mt-3 max-w-[42ch] leading-relaxed text-ink-2">
+              Every box has at least one, and it is the only part that
+              can&rsquo;t be bought anywhere else. A calligraphy card in your
+              words, a wooden name plaque painted by hand, a resin keepsake with
+              a date set into it, or a scrapbook spread illustrated from photos
+              you send. This is the piece that is still on a shelf a year later.
+            </p>
+          </Reveal>
+
+          <Reveal delay={120}>
+            <h3 className="display text-[1.4rem]">What you choose to fill it with</h3>
+            <p className="mt-3 max-w-[42ch] leading-relaxed text-ink-2">
+              Chocolates, a scented candle, a personalised mug, jewellery, attar,
+              skincare, dates and dry fruit, preserved florals, warm lights. Fresh
+              flowers where we deliver by rider in Karachi — not by courier, because
+              they don&rsquo;t survive it. You pick as many as you like and we balance
+              the arrangement.
+            </p>
+          </Reveal>
+
+          <Reveal delay={180}>
+            <h3 className="display text-[1.4rem]">How it arrives</h3>
+            <p className="mt-3 max-w-[42ch] leading-relaxed text-ink-2">
+              Packed in a rigid box, ribbon-tied and wax-sealed, with hand-lettered
+              tags on the pieces that need them. You get clips on WhatsApp while
+              it&rsquo;s being built — the card being written, the lid going on — so
+              nothing about the box is a surprise to you, only to them.
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ── Prices ─────────────────────────────────────────────────
+          Bands, not a price list. Numbers come from lib/pricing.ts so
+          this table, the FAQ answers and the LocalBusiness schema can
+          never disagree. */}
+      <section className="shell mt-28">
+        <Reveal>
+          <h2 className="display max-w-[20ch] text-[clamp(1.9rem,4vw,2.8rem)]">
+            Gift box prices in Pakistan
+          </h2>
+          <p className="mt-4 max-w-[54ch] leading-relaxed text-ink-2">
+            Made-to-order work can&rsquo;t carry a fixed price tag — the same box
+            at two budgets is two different boxes. But you deserve to know
+            whether we&rsquo;re in your range before you message. These are the
+            bands we actually work in.
+          </p>
+        </Reveal>
+
+        <Reveal delay={80}>
+          <div className="mt-9 overflow-x-auto">
+            <table className="w-full min-w-[34rem] border-collapse text-left">
+              <caption className="sr-only">
+                HeartMade Craft gift box price bands in Pakistani rupees
+              </caption>
+              <thead>
+                <tr className="border-b border-ink/15">
+                  <th scope="col" className="eyebrow py-3 pr-6 font-normal">
+                    Roughly
+                  </th>
+                  <th scope="col" className="eyebrow py-3 pr-6 font-normal">
+                    What it is
+                  </th>
+                  <th scope="col" className="eyebrow py-3 font-normal">
+                    What that buys
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {priceBands.map((band) => (
+                  <tr key={band.range} className="border-b border-paper-3">
+                    <td className="display whitespace-nowrap py-5 pr-6 text-[1.25rem] text-rose-deep">
+                      {band.range}
+                    </td>
+                    <td className="py-5 pr-6 text-[0.95rem] text-ink">
+                      {band.label}
+                    </td>
+                    <td className="py-5 text-[0.9rem] leading-relaxed text-ink-2">
+                      {band.note}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Reveal>
+
+        <Reveal delay={120}>
+          <p className="mt-6 max-w-[54ch] text-[0.86rem] leading-relaxed text-ink-3">
+            Delivery is Rs 350 in Karachi and Rs 500 nationwide for most boxes,
+            and we tell you the figure before you commit to anything. Rush work
+            inside 24 hours is 30% more, because it pushes other orders back.
+            Nothing is owed until you&rsquo;ve seen options and agreed a price.
+          </p>
+        </Reveal>
+      </section>
+
+      {/* ── How to order ───────────────────────────────────────── */}
+      <section className="shell mt-28">
+        <Reveal>
+          <h2 className="display max-w-[20ch] text-[clamp(1.9rem,4vw,2.8rem)]">
+            How to order
+          </h2>
+        </Reveal>
+
+        <ol className="mt-9 grid gap-px sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            [
+              "01",
+              "Send the brief",
+              "Who it's for, the occasion, and a budget. Two lines is enough.",
+            ],
+            [
+              "02",
+              "We come back with options",
+              "Two or three directions and an honest figure, usually the same day.",
+            ],
+            [
+              "03",
+              "We make it",
+              "Clips on WhatsApp as it comes together, so you see it before they do.",
+            ],
+            [
+              "04",
+              "It arrives",
+              "Karachi same or next day. Rest of Pakistan 2–4 days by courier.",
+            ],
+          ].map(([n, title, body], i) => (
+            <Reveal key={n} delay={i * 70} className="h-full">
+              <li className="h-full bg-paper-2/50 p-6 outline outline-1 outline-paper-3">
+                <span className="display text-[1.5rem] text-rose/60">{n}</span>
+                <h3 className="display mt-3 text-[1.2rem] leading-snug">
+                  {title}
+                </h3>
+                <p className="mt-2.5 text-[0.88rem] leading-relaxed text-ink-2">
+                  {body}
+                </p>
+              </li>
+            </Reveal>
+          ))}
+        </ol>
+
+        <Reveal delay={160}>
+          <div className="mt-10 flex flex-col items-start gap-6 border-t border-paper-3 pt-9 sm:flex-row sm:items-center sm:justify-between">
+            <p className="italic-serif max-w-[42ch] text-[1.15rem] text-ink-2">
+              Most orders start with one message and a budget. Ours is on
+              Instagram too — @{site.instagram}.
+            </p>
+            <a
+              href={waLink(
+                `Assalam o alaikum! ${site.name} se gift box banwana tha.\n\nKis ke liye: \nOccasion: \nBudget: \nKab chahiye: \nDelivery city: `,
+              )}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn shrink-0 bg-ink px-7 py-4 text-[0.85rem] tracking-wide text-paper after:bg-rose"
+            >
+              Send that message
+            </a>
+          </div>
+        </Reveal>
+      </section>
+
+      {/*
+        CollectionPage + ItemList.
+
+        Deliberately NOT Product schema: that needs a real image and a
+        real price per item, and the catalogue currently has neither
+        (mp4 clips, and no per-product price field). Invalid Product
+        markup earns Search Console errors, not rich results. Add it
+        once the photography is shot.
+      */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            name: "Gift Boxes in Pakistan",
+            description:
+              "Handmade gift boxes and hampers, made to order in Karachi and delivered across Pakistan.",
+            url: `${site.url}/shop`,
+            isPartOf: { "@type": "WebSite", name: site.name, url: site.url },
+            mainEntity: {
+              "@type": "ItemList",
+              numberOfItems: products.length,
+              itemListElement: products.map((p, i) => ({
+                "@type": "ListItem",
+                position: i + 1,
+                name: p.name,
+                url: `${site.url}/product/${p.slug}`,
+              })),
+            },
+          }),
+        }}
+      />
     </>
   );
 }

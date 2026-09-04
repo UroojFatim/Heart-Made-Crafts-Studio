@@ -6,6 +6,7 @@ import ProductGallery from "@/components/ProductGallery";
 import Reveal from "@/components/Reveal";
 import { getOccasion, occasions } from "@/lib/occasions";
 import { getProduct, isInOccasion, products } from "@/lib/products";
+import { priceFloor } from "@/lib/pricing";
 import { site, waLink } from "@/lib/site";
 
 type Params = { params: Promise<{ slug: string }> };
@@ -80,7 +81,7 @@ export default async function ProductPage({ params }: Params) {
               {[
                 ["Ready in", `${product.leadTimeDays[0]}–${product.leadTimeDays[1]} days`],
                 ["Made in", site.city],
-                ["Pricing", "Quoted to your brief"],
+                ["Pricing", `From ${priceFloor}, quoted to your brief`],
               ].map(([k, v]) => (
                 <div key={k} className="bg-paper px-4 py-4">
                   <dt className="eyebrow">{k}</dt>

@@ -39,8 +39,8 @@ const money: QA[] = [
     a: "Raast, JazzCash, EasyPaisa or bank transfer. Cash on delivery where the courier supports it. We don't take card payments on the site yet — when we do, it'll be through a proper gateway, not a link in a DM.",
   },
   {
-    q: "Why aren't there any prices on the website?",
-    a: "Because every piece is made to order, and the same box at two budgets is genuinely two different boxes. A printed number stops being true the moment you change one thing in it. So instead of a price list, tell us the occasion and roughly what you want to spend — we come back with two or three options and an honest figure, usually within the hour. Nothing is owed until you've seen them and agreed.",
+    q: "Why are there price ranges instead of prices?",
+    a: "Because every piece is made to order, and the same box at two budgets is genuinely two different boxes. A printed number stops being true the moment you change one thing in it. So the shop page carries the bands we actually work in — from Rs 900 for a card on its own up past Rs 5,000 for large hampers — and the exact figure comes back on your actual brief, usually within the hour. Nothing is owed until you've seen options and agreed a price.",
   },
   {
     q: "Can you work to my budget?",

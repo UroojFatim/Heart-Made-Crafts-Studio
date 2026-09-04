@@ -151,18 +151,30 @@ touch.
 
 ## About prices
 
-There are none on the site, anywhere, on purpose. Every piece is made to
-order, and the same box at two budgets is two different boxes.
+**Bands, not a price list.** Every piece is still made to order, and the
+same box at two budgets is still two different boxes — so no individual
+product carries a number. What the site does publish is the range we
+actually work in, because "are they even in my budget" is the question
+that otherwise costs a whole WhatsApp exchange to answer.
 
-Instead:
+Edit the bands in **`lib/pricing.ts`**. Three things read from it, so
+changing a number there changes all three at once:
 
-- Product pages say **"Quoted to your brief."**
-- The occasions page carries a short paragraph explaining why.
+- the price table on `/shop`
+- `priceFloor`, shown in the Pricing row on every product page
+- `priceRangeSchema`, the `priceRange` in the LocalBusiness schema
+
+Everything else stays as it was:
+
+- Product cards carry a **lead time**, not a price.
 - The box builder collects the brief — including a free-text budget
   field — and sends it to WhatsApp already written out.
-- The FAQ answers *"Why aren't there any prices on the website?"* and
+- The FAQ answers *"Why are there price ranges instead of prices?"* and
   *"Can you work to my budget?"* properly.
 
-If you later want to publish prices, add a `price` field to the `Product`
-type and show it in `ProductCard.tsx` — nothing else depends on its
-absence.
+If you later want a number on each individual product, add a `price`
+field to the `Product` type in `lib/products.ts` and show it in
+`ProductCard.tsx`. You will also then be able to emit `Product` schema
+with `offers` on `/shop` — it is deliberately left out today because a
+product has no price and no still image, and invalid markup earns Search
+Console errors rather than rich results.

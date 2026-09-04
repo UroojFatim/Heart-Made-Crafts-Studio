@@ -36,7 +36,8 @@
  * SVG box in that product's palette — the site stays presentable while
  * you shoot.
  *
- * There are no prices anywhere. Quotes happen on WhatsApp.
+ * Products carry no price field. Price BANDS live in lib/pricing.ts
+ * and are shown on /shop; the exact figure is quoted on WhatsApp.
  */
 
 import type { OccasionSlug } from "./occasions";

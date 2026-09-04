@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import AmbientField from "@/components/AmbientField";
 import RibbonSpine from "@/components/RibbonSpine";
 import SmoothScroll from "@/components/SmoothScroll";
+import { priceRangeSchema } from "@/lib/pricing";
 import { site } from "@/lib/site";
 
 const fraunces = Fraunces({
@@ -100,7 +101,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               // Reads from lib/site.ts — still the placeholder number
               // until `whatsapp` is set there.
               telephone: `+${site.whatsapp}`,
-              priceRange: "Rs 900 - Rs 15,000",
+              priceRange: priceRangeSchema,
               address: {
                 "@type": "PostalAddress",
                 addressLocality: "Karachi",

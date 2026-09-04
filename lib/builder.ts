@@ -8,7 +8,8 @@
  * WhatsApp already written out — so the first message contains
  * everything needed to quote and start work.
  *
- * No prices here on purpose. Quoting happens in conversation.
+ * No prices on the options here on purpose — a build is quoted as a
+ * whole. The bands are in lib/pricing.ts and shown on /shop.
  *
  * TO ADD AN OPTION  add it to the relevant group's `items`.
  * TO ADD A GROUP    add a new object to `groups`.
@@ -114,6 +115,7 @@ export const occasionOptions = [
   "Anniversary",
   "Nikah / Wedding",
   "New baby",
+  "14 August",
   "Eid",
   "Valentine's",
   "Graduation",

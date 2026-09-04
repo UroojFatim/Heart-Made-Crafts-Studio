@@ -23,9 +23,10 @@ import Reveal from "./Reveal";
  * that's already written. Entirely client-side: no backend, no
  * database, no running cost.
  *
- * Deliberately no prices. Every piece is made to order and the same box
- * at two budgets is two different boxes — so the budget arrives as a
- * sentence in the message and the quote happens in conversation.
+ * Deliberately no per-option prices. A build is quoted as a whole, and
+ * the same box at two budgets is two different boxes — so the budget
+ * arrives as a sentence in the message and the quote happens in
+ * conversation. The bands are in lib/pricing.ts, shown on /shop.
  */
 export default function BoxBuilder() {
   const [occasion, setOccasion] = useState<string>(occasionOptions[0]);

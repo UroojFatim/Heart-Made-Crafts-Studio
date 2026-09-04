@@ -31,7 +31,9 @@ export function waLink(message: string) {
 }
 
 export const nav = [
-  { href: "/shop", label: "Occasions" },
+  // /shop is the gift boxes hub now, not just an occasions index — its
+  // H1 and title say so, and the nav has to agree.
+  { href: "/shop", label: "Gift boxes" },
   { href: "/build-your-box", label: "Build your box" },
   { href: "/about", label: "About" },
   { href: "/faq", label: "FAQ" },
