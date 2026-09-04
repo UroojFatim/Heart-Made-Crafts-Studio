@@ -217,7 +217,11 @@ export default function ShopPage() {
             Delivery is Rs 350 in Karachi and Rs 500 nationwide for most boxes,
             and we tell you the figure before you commit to anything. Rush work
             inside 24 hours is 30% more, because it pushes other orders back.
-            Nothing is owed until you&rsquo;ve seen options and agreed a price.
+            Nothing is owed until you&rsquo;ve seen options and agreed a price.{" "}
+            <Link href="/gift-delivery/karachi" className="link-wipe text-ink">
+              Same-day delivery in Karachi
+            </Link>{" "}
+            has its own page, with the cut-off time and the areas we cover.
           </p>
         </Reveal>
       </section>

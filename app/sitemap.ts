@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { cities } from "@/lib/delivery";
 import { occasions } from "@/lib/occasions";
 import { products } from "@/lib/products";
 import { site } from "@/lib/site";
@@ -32,6 +33,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.9,
   }));
 
+  // City delivery pages carry buying intent ("gift delivery karachi")
+  // and back up the Google Business Profile, so they rank with the
+  // occasion pages rather than below the products.
+  const cityPages = cities.map((c) => ({
+    url: `${site.url}/gift-delivery/${c.slug}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.9,
+  }));
+
   const productPages = products.map((p) => ({
     url: `${site.url}/product/${p.slug}`,
     lastModified: now,
@@ -39,5 +50,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [...pages, ...occasionPages, ...productPages];
+  return [...pages, ...occasionPages, ...cityPages, ...productPages];
 }

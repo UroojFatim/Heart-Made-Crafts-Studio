@@ -130,7 +130,14 @@ export default function Footer() {
           <div>
             <p className="eyebrow text-paper/40">Delivery</p>
             <ul className="mt-4 space-y-2.5 text-sm text-paper/70">
-              <li>Karachi — same or next day</li>
+              <li>
+                <Link
+                  href="/gift-delivery/karachi"
+                  className="link-wipe transition-colors duration-500 hover:text-paper"
+                >
+                  Karachi — same or next day
+                </Link>
+              </li>
               <li>Nationwide — 2–4 days by courier</li>
               <li>Cash on delivery available</li>
             </ul>

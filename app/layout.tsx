@@ -94,6 +94,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "LocalBusiness",
+              // Stable id so other pages can point at THIS business
+              // instead of declaring a second one. The city delivery
+              // pages reference it as the provider of their Service.
+              "@id": `${site.url}/#business`,
               name: "HeartMade Craft",
               description:
                 "Handmade gift boxes and hampers, made to order in Karachi.",
