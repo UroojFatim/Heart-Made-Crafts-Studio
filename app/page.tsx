@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Accordion, { type QA } from "@/components/Accordion";
 import Hero from "@/components/Hero";
 import Marquee from "@/components/Marquee";
 import Reveal from "@/components/Reveal";
@@ -23,6 +24,7 @@ export default function Home() {
       <Featured products={featured} />
       <HowItWorks />
       <Reviews />
+      <HomeFAQ />
     </>
   );
 }
@@ -218,7 +220,7 @@ function TheOnePiece() {
             {[
               ["1", "handmade piece in every single box, minimum"],
               ["8", "orders a week, maximum — so nothing is rushed"],
-              ["Rs 600", "the smallest thing we&rsquo;ll make for you"],
+              ["Rs 900", "the smallest thing we&rsquo;ll make for you"],
               ["2–3 days", "from your message to their hands, in Karachi"],
             ].map(([n, label]) => (
               <div
@@ -417,6 +419,87 @@ function HowItWorks() {
           </div>
         </Reveal>
       </div>
+    </section>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════
+   Homepage FAQ
+
+   The five questions people actually type into Google before they buy
+   a gift box. The longer set lives on /faq — this is only the money,
+   delivery and contents questions, answered in the same words a
+   customer would use.
+
+   `faqs` feeds both the accordion and the FAQPage schema below it, so
+   the answer a reader sees and the answer Google reads cannot drift
+   apart. If you edit one, you have edited both.
+   ══════════════════════════════════════════════════════════════ */
+
+const faqs: QA[] = [
+  {
+    q: "Gift box ki price kya hoti hai Pakistan mein?",
+    a: "Hamare boxes Rs 900 se shuru hote hain — ek akela hand-lettered card. Signature Box Rs 2,500–4,000 ke beech aata hai, aur bare hampers isse upar. Aap budget batayein, hum usi ke andar do-teen options bana kar bhejte hain.",
+  },
+  {
+    q: "Karachi mein gift box delivery kitne din mein hoti hai?",
+    a: "Ready boxes Karachi mein same ya next day. Custom handmade pieces 2–3 din lete hain kyunki wo haath se bante hain. Baqi Pakistan mein courier se 2–4 din.",
+  },
+  {
+    q: "Kya cash on delivery available hai?",
+    a: "Ready boxes pe haan — jab box aapke haath mein ho tab payment. Custom orders pe 50% advance, kyunki personalised piece dobara kisi ko nahi bech sakte.",
+  },
+  {
+    q: "Gift box mein kya daal sakte hain?",
+    a: "Chocolates, scented candle, mug, jewellery, dry fruit, mithai — aur har box mein kam az kam ek handmade piece: hand-lettered card, hand-painted name plaque, ya resin keepsake. Build Your Box se aap khud choose kar sakti hain.",
+  },
+  {
+    q: "Kya aap Lahore aur Islamabad deliver karte hain?",
+    a: "Ji haan. Poore Pakistan mein courier se, 2–4 working days.",
+  },
+];
+
+function HomeFAQ() {
+  return (
+    <section className="relative border-t border-paper-3 py-24 lg:py-32">
+      <div className="shell">
+        <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+          <Reveal variant="left" className="lg:sticky lg:top-32 lg:self-start">
+            <p className="eyebrow">Before you ask</p>
+            <h2 className="display mt-5 max-w-[14ch] text-[clamp(2.1rem,4.6vw,3.4rem)]">
+              Gift box FAQs
+            </h2>
+            <p className="mt-5 max-w-[38ch] leading-relaxed text-ink-2">
+              The five we get most often. The rest — refunds, rush orders,
+              corporate gifting — are answered on the{" "}
+              <Link href="/faq" className="link-wipe text-ink">
+                full FAQ page
+              </Link>
+              .
+            </p>
+          </Reveal>
+
+          <Reveal variant="right" delay={80}>
+            <Accordion items={faqs} />
+          </Reveal>
+        </div>
+      </div>
+
+      {/* Built from `faqs` above, so the two can never disagree. */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: faqs.map((qa) => ({
+              "@type": "Question",
+              name: qa.q,
+              acceptedAnswer: { "@type": "Answer", text: qa.a },
+            })),
+          }),
+        }}
+      />
     </section>
   );
 }

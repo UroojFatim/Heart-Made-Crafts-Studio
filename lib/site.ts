@@ -7,7 +7,15 @@
  */
 export const site = {
   name: "HeartMade Craft",
-  url: "https://heartmadecraft.studio",
+  /**
+   * The live domain, with the www and no trailing slash. It feeds
+   * metadataBase, sitemap.xml, robots.txt, Open Graph and the
+   * LocalBusiness schema — get it wrong and all five are wrong.
+   *
+   * Note the s: the DOMAIN is heartmadecraftS.studio, the INSTAGRAM
+   * handle is heartmadecraft.studio. They genuinely differ.
+   */
+  url: "https://www.heartmadecrafts.studio",
   instagram: "heartmadecraft.studio",
   email: "heartmadecraft.studio@gmail.com",
   whatsapp: "923000000000",

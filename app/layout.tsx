@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     template: "%s · HeartMade Craft",
   },
   description:
-    "Handmade gift boxes and hampers from Karachi, made to order. Every box has one hand-made piece — a hand-lettered card, a painted name plaque. From Rs 600, COD available, delivery across Pakistan.",
+    "Handmade gift boxes and hampers from Karachi, made to order. Every box has one hand-made piece — a hand-lettered card, a painted name plaque. From Rs 900, COD available, delivery across Pakistan.",
   icons: {
     icon: "/logo.png",
     shortcut: "/logo.png",
@@ -95,16 +95,22 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               "@type": "LocalBusiness",
               name: "HeartMade Craft",
               description:
-                "Handmade gift boxes and hampers. Every box carries one piece made only for the recipient.",
+                "Handmade gift boxes and hampers, made to order in Karachi.",
               url: site.url,
+              // Reads from lib/site.ts — still the placeholder number
+              // until `whatsapp` is set there.
               telephone: `+${site.whatsapp}`,
+              priceRange: "Rs 900 - Rs 15,000",
               address: {
                 "@type": "PostalAddress",
                 addressLocality: "Karachi",
                 addressRegion: "Sindh",
                 addressCountry: "PK",
               },
-              areaServed: "Pakistan",
+              // Named cities, not just the country — this is what a
+              // "gift delivery Lahore" style query matches against.
+              areaServed: ["Karachi", "Lahore", "Islamabad", "Pakistan"],
+              // Add the Google Business Profile URL here once it's live.
               sameAs: [`https://instagram.com/${site.instagram}`],
             }),
           }}
