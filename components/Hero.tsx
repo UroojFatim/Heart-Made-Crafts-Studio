@@ -104,19 +104,24 @@ export default function Hero() {
             style={{ animationDelay: "80ms" }}
           >
             <span className="h-px w-8 bg-gold" />
-            Handmade in {site.city}
+            Handmade in {site.city} · Gift boxes delivered across Pakistan
           </p>
 
+          {/* The H1 carries the search terms people actually type. The
+              poetic line that used to sit here is now the sub-headline
+              below — same voice, one line further down. */}
           <h1 className="display-tight mt-5 text-[clamp(2.1rem,4.5vw,3.5rem)]">
             <span className="line-mask auto">
-              <span style={{ animationDelay: "160ms" }}>Every box carries</span>
+              <span style={{ animationDelay: "160ms" }}>Handmade gift boxes</span>
             </span>
             <span className="line-mask auto">
-              <span style={{ animationDelay: "255ms" }}>one thing that can</span>
+              <span style={{ animationDelay: "255ms" }}>in Karachi, made for</span>
             </span>
             <span className="line-mask auto">
               <span style={{ animationDelay: "350ms" }}>
-                only <em className="ink-wash italic-serif not-italic">be theirs.</em>
+                <em className="ink-wash italic-serif not-italic">
+                  one person only
+                </em>
               </span>
             </span>
           </h1>

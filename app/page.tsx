@@ -105,19 +105,19 @@ function TheOnePiece() {
   const pieces = [
     {
       label: "Written",
-      title: "A card in your words",
+      title: "A hand-lettered card in your words",
       body: "You send the words. They come back in ink on cotton paper, lettered by hand and sealed with wax. No fonts, no templates.",
       art: <CardArt />,
     },
     {
       label: "Painted",
-      title: "Their name, by hand",
+      title: "Their name, hand-painted",
       body: "A wooden plaque, a resin keepsake, a lid painted to match. Small enough to keep on a shelf long after the chocolates are gone.",
       art: <PlaqueArt />,
     },
     {
       label: "Kept",
-      title: "Something from before",
+      title: "A pressed flower from before",
       body: "A pressed flower from a day that already happened. Photos illustrated into a spread. The parts of a gift that can't be bought.",
       art: <PressedArt />,
     },
@@ -145,16 +145,21 @@ function TheOnePiece() {
           <Reveal variant="left">
             <p className="eyebrow text-gold-soft/75">The difference</p>
             <h2 className="display mt-5 text-[clamp(2.1rem,4.6vw,3.4rem)]">
-              Anyone can put chocolates{" "}
-              <em className="italic-serif not-italic text-rose-soft">in a box.</em>
+              What makes a handmade gift box different from a{" "}
+              <em className="italic-serif not-italic text-rose-soft">
+                ready-made hamper
+              </em>
             </h2>
           </Reveal>
 
           <Reveal variant="right" delay={100} className="lg:pt-4">
+            {/* Opens with the line that used to be this section's H2 — it
+                keeps the voice, and it is what "that" refers to. */}
             <p className="max-w-[52ch] text-[1.02rem] leading-relaxed text-paper/68">
-              And most of the pages you&rsquo;ve scrolled past do exactly that —
-              the same imported bars, the same acrylic lid, a different ribbon.
-              It looks lovely for a day.
+              Anyone can put chocolates in a box. And most of the pages
+              you&rsquo;ve scrolled past do exactly that — the same imported
+              bars, the same acrylic lid, a different ribbon. It looks lovely
+              for a day.
             </p>
             <p className="mt-4 max-w-[52ch] text-[1.02rem] leading-relaxed text-paper/68">
               We build every box around{" "}
@@ -163,6 +168,11 @@ function TheOnePiece() {
               </span>
               . That piece has no market price and no substitute, and it is the
               only part they still have a year later.
+            </p>
+            {/* Ties the "gift hamper" search term to the homepage. */}
+            <p className="mt-4 max-w-[52ch] text-[1.02rem] leading-relaxed text-paper/68">
+              That is the difference between a gift hamper you buy and a gift box
+              that gets made.
             </p>
           </Reveal>
         </div>
