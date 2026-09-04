@@ -32,26 +32,25 @@ export const metadata: Metadata = {
   },
   description:
     "Handmade gift boxes and hampers from Karachi, made to order. Every box has one hand-made piece — a hand-lettered card, a painted name plaque. From Rs 900, COD available, delivery across Pakistan.",
-  icons: {
-    icon: "/logo.png",
-    shortcut: "/logo.png",
-    apple: "/logo.png",
-  },
-  keywords: [
-    "gift boxes Karachi",
-    "handmade gifts Pakistan",
-    "birthday gift box Karachi",
-    "custom gift hamper Pakistan",
-    "anniversary gifts Karachi",
-    "nikah gift box",
-  ],
+  // No `icons` block on purpose. app/favicon.ico and app/apple-icon.png
+  // are picked up by Next's file convention and emitted automatically.
+  // This used to point all three at /logo.png — a 476×525 lockup, which
+  // a browser then had to squeeze into 16px of tab. Unreadable, and a
+  // quarter-megabyte download for a tab icon.
+  // No `keywords` either. It emits <meta name="keywords">, which Google
+  // stopped reading in 2009 and has said so publicly — the only people
+  // it reaches now are competitors reading your target list out of the
+  // page source. Keywords belong in the headings and the copy, where
+  // they already are.
   openGraph: {
     type: "website",
     locale: "en_PK",
     siteName: "HeartMade Craft",
-    title: "HeartMade Craft — Handmade Gift Boxes in Karachi",
+    // Kept in step with the title and description above — this is what
+    // shows when the link is pasted into WhatsApp or Instagram.
+    title: "Handmade Gift Boxes in Karachi | Delivered Across Pakistan",
     description:
-      "Every box carries one piece made only for them. Handmade in Karachi, delivered across Pakistan.",
+      "Every box carries one piece made only for them — a hand-lettered card, a painted name plaque. Made to order in Karachi from Rs 900, delivered across Pakistan.",
   },
   robots: { index: true, follow: true },
 };

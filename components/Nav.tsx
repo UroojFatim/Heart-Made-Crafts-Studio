@@ -42,19 +42,24 @@ export default function Nav() {
             className="group flex items-baseline gap-2.5 hover:opacity-80 transition-opacity duration-300"
             aria-label="HeartMade Craft, home"
           >
-            {/* Intrinsic size is the file's real 476×525 — the previous
-                80×80 was squashing a portrait mark into a square.
+            {/* Intrinsic size is the file's real 476×525.
 
-                `unoptimized` is deliberate: a logo shown at 40px gains
-                nothing from the image pipeline, and routing it through
-                /_next/image was the thing stopping it rendering at all.
-                See the note in Footer.tsx before removing it. */}
+                h-14, not h-10. This logo is a full lockup — illustration,
+                "Heart Made" in script, "CRAFTS" letterspaced underneath —
+                and at 40px tall the type collapsed into a smudge. 56px is
+                where the script starts reading. --nav-h was raised to
+                5rem in globals.css to give it room.
+
+                `unoptimized` stays: logo.png is now a 53 kB palette PNG,
+                so /_next/image has nothing left to save, and the
+                optimizer was what stopped it rendering at all before
+                sharp was installed. */}
             <Image
               src="/logo.png"
               alt="HeartMade Craft"
               width={476}
               height={525}
-              className="h-10 w-auto"
+              className="h-14 w-auto"
               priority
               unoptimized
             />
