@@ -88,7 +88,7 @@ function EmptyState() {
     {
       n: "04",
       title: "A real person, a real address",
-      body: "Karachi-based, with a name and a face on Instagram. If something is wrong, there is someone to answer for it.",
+      body: "Karachi-based, with a name on the site and work you can watch being made. If something is wrong, there is someone to answer for it.",
     },
   ];
 
