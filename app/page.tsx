@@ -39,8 +39,12 @@ function Occasions() {
           <div>
             <p className="eyebrow">Start here</p>
             <h2 className="display mt-5 max-w-[18ch] text-[clamp(2.1rem,4.6vw,3.4rem)]">
-              What&rsquo;s the occasion?
+              Gift boxes by occasion
             </h2>
+            <p className="mt-4 max-w-[46ch] leading-relaxed text-ink-2">
+              Birthday, anniversary, nikah, Eid, new baby, graduation — har
+              occasion ke liye alag box, alag handmade piece.
+            </p>
           </div>
           <Link
             href="/shop"
@@ -259,8 +263,8 @@ function Featured({ products: list }: { products: Product[] }) {
         <Reveal className="flex flex-wrap items-end justify-between gap-6">
           <div>
             <p className="eyebrow">The boxes</p>
-            <h2 className="display mt-5 max-w-[16ch] text-[clamp(2.1rem,4.6vw,3.4rem)]">
-              Start from one of these.
+            <h2 className="display mt-5 max-w-[20ch] text-[clamp(2.1rem,4.6vw,3.4rem)]">
+              Our most-ordered gift boxes and hampers
             </h2>
             <p className="mt-4 max-w-[46ch] leading-relaxed text-ink-2">
               Every one is made to order and adjusted to your brief. Tell us
@@ -341,7 +345,9 @@ function HowItWorks() {
     {
       n: "04",
       title: "It arrives",
-      body: "Karachi same or next day. Anywhere else in Pakistan, 2–4 days by courier. Cash on delivery where we can.",
+      // Cities named on purpose — these become the internal links when
+      // the city pages exist.
+      body: "Karachi mein same ya next day. Lahore, Islamabad aur baqi Pakistan mein 2–4 days courier se. Cash on delivery jahan mumkin ho.",
     },
   ];
 
@@ -351,7 +357,7 @@ function HowItWorks() {
         <Reveal>
           <p className="eyebrow">How it works</p>
           <h2 className="display mt-5 max-w-[20ch] text-[clamp(2.1rem,4.6vw,3.4rem)]">
-            Four steps, and only one of them is yours.
+            How to order a custom gift box
           </h2>
         </Reveal>
 

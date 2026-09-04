@@ -9,7 +9,7 @@ import { site } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Occasions",
   description:
-    "Handmade gift boxes, bouquets and keepsakes for birthdays, anniversaries, engagements, Eid, apologies, congratulations and festivals. Made to order in Karachi, delivered across Pakistan.",
+    "Handmade gift boxes, bouquets and keepsakes for birthdays, anniversaries, nikah and weddings, a new baby, Eid, graduations and apologies. Made to order in Karachi, delivered across Pakistan.",
 };
 
 export default function ShopPage() {

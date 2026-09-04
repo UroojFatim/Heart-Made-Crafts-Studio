@@ -99,9 +99,9 @@ function EmptyState() {
           <Reveal variant="left" className="lg:sticky lg:top-32 lg:self-start">
             <p className="eyebrow">Trust</p>
             <h2 className="display mt-5 text-[clamp(2.2rem,5vw,3.5rem)]">
-              We&rsquo;re new. So here&rsquo;s what we do instead of{" "}
+              Why trust a{" "}
               <em className="italic-serif not-italic text-rose">
-                showing you reviews.
+                new gift box brand
               </em>
             </h2>
             <p className="mt-7 max-w-[42ch] leading-relaxed text-ink-2">

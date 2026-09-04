@@ -217,7 +217,7 @@ export const products: Product[] = [
     alt: "The Anniversary Box being packed and tied",
   },
     ],
-    occasions: ["anniversary", "engagement"],
+    occasions: ["anniversary", "nikah-wedding"],
     tags: ["box", "for-couple", "for-her", "for-him", "statement"],
     featured: true,
     handmade: "Hand-lettered timeline of your year",
@@ -272,7 +272,7 @@ export const products: Product[] = [
   //   description:
   //     "Coordinated trays hand-painted so the set reads as one thing rather than nine separate purchases. Book at least two weeks out; engagement season fills early.",
   //   media: [],
-  //   occasions: ["engagement"],
+  //   occasions: ["nikah-wedding"],
   //   tags: ["hamper", "for-couple", "for-her", "mangni", "trousseau", "statement"],
   //   handmade: "Hand-painted tray detailing and name plaques",
   //   includes: [
@@ -294,7 +294,7 @@ export const products: Product[] = [
   //   description:
   //     "Built for the moment itself — a ring seat, lights, and a hand-lettered card with the words you've been practising. We'll keep it a secret from whoever you tell us to.",
   //   media: [],
-  //   occasions: ["engagement"],
+  //   occasions: ["nikah-wedding"],
   //   tags: ["box", "for-her", "for-him", "proposal", "statement"],
   //   handmade: "Hand-lettered card and painted lid",
   //   includes: [
@@ -349,7 +349,7 @@ export const products: Product[] = [
   //   description:
   //     "Built around the actual reason — a degree, a first job, a new home, a new baby. The handmade piece changes with it, so it never reads as a generic well-done.",
   //   media: [],
-  //   occasions: ["congratulations"],
+  //   occasions: ["congratulations", "graduation", "new-baby"],
   //   tags: [
   //     "box", "keepsake", "for-her", "for-him", "for-family",
   //     "new-job", "graduation", "new-baby", "new-home", "statement",
@@ -376,8 +376,8 @@ export const products: Product[] = [
   //   description:
   //     "Dusty rose rather than pillar-box red, and built around something written by hand. Slots are limited every year — book by the first week of February.",
   //   media: [],
-  //   occasions: ["festivals"],
-  //   tags: ["box", "bouquet", "for-her", "for-him", "valentines", "statement"],
+  //   occasions: ["valentine"],
+  //   tags: ["box", "bouquet", "for-her", "for-him", "small", "statement"],
   //   handmade: "Handwritten letter, not a printed card",
   //   includes: [
   //     "Handwritten letter on cotton paper",
@@ -397,8 +397,8 @@ export const products: Product[] = [
   //   description:
   //     "Independence Day boxes for family, teams and offices. Hand-painted crescent detailing rather than plastic flags.",
   //   media: [],
-  //   occasions: ["festivals"],
-  //   tags: ["box", "hamper", "for-family", "for-kids", "independence-day", "single", "bulk"],
+  //   occasions: ["14-august"],
+  //   tags: ["box", "hamper", "for-family", "for-kids", "single", "bulk"],
   //   handmade: "Hand-painted crescent detailing",
   //   includes: [
   //     "Hand-painted lid detailing",

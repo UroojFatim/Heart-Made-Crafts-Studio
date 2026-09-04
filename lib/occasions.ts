@@ -26,14 +26,22 @@
 
 import type { Palette } from "./palette";
 
+/**
+ * Slugs are URLs. Renaming one breaks every link Google already has, so
+ * if you retire a slug, add a redirect for it in next.config.ts —
+ * "engagement" and "festivals" both have one.
+ */
 export type OccasionSlug =
   | "birthday"
   | "anniversary"
-  | "sorry"
-  | "engagement"
+  | "nikah-wedding"
+  | "new-baby"
+  | "14-august"
   | "eid"
+  | "valentine"
+  | "graduation"
   | "congratulations"
-  | "festivals";
+  | "sorry";
 
 export type FilterOption = {
   /** Must match the tag you put on products. Keep it lowercase-hyphenated. */
@@ -99,6 +107,26 @@ const FOR_ANYONE: FilterGroup = {
   ],
 };
 
+const SCALE: FilterGroup = {
+  id: "scale",
+  label: "How big",
+  options: [
+    { id: "small", label: "Something small" },
+    { id: "statement", label: "Make a statement" },
+  ],
+};
+
+/** For the occasions people order in sets — Eid, corporate. */
+const QUANTITY: FilterGroup = {
+  id: "quantity",
+  label: "How many",
+  options: [
+    { id: "single", label: "Just one" },
+    { id: "set", label: "A set of a few" },
+    { id: "bulk", label: "Bulk / corporate" },
+  ],
+};
+
 /* ──────────────────────────────────────────────────────────────────
    The occasions
    ────────────────────────────────────────────────────────────────── */
@@ -122,14 +150,7 @@ export const occasions: Occasion[] = [
         ],
       },
       TYPE,
-      {
-        id: "scale",
-        label: "How big",
-        options: [
-          { id: "small", label: "Something small" },
-          { id: "statement", label: "Make a statement" },
-        ],
-      },
+      SCALE,
     ],
   },
 
@@ -155,6 +176,133 @@ export const occasions: Occasion[] = [
   },
 
   {
+    /**
+     * Was two occasions — "engagement" and the wedding half of
+     * "festivals". Merged because the search intent is the same and one
+     * strong page outranks two thin ones. /occasions/engagement
+     * redirects here (see next.config.ts).
+     */
+    slug: "nikah-wedding",
+    name: "Nikah & Wedding",
+    tagline: "For the yes, and everything after it.",
+    blurb:
+      "Proposal boxes, mangni trays, nikah gifts and coordinated trousseau sets. Book these early — we hand-paint the detailing and wedding season fills fast.",
+    palette: { box: "#F1E7D5", lid: "#E3D3B8", ribbon: "#B78B4B", glow: "#FFF3D6" },
+    filters: [
+      {
+        id: "recipient",
+        label: "Who it's for",
+        options: [
+          { id: "for-her", label: "For her" },
+          { id: "for-him", label: "For him" },
+          { id: "for-couple", label: "For the couple" },
+          { id: "for-family", label: "For the family" },
+        ],
+      },
+      TYPE,
+      {
+        id: "moment",
+        label: "Which moment",
+        options: [
+          { id: "proposal", label: "The proposal" },
+          { id: "mangni", label: "Mangni / ring ceremony" },
+          { id: "nikah", label: "Nikah" },
+          { id: "trousseau", label: "Trousseau trays" },
+          { id: "walima", label: "Walima" },
+        ],
+      },
+    ],
+  },
+
+  {
+    slug: "new-baby",
+    name: "New Baby",
+    tagline: "For the people who haven't slept in a week.",
+    blurb:
+      "Boxes for the baby and, more usefully, for the mother. Hand-painted name pieces, keepsakes with the birth date, and something for the older sibling who is quietly furious.",
+    palette: { box: "#E6EDF2", lid: "#D2DEE7", ribbon: "#6E8CA8", glow: "#EDF6FC" },
+    filters: [
+      {
+        id: "recipient",
+        label: "Who it's for",
+        options: [
+          { id: "for-her", label: "For the mother" },
+          { id: "for-kids", label: "For the baby" },
+          { id: "for-family", label: "For the whole family" },
+        ],
+      },
+      TYPE,
+      SCALE,
+    ],
+  },
+
+  {
+    slug: "eid",
+    name: "Eid",
+    tagline: "Eidi, but worth keeping.",
+    blurb:
+      "Eid boxes for family, for the in-laws, for a whole office. Order early — Eid week fills up and we cap what we take.",
+    palette: { box: "#E4EDE6", lid: "#CEDBD2", ribbon: "#5E8C6A", glow: "#EAFBEF" },
+    filters: [
+      FOR_ANYONE,
+      TYPE,
+      QUANTITY,
+    ],
+  },
+
+  {
+    /** Also split out of the old "festivals" page. */
+    slug: "valentine",
+    name: "Valentine's",
+    tagline: "Not another red teddy.",
+    blurb:
+      "Dusty rose rather than pillar-box red, and built around something written by hand. Slots are limited every year — book by the first week of February.",
+    palette: { box: "#F6E3E0", lid: "#E8CAC6", ribbon: "#C4695E", glow: "#FFECE8" },
+    filters: [
+      FOR_HER_HIM,
+      TYPE,
+      SCALE,
+    ],
+  },
+
+  {
+    /** Was a filter option inside "congratulations". Promoted to its own
+        page; congratulations still covers the reasons that don't have one. */
+    slug: "graduation",
+    name: "Graduation",
+    tagline: "For the degree that took longer than it should have.",
+    blurb:
+      "Convocation boxes and keepsakes with the date and the degree lettered by hand. For the graduate, or from a whole family at once.",
+    palette: { box: "#E7E2F0", lid: "#D5CEE4", ribbon: "#7A6BA8", glow: "#F2EDFF" },
+    filters: [
+      FOR_HER_HIM,
+      TYPE,
+      SCALE,
+    ],
+  },
+
+  {
+    slug: "congratulations",
+    name: "Congratulations",
+    tagline: "For the news worth marking.",
+    blurb:
+      "A new job, a new home, a promotion, a first flat. Built to suit the reason rather than a generic well-done. Graduations and new babies have their own pages.",
+    palette: { box: "#E7E2F0", lid: "#D5CEE4", ribbon: "#7A6BA8", glow: "#F2EDFF" },
+    filters: [
+      {
+        id: "reason",
+        label: "What for",
+        options: [
+          { id: "new-job", label: "New job" },
+          { id: "promotion", label: "Promotion" },
+          { id: "new-home", label: "New home" },
+        ],
+      },
+      TYPE,
+    ],
+  },
+
+  {
     slug: "sorry",
     name: "Sorry",
     tagline: "When the words need help arriving.",
@@ -173,104 +321,6 @@ export const occasions: Occasion[] = [
           { id: "serious", label: "Serious" },
         ],
       },
-    ],
-  },
-
-  {
-    slug: "engagement",
-    name: "Engagement",
-    tagline: "For the yes, and everything after it.",
-    blurb:
-      "Proposal boxes, mangni trays and coordinated sets. Book these early — we hand-paint the detailing and it takes time.",
-    palette: { box: "#F1E7D5", lid: "#E3D3B8", ribbon: "#B78B4B", glow: "#FFF3D6" },
-    filters: [
-      {
-        id: "recipient",
-        label: "Who it's for",
-        options: [
-          { id: "for-her", label: "For her" },
-          { id: "for-him", label: "For him" },
-          { id: "for-couple", label: "For the couple" },
-        ],
-      },
-      TYPE,
-      {
-        id: "moment",
-        label: "Which moment",
-        options: [
-          { id: "proposal", label: "The proposal" },
-          { id: "mangni", label: "Mangni / ring ceremony" },
-          { id: "trousseau", label: "Trousseau trays" },
-        ],
-      },
-    ],
-  },
-
-  {
-    slug: "eid",
-    name: "Eid",
-    tagline: "Eidi, but worth keeping.",
-    blurb:
-      "Eid boxes for family, for the in-laws, for a whole office. Order early — Eid week fills up and we cap what we take.",
-    palette: { box: "#E4EDE6", lid: "#CEDBD2", ribbon: "#5E8C6A", glow: "#EAFBEF" },
-    filters: [
-      FOR_ANYONE,
-      TYPE,
-      {
-        id: "quantity",
-        label: "How many",
-        options: [
-          { id: "single", label: "Just one" },
-          { id: "set", label: "A set of a few" },
-          { id: "bulk", label: "Bulk / corporate" },
-        ],
-      },
-    ],
-  },
-
-  {
-    slug: "congratulations",
-    name: "Congratulations",
-    tagline: "For the news worth marking.",
-    blurb:
-      "New job, new baby, new home, a degree finally finished. Built to suit the reason rather than a generic well-done.",
-    palette: { box: "#E7E2F0", lid: "#D5CEE4", ribbon: "#7A6BA8", glow: "#F2EDFF" },
-    filters: [
-      {
-        id: "reason",
-        label: "What for",
-        options: [
-          { id: "new-job", label: "New job" },
-          { id: "graduation", label: "Graduation" },
-          { id: "new-baby", label: "New baby" },
-          { id: "new-home", label: "New home" },
-        ],
-      },
-      TYPE,
-    ],
-  },
-
-  {
-    slug: "festivals",
-    name: "Festivals",
-    tagline: "The dates the whole country is thinking about.",
-    blurb:
-      "Valentine's, Independence Day, Mother's and Father's Day, New Year. These sell out fast, so we open a limited number of slots for each.",
-    palette: { box: "#F6E3E0", lid: "#E8CAC6", ribbon: "#C4695E", glow: "#FFECE8" },
-    filters: [
-      {
-        id: "festival",
-        label: "Which one",
-        options: [
-          { id: "valentines", label: "Valentine's — 14 Feb" },
-          { id: "independence-day", label: "Independence Day — 14 Aug" },
-          { id: "mothers-day", label: "Mother's Day" },
-          { id: "fathers-day", label: "Father's Day" },
-          { id: "new-year", label: "New Year" },
-        ],
-      },
-      FOR_ANYONE,
-      TYPE,
     ],
   },
 ];

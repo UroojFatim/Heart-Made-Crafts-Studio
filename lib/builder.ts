@@ -104,14 +104,21 @@ export const delivery = [
 
 export type DeliveryId = (typeof delivery)[number]["id"];
 
+/**
+ * These are free-text labels for the WhatsApp brief, not slugs — but
+ * keep them in step with lib/occasions.ts so the builder offers the same
+ * occasions the shop does.
+ */
 export const occasionOptions = [
   "Birthday",
   "Anniversary",
-  "Sorry",
-  "Engagement",
+  "Nikah / Wedding",
+  "New baby",
   "Eid",
+  "Valentine's",
+  "Graduation",
   "Congratulations",
-  "Festival (14 Feb, 14 Aug…)",
+  "Sorry",
   "Just because",
 ] as const;
 
