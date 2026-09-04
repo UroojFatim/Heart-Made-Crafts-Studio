@@ -36,7 +36,6 @@ export type OccasionSlug =
   | "anniversary"
   | "nikah-wedding"
   | "new-baby"
-  | "14-august"
   | "eid"
   | "valentine"
   | "graduation"
@@ -116,7 +115,7 @@ const SCALE: FilterGroup = {
   ],
 };
 
-/** For the occasions people order in sets — Eid, 14 August, corporate. */
+/** For the occasions people order in sets — Eid, corporate. */
 const QUANTITY: FilterGroup = {
   id: "quantity",
   label: "How many",
@@ -233,22 +232,6 @@ export const occasions: Occasion[] = [
       },
       TYPE,
       SCALE,
-    ],
-  },
-
-  {
-    /** Split out of the old "festivals" page — 14 August has its own
-        search demand and deserves its own page. */
-    slug: "14-august",
-    name: "14 August",
-    tagline: "Green and white, done properly.",
-    blurb:
-      "Independence Day boxes for family, for schools and for whole offices. Hand-painted crescent detailing rather than plastic flags. Order by the first week of August.",
-    palette: { box: "#E4EDE6", lid: "#CEDBD2", ribbon: "#5E8C6A", glow: "#EAFBEF" },
-    filters: [
-      FOR_ANYONE,
-      TYPE,
-      QUANTITY,
     ],
   },
 

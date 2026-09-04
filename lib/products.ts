@@ -390,26 +390,6 @@ export const products: Product[] = [
   //   leadTimeDays: [3, 5],
   //   palette: { box: "#F6E3E0", lid: "#E8CAC6", ribbon: "#C4695E", glow: "#FFECE8" },
   // },
-
-  // {
-  //   slug: "azadi-box",
-  //   name: "The 14 August Box",
-  //   tagline: "Green and white, done properly.",
-  //   description:
-  //     "Independence Day boxes for family, teams and offices. Hand-painted crescent detailing rather than plastic flags.",
-  //   media: [],
-  //   occasions: ["14-august"],
-  //   tags: ["box", "hamper", "for-family", "for-kids", "single", "bulk"],
-  //   handmade: "Hand-painted crescent detailing",
-  //   includes: [
-  //     "Hand-painted lid detailing",
-  //     "Green and white confectionery",
-  //     "Hand-lettered card",
-  //     "Coordinated wrapping",
-  //   ],
-  //   leadTimeDays: [3, 5],
-  //   palette: { box: "#E4EDE6", lid: "#CEDBD2", ribbon: "#5E8C6A", glow: "#EAFBEF" },
-  // },
 ];
 
 /* ──────────────────────────────────────────────────────────────────

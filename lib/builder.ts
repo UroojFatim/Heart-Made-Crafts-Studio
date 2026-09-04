@@ -80,6 +80,9 @@ export const groups: BuilderGroup[] = [
       { id: "scent", label: "Perfume or attar" },
       { id: "skin", label: "Skincare set" },
       { id: "dates", label: "Dates and dry fruit" },
+      { id: "mithai", label: "Mithai", note: "Fresh from a Karachi halwai", localOnly: true },
+      { id: "snacks", label: "Savoury snacks" },
+      { id: "fruit", label: "Fresh fruit basket", localOnly: true },
     ],
   },
   {

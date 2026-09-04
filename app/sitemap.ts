@@ -6,14 +6,22 @@ import { site } from "@/lib/site";
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 
-  const pages = ["", "/shop", "/build-your-box", "/about", "/faq", "/contact"].map(
-    (path) => ({
-      url: `${site.url}${path}`,
-      lastModified: now,
-      changeFrequency: "weekly" as const,
-      priority: path === "" ? 1 : 0.8,
-    }),
-  );
+  // /shop and /gift-hampers are the two commercial hubs, so they sit a
+  // notch above the rest.
+  const pages = [
+    "",
+    "/shop",
+    "/gift-hampers",
+    "/build-your-box",
+    "/about",
+    "/faq",
+    "/contact",
+  ].map((path) => ({
+    url: `${site.url}${path}`,
+    lastModified: now,
+    changeFrequency: "weekly" as const,
+    priority: path === "" ? 1 : path === "/shop" || path === "/gift-hampers" ? 0.9 : 0.8,
+  }));
 
   // Occasion pages are the ones people actually search for
   // ("birthday gifts karachi"), so they rank above product pages.

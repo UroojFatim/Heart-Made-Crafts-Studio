@@ -21,7 +21,7 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
-        // Split into /occasions/14-august and /occasions/valentine.
+        // Split into  /occasions/valentine.
         // No single successor, so it goes to the occasions index.
         source: "/occasions/festivals",
         destination: "/shop",

@@ -91,6 +91,16 @@ export default function ShopPage() {
           </div>
         </Reveal>
 
+        <Reveal delay={50}>
+          <p className="mt-6 text-[0.92rem] leading-relaxed text-ink-2">
+            Sending to a whole family or an office?{" "}
+            <Link href="/gift-hampers" className="link-wipe text-ink">
+              Gift hampers and baskets
+            </Link>{" "}
+            are bigger and built to be shared.
+          </p>
+        </Reveal>
+
         <Reveal delay={60}>
           <div className="rule-gold mt-10" />
         </Reveal>

@@ -51,6 +51,10 @@ export const priceBands: PriceBand[] = [
 /** Lowest price we will take an order at. */
 export const priceFloor = "Rs 900";
 
+/** The two ends of the range, for the hamper-vs-box table on /gift-hampers. */
+export const boxRange = "Rs 900 – 4,000";
+export const hamperRange = "Rs 5,000 +";
+
 /**
  * For schema.org `priceRange`. Not shown to anyone — it is a hint to
  * Google about where this business sits, so a wide honest range is
