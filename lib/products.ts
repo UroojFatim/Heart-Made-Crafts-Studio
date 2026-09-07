@@ -44,13 +44,30 @@ import type { OccasionSlug } from "./occasions";
 import type { Palette } from "./palette";
 
 export type Media = {
-  /** Path under /public, e.g. "/videos/birthday-choc-bouquet.mp4" */
-  src: string;
-  /** Optional still frame, e.g. "/videos/birthday-choc-bouquet.jpg" */
-  poster?: string;
+  /**
+   * File name with no extension, e.g. "the-signature-box".
+   *
+   * The video is <id>.mp4 and the poster is <id>.jpg — one id, so the
+   * two can never drift apart the way separately typed paths did. The
+   * URLs are built in lib/media.ts, which is also the one place that
+   * knows whether they come from public/ or from the R2 bucket.
+   */
+  id: string;
+  /**
+   * "hover" — still frame until hovered. Right for anything in a grid.
+   * "auto"  — plays muted on loop in view. Two or three per page at the
+   *           very most; each one is a video download on a phone.
+   */
   playback: "hover" | "auto";
-  /** Describe it for screen readers and for when the file fails to load. */
+  /** Describe it for screen readers, and for Google Images. */
   alt: string;
+  /**
+   * The day the clip went live, "YYYY-MM-DD". Optional, but Google
+   * requires `uploadDate` before it will show a video result, so a clip
+   * without one is indexed and never featured. `npm run video` stamps
+   * today's date when it uploads.
+   */
+  published?: string;
 };
 
 export type Product = {
@@ -89,12 +106,7 @@ export const products: Product[] = [
     description:
       "Hand-wrapped, hand-tied, built to whatever size you want. Works for almost any occasion, which is why it's the thing people order when they can't decide.",
     media: [
-      {
-        src: "/videos/the-chocolate-bouquet.mp4",
-        poster: "/videos/the-chocolate-bouquet.png",
-        playback: "auto",
-        alt: "A bouquet of wrapped chocolates being turned in the light",
-      },
+      { id: "the-chocolate-bouquet", playback: "auto", alt: "A bouquet of wrapped chocolates being turned in the light" },
     ],
     occasions: "all",
     tags: ["bouquet", "for-her", "for-him", "for-kids", "small", "gentle", "playful"],
@@ -117,12 +129,7 @@ export const products: Product[] = [
     description:
       "You send the words. They come back in ink on cotton paper, lettered by hand and sealed with wax. People order these for things a hamper would be wrong for.",
     media: [
-      {
-        src: "/videos/the-card-on-its-own.mp4",
-        poster: "/videos/the-card-on-its-own.png",
-        playback: "auto",
-        alt: "The Hand made card with pictures",
-      },
+      { id: "the-card-on-its-own", playback: "hover", alt: "The Hand made card with pictures" },
     ],
     occasions: ["sorry"],
     tags: ["card", "for-her", "for-him", "small", "gentle", "serious"],
@@ -148,12 +155,7 @@ export const products: Product[] = [
     description:
       "The box most people mean when they say they want a gift box. Big enough to feel generous, restrained enough not to look like a pile of things. Contents built around a short brief from you.",
     media: [
-      {
-    src: "/videos/the-signature-box.mp4",
-    poster: "/videos/the-signature-box.jpg",
-    playback: "auto",   
-    alt: "The Signature Box being packed and tied",
-  },
+      { id: "the-signature-box", playback: "auto", alt: "The Signature Box being packed and tied" },
     ],
     occasions: ["birthday", "anniversary", "congratulations"],
     tags: ["box", "for-him", "statement", "new-job", "graduation"],
@@ -178,13 +180,7 @@ export const products: Product[] = [
     description:
       "One parcel for every year, each individually wrapped and hand-numbered so they open in an order you choose. Tell us the age and the budget and we'll tell you honestly what fits.",
     media: [
-      {
-        src: "/videos/the-countdown.mp4",
-        // No poster yet — see public/videos/README.md for the one-line
-        // ffmpeg command that pulls a still out of the mp4.
-        playback: "auto",
-        alt: "The Countdown box being prepared",
-      },
+      { id: "the-countdown", playback: "hover", alt: "The Countdown box being prepared" },
     ],
     occasions: ["birthday"],
     tags: ["box", "hamper", "for-her", "for-him", "for-kids", "statement"],
@@ -211,12 +207,7 @@ export const products: Product[] = [
     description:
       "Built around a hand-lettered timeline — the dates that actually mattered this year, written out. Most people send six or seven; we letter them onto a single card that sits on top when the lid comes off.",
     media: [
-      {
-    src: "/videos/the-anniversary-box.mp4",
-    poster: "/videos/the-anniversary-box.jpg",
-    playback: "auto",   // or "auto"
-    alt: "The Anniversary Box being packed and tied",
-  },
+      { id: "the-anniversary-box", playback: "hover", alt: "The Anniversary Box being packed and tied" },
     ],
     occasions: ["anniversary", "nikah-wedding"],
     tags: ["box", "for-couple", "for-her", "for-him", "statement"],
@@ -243,11 +234,7 @@ export const products: Product[] = [
     description:
       "Deliberately unshowy. A hand-lettered card doing the actual work, and just enough around it that it doesn't arrive empty-handed. We'll help you word it if you want.",
     media: [
-      {
-        src: "/videos/the-quite-sorry.mp4",
-        playback: "auto",
-        alt: "The Quiet Sorry box being prepared",
-      },
+      { id: "the-quite-sorry", playback: "hover", alt: "The Quiet Sorry box being prepared" },
     ],
     occasions: ["sorry"],
     tags: ["box", "card", "for-her", "for-him", "small", "gentle", "serious"],
@@ -319,12 +306,7 @@ export const products: Product[] = [
     description:
       "For the in-laws, the cousins, or a whole office at once. Green and gold if you want it traditional, or we'll match whatever you have in mind.",
     media: [
-      {
-    src: "/videos/eid-bouquet.mp4",
-    poster: "/videos/eid-bouquet.jpg",
-    playback: "auto",   // or "auto"
-    alt: "The Eid Bouquet being packed and tied",
-  },
+      { id: "eid-bouquet", playback: "hover", alt: "The Eid Bouquet being packed and tied" },
     ],
     occasions: ["eid"],
     tags: ["box", "hamper", "for-her", "for-him", "for-kids", "for-family", "single", "set", "bulk"],

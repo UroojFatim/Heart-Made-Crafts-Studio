@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import BoxArt from "./BoxArt";
+import { posterUrl, videoUrl } from "@/lib/media";
 import type { Media } from "@/lib/products";
 import type { Palette } from "@/lib/palette";
 
@@ -100,8 +101,8 @@ export default function ProductMedia({
       <video
         ref={videoRef}
         className={className}
-        src={first.src}
-        poster={first.poster}
+        src={videoUrl(first.id)}
+        poster={posterUrl(first.id)}
         aria-label={first.alt}
         muted
         loop

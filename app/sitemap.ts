@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { cities } from "@/lib/delivery";
+import { absolutePosterUrl, absoluteVideoUrl } from "@/lib/media";
 import { occasions } from "@/lib/occasions";
 import { products } from "@/lib/products";
 import { site } from "@/lib/site";
@@ -43,11 +44,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.9,
   }));
 
+  // Product pages carry their clips as video sitemap entries, which is
+  // how Google finds a video that is not on YouTube. A product with no
+  // clip simply has no `videos` key.
   const productPages = products.map((p) => ({
     url: `${site.url}/product/${p.slug}`,
     lastModified: now,
     changeFrequency: "monthly" as const,
     priority: 0.7,
+    ...(p.media.length > 0 && {
+      videos: p.media.map((m) => ({
+        title: `${p.name} — ${p.tagline}`,
+        description: m.alt,
+        thumbnail_loc: absolutePosterUrl(m.id, site.url),
+        content_loc: absoluteVideoUrl(m.id, site.url),
+        family_friendly: "yes" as const,
+        ...(m.published && { publication_date: m.published }),
+      })),
+    }),
   }));
 
   return [...pages, ...occasionPages, ...cityPages, ...productPages];
