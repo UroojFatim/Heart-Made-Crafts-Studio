@@ -5,6 +5,7 @@ import ProductCard from "@/components/ProductCard";
 import ProductGallery from "@/components/ProductGallery";
 import Reveal from "@/components/Reveal";
 import { getOccasion, occasions } from "@/lib/occasions";
+import { absolutePosterUrl, absoluteVideoUrl } from "@/lib/media";
 import { getProduct, isInOccasion, products } from "@/lib/products";
 import { priceFloor } from "@/lib/pricing";
 import { ogDefaults, site, waLink } from "@/lib/site";
@@ -226,6 +227,38 @@ export default async function ProductPage({ params }: Params) {
           </div>
         </section>
       )}
+
+      {/*
+        VideoObject, one per clip.
+
+        This is what lets a gift-box video earn a video result for
+        heartmadecrafts.studio rather than for somebody else's platform —
+        `contentUrl` points at our own file on our own domain.
+
+        `uploadDate` is only emitted when the clip has a `published` date
+        in lib/products.ts. Google treats it as required for a video
+        result, so a clip without one still validates but will not be
+        featured. Nothing here is invented: no date, no field.
+      */}
+      {product.media.map((m) => (
+        <script
+          key={m.id}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "VideoObject",
+              name: m.alt,
+              description: `${product.name} — ${product.tagline} ${product.handmade}.`,
+              thumbnailUrl: absolutePosterUrl(m.id, site.url),
+              contentUrl: absoluteVideoUrl(m.id, site.url),
+              ...(m.published ? { uploadDate: m.published } : {}),
+              publisher: { "@id": `${site.url}/#business` },
+              isFamilyFriendly: true,
+            }),
+          }}
+        />
+      ))}
     </>
   );
 }

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import BoxArt from "./BoxArt";
+import { posterUrl, videoUrl } from "@/lib/media";
 import type { Media } from "@/lib/products";
 import type { Palette } from "@/lib/palette";
 
@@ -81,10 +82,10 @@ export default function ProductGallery({
       >
         <video
           ref={videoRef}
-          key={current.src}
+          key={current.id}
           className="h-auto w-full cursor-pointer"
-          src={current.src}
-          poster={current.poster}
+          src={videoUrl(current.id)}
+          poster={posterUrl(current.id)}
           aria-label={current.alt}
           playsInline
           loop
@@ -145,7 +146,7 @@ export default function ProductGallery({
         <div className="no-scrollbar mt-3 flex gap-2.5 overflow-x-auto">
           {media.map((m, i) => (
             <button
-              key={m.src}
+              key={m.id}
               type="button"
               onClick={() => setIndex(i)}
               aria-label={`Show video ${i + 1}`}
@@ -155,12 +156,15 @@ export default function ProductGallery({
               }`}
               style={{ background: palette.box }}
             >
-              {m.poster ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={m.poster} alt="" className="h-full w-full object-cover" />
-              ) : (
-                <video src={m.src} className="h-full w-full object-cover" preload="metadata" muted />
-              )}
+              {/* Always a poster now — it is derived from the same id as
+                  the video, so there is no "no poster yet" branch to
+                  fall back to a <video> for. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={posterUrl(m.id)}
+                alt=""
+                className="h-full w-full object-cover"
+              />
             </button>
           ))}
         </div>

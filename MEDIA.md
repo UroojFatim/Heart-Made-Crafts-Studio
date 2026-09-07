@@ -1,249 +1,183 @@
-# Video hosting — Cloudflare R2
+# Videos
 
-Videos live in a Cloudflare R2 bucket, served from `media.heartmadecrafts.studio`.
-The site holds only the file name; the URL is built in `lib/media.ts`.
+Every clip is one **id** — `the-signature-box` — and nothing else. The
+video is `<id>.mp4`, the poster is `<id>.jpg`, and every URL on the site
+is built from that id in `lib/media.ts`.
 
-**Why R2 and not the repo:** every video in `public/` is uploaded to Vercel on
-every deploy and counts against Vercel's limits. R2 charges nothing for
-bandwidth, ever — the cost of a video does not grow with how many people watch
-it. That is the whole reason.
-
----
-
-## Part 1 — One-time setup
-
-Roughly 30 minutes, mostly waiting for DNS.
-
-### ⚠️ Read this before you start
-
-Step 2 changes your nameservers. **If the DNS records are not copied across
-correctly, heartmadecrafts.studio goes down** — the site, and email on that
-domain if you have any. It is reversible (change the nameservers back) but the
-outage is real while it lasts.
-
-So: do step 1 first and keep that screenshot until the site is confirmed
-working on Cloudflare.
-
-### 1. Write down your current DNS
-
-Go to wherever the domain's DNS lives now (Vercel, or your registrar) and
-**screenshot every record** — type, name, value, TTL. Especially:
-
-- the `A` or `CNAME` record for `@` (the root)
-- the `CNAME` for `www`
-- any `MX` or `TXT` records (email, domain verification)
-
-You are going to re-create these on Cloudflare.
-
-### 2. Create the Cloudflare account and add the domain
-
-1. Sign up at `dash.cloudflare.com` — free, no card at this stage.
-2. **Add a domain** → `heartmadecrafts.studio` → choose the **Free** plan.
-3. Cloudflare scans your existing DNS and imports what it finds. **Check the
-   imported list against your screenshot.** It usually gets everything, but it
-   is your job to confirm — this is the step that breaks sites.
-4. Cloudflare gives you two nameservers. Go to your registrar and replace the
-   existing nameservers with those two.
-5. Wait. Usually under an hour, sometimes up to 24. Cloudflare emails you.
-
-### 3. Make Vercel's records DNS-only
-
-This one catches everyone. In the Cloudflare DNS list, the records pointing at
-Vercel must show a **grey cloud**, not an orange one.
-
-- Orange cloud = Cloudflare proxies the traffic. Combined with Vercel's own SSL
-  this causes redirect loops and certificate errors.
-- Grey cloud = Cloudflare only answers the DNS question and steps aside.
-
-Click the cloud icon to toggle it. Do this for the root record and `www`.
-
-**Then load the site and confirm it still works before going any further.**
-
-### 4. Turn on R2
-
-1. In the dashboard sidebar: **R2**.
-2. It asks for a payment method. This is unavoidable — Cloudflare's own
-   explanation is that R2 usage is not capped, so they need a card on file.
-
-   What that actually risks, at your scale:
-
-   | | Free every month | You will use |
-   |---|---|---|
-   | Storage | 10 GB | 30 videos ≈ 90 MB |
-   | Uploads (Class A) | 1,000,000 | tens |
-   | Reads (Class B) | 10,000,000 | far below |
-   | **Bandwidth out** | **unlimited, free** | — |
-
-   Storage past 10 GB is roughly $0.015 per GB per month, so even 20 GB would
-   be about 15 cents. The expensive thing everywhere else — bandwidth — is the
-   one thing R2 never charges for. A surprise bill has no route in.
-
-3. **Create bucket** → name it `heartmade-media` → location **Automatic**.
-
-### 5. Connect the custom domain
-
-1. Open the bucket → **Settings** → **Public access** → **Custom Domains** →
-   **Connect Domain**.
-2. Enter `media.heartmadecrafts.studio`.
-3. Cloudflare creates the DNS record and issues the certificate itself. A few
-   minutes.
-
-Do **not** use the `pub-xxxx.r2.dev` URL it also offers. Cloudflare's docs are
-explicit that it is rate-limited and for development only.
-
-### 6. Tell the site where the bucket is
-
-In `lib/media.ts`, set the host to your custom domain. That is the only place
-the domain appears — everything else builds URLs from it.
+That is the whole design, and it exists because the old way (typing the
+full path for the video and again for the poster) had four products
+pointing at poster files that did not exist. One id cannot drift from
+itself.
 
 ---
 
-## Part 2 — How to organise the files
-
-### Do NOT make folders per occasion
-
-The obvious instinct is `birthday/`, `anniversary/`, `eid/`. Don't. Two reasons,
-and both bite later:
-
-**A video often belongs to several occasions.** The chocolate bouquet suits
-birthday *and* anniversary *and* sorry. In a folder-per-occasion layout you
-either upload the same file three times, or you file it under one and the
-structure immediately stops meaning anything.
-
-**A file's path is its URL.** Move `birthday/x.mp4` to `eid/x.mp4` later and
-every link to it breaks — the page, the `VideoObject` schema, anything Google
-has already indexed, and every cached copy on Cloudflare's edge. Storage paths
-should be boring and permanent.
-
-### Instead: flat names, relationships in code
-
-```
-videos/the-signature-box.mp4
-videos/the-signature-box.jpg      ← poster, same name
-videos/chocolate-bouquet.mp4
-videos/chocolate-bouquet.jpg
-```
-
-Which occasions a video appears in is not the bucket's business — it is already
-described in `lib/products.ts`, and has been all along:
-
-```ts
-{
-  slug: "chocolate-bouquet",
-  video: "chocolate-bouquet",
-  occasions: "all",                                   // every occasion
-}
-{
-  slug: "the-signature-box",
-  video: "the-signature-box",
-  occasions: ["birthday", "anniversary", "congratulations"],   // three
-}
-```
-
-**One file. Listed in as many occasions as you like. Never duplicated.** Add a
-slug to that array and the video appears on that occasion page too — no upload,
-no re-encode, no new URL.
-
-### Re-shooting a video: change the name
-
-Cloudflare caches aggressively at the edge, which is what makes it fast. If you
-overwrite `the-signature-box.mp4` with a new cut under the same name, visitors
-keep getting the old one from cache for a long time.
-
-So when you re-shoot, bump the name:
-
-```
-videos/the-signature-box-v2.mp4
-```
-
-and change the one line in `lib/products.ts`. New name, new URL, everybody sees
-the new cut immediately. Delete the old file a week later.
-
----
-
-## Part 3 — Adding a video
-
-### The short way
+## Adding a video
 
 ```bash
 npm run video -- ~/Desktop/raw-clip.mp4 the-signature-box
 ```
 
-That one command compresses the clip, pulls a poster frame out of it, uploads
-both to R2 and prints the line to paste into `lib/products.ts`.
+That one command compresses the clip to under 3 MB, pulls a poster frame
+out of it, uploads both to R2, and prints the block to paste into
+`lib/products.ts`.
 
-Compression is not optional housekeeping. A phone clip is 30–50 MB; on a
-Karachi mobile connection that is the difference between a page that loads and
-one that is abandoned. The script targets **under 3 MB**.
+Then paste it in, and fill in `alt`:
 
-### The manual way
+```ts
+media: [
+  {
+    id: "the-signature-box",
+    playback: "hover",
+    alt: "A wooden name plaque being lettered, then set into the box",
+    published: "2026-09-05",
+  },
+],
+```
 
-If you would rather not use the script, in the R2 dashboard: open the bucket →
-**Upload** → drag the file in. Then the URL is
-`https://media.heartmadecrafts.studio/videos/<name>.mp4`.
+**Write `alt` properly.** It is read aloud to anyone using a screen
+reader, it is what Google Images reads, and it is the `description` on
+the video's schema. "The Signature Box" is not a description of what
+happens on screen; the line above is.
 
-But compress it first, and make the poster, or you have shipped a 40 MB
-autoplaying video to someone's phone:
+**`published` matters more than it looks.** Google will index a video
+without an upload date but will not give it a video result. The script
+stamps today's date for you.
+
+### Requirements
+
+- **ffmpeg** on PATH — the compressing and the poster both use it.
+- **wrangler** for the upload. First time only: `npx wrangler login`,
+  which opens a browser and authorises this machine. There is no API
+  token to copy and nothing secret to keep in a file.
+
+Pass `--no-upload` to skip R2 and put the two files in the dashboard by
+hand instead. The script prints where it left them.
+
+---
+
+## Doing it by hand
+
+If you would rather not use the script:
 
 ```bash
-# compress
+# compress — 1080 wide, keeps the aspect ratio
 ffmpeg -i input.mp4 -vf "scale=1080:-2" -c:v libx264 -crf 26 -preset slow \
        -c:a aac -b:a 96k -movflags +faststart the-signature-box.mp4
 
-# poster, from 2 seconds in
+# poster, from two seconds in
 ffmpeg -i the-signature-box.mp4 -ss 2 -vframes 1 -q:v 3 the-signature-box.jpg
 ```
 
-`-movflags +faststart` matters — it moves the index to the front of the file so
-playback can begin before the whole thing has downloaded.
+`-movflags +faststart` is not optional. It moves the file's index to the
+front so playback can begin before the whole thing has downloaded.
 
-### Then wire it up
-
-In `lib/products.ts`:
-
-```ts
-video: "the-signature-box",
-occasions: ["birthday", "anniversary"],
-```
-
-The poster is found automatically — same name, `.jpg`. There is nothing else to
-fill in.
+Then in the Cloudflare dashboard: **R2 → heartmade-media → Upload**, and
+drop both files into the `videos/` folder. Both files, always — a video
+without its poster makes every visitor download the first chunk of it
+just to draw one frame.
 
 ---
 
-## Part 4 — A video for an occasion page itself
+## Switching from public/ to R2
 
-Everything above attaches a video to a *product*. If you also want a video on
-the occasion page itself — a birthday montage at the top of
-`/occasions/birthday` — that is a separate field on the occasion, not a product:
+The bucket and the domain are live:
 
-```ts
-// lib/occasions.ts
-{
-  slug: "birthday",
-  name: "Birthday",
-  video: "birthday-montage",    // optional
-  ...
-}
-```
+| | |
+|---|---|
+| Bucket | `heartmade-media`, Asia-Pacific |
+| Public domain | `media.heartmadecrafts.studio` — active |
+| Bandwidth | free, forever, whatever the traffic |
 
-Same bucket, same naming, same rules. Leave it out and the page renders exactly
-as it does now.
+The site still serves from `public/videos/` until you flip one line.
+Once every clip is in the bucket:
+
+1. Open `https://media.heartmadecrafts.studio/videos/the-signature-box.mp4`
+   in a browser and confirm it plays.
+2. In `lib/media.ts`, set:
+   ```ts
+   const HOST = "https://media.heartmadecrafts.studio";
+   ```
+3. `npm run dev`, click through a product page, confirm the clips play.
+4. Delete `public/videos/`.
+
+Nothing else changes — the schema, the sitemap and both components all
+build their URLs through `lib/media.ts`.
 
 ---
 
-## Why not YouTube
+## Naming, and why there are no folders
 
-It is free and unlimited, so it deserves a straight answer: YouTube gives you an
-iframe, not a file.
+Files are flat: `videos/the-signature-box.mp4`. There is no
+`videos/birthday/` and there should not be.
 
-- `ProductMedia.tsx` needs a real `<video src>` — hover-to-play, muted looping,
-  the `BoxArt` fallback when a file is missing. All of that would be rewritten.
-- Each embed ships roughly half a megabyte of YouTube's own JavaScript, which
-  lands directly on your Core Web Vitals.
-- The video ranks for YouTube, not for heartmadecrafts.studio. On your own
-  domain it can carry `VideoObject` schema pointing at your `contentUrl`, go in
-  your video sitemap, and earn video results for *your* site.
+**A clip often belongs to several occasions.** The chocolate bouquet
+suits birthday *and* anniversary *and* sorry. Folders would force you to
+upload it three times or file it under one and lose the rest.
 
-YouTube is the right place to *also* post the clips for reach. It is the wrong
-place to host the ones the website plays.
+**A file's path is its URL.** Move `birthday/x.mp4` to `eid/x.mp4` and
+every link to it breaks — the page, the `VideoObject` schema, the
+sitemap entry, whatever Google has already indexed, and every cached
+copy at Cloudflare's edge.
+
+Which occasions a clip appears in is not the bucket's business. It is
+already in `lib/products.ts`:
+
+```ts
+occasions: "all",                                    // every occasion
+occasions: ["birthday", "anniversary", "eid"],       // three
+```
+
+One file, listed anywhere you like, never duplicated.
+
+### Re-shooting a clip
+
+Cloudflare caches hard at the edge, which is what makes it fast. Replace
+`the-signature-box.mp4` with a new cut under the same name and visitors
+keep getting the old one from cache for a long time.
+
+So bump the id:
+
+```
+the-signature-box-v2
+```
+
+Change the one line in `lib/products.ts`. New id, new URL, everyone sees
+the new cut immediately. Delete the old pair a week later.
+
+---
+
+## Playback modes
+
+```ts
+playback: "hover"   // still frame until hovered — right for grids
+playback: "auto"    // plays muted on loop in view
+```
+
+Two `"auto"` clips on the site today, the chocolate bouquet and the
+signature box. **Keep it to two or three.** Every autoplaying clip is a
+video download, and the home page once shipped seven of them — about
+24 MB before a visitor had touched anything.
+
+⚠️ On touch devices `"hover"` currently falls back to playing in view,
+because `ProductMedia.tsx` treats "no pointer" as "cannot hover". That
+was the right call when there were no posters and a paused clip looked
+broken. Now that every clip has one, tapping to play would be lighter on
+exactly the phones that matter most — a one-line change in that
+component, and a UX decision rather than a technical one.
+
+---
+
+## What the SEO depends on
+
+Three things, all of which come from the id:
+
+- **`VideoObject`** on every product page, with `contentUrl` pointing at
+  our own file on our own domain. This is what can earn a video result
+  for heartmadecrafts.studio instead of for somebody else's platform.
+- **Video entries in `sitemap.xml`**, which is how Google finds a video
+  that is not on YouTube.
+- **The poster**, which is `thumbnailUrl` in the schema and
+  `thumbnail_loc` in the sitemap. No poster, no video result.
+
+None of it needs touching when you add a clip. Fill in the id, the alt
+and the published date, and all three follow.
