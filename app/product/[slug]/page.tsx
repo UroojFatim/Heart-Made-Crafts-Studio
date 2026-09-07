@@ -7,7 +7,7 @@ import Reveal from "@/components/Reveal";
 import { getOccasion, occasions } from "@/lib/occasions";
 import { getProduct, isInOccasion, products } from "@/lib/products";
 import { priceFloor } from "@/lib/pricing";
-import { site, waLink } from "@/lib/site";
+import { ogDefaults, site, waLink } from "@/lib/site";
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -24,6 +24,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     title: product.name,
     description: `${product.tagline} ${product.description.slice(0, 120)}… Handmade in ${site.city}, delivered across Pakistan.`,
     openGraph: {
+      ...ogDefaults,
       title: `${product.name} · ${site.name}`,
       description: product.tagline,
     },

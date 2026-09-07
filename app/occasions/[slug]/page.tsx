@@ -5,7 +5,7 @@ import FilteredGrid from "@/components/FilteredGrid";
 import Reveal from "@/components/Reveal";
 import { getOccasion, occasions } from "@/lib/occasions";
 import { productsForOccasion } from "@/lib/products";
-import { site, waLink } from "@/lib/site";
+import { ogDefaults, site, waLink } from "@/lib/site";
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -22,6 +22,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     title: `${occasion.name} Gifts`,
     description: `${occasion.tagline} ${occasion.blurb} Handmade in ${site.city}, delivered across Pakistan.`,
     openGraph: {
+      ...ogDefaults,
       title: `${occasion.name} Gifts · ${site.name}`,
       description: occasion.tagline,
     },

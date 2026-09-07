@@ -5,7 +5,7 @@ import Reveal from "@/components/Reveal";
 import { occasions, shopFilters } from "@/lib/occasions";
 import { products } from "@/lib/products";
 import { priceBands } from "@/lib/pricing";
-import { site, waLink } from "@/lib/site";
+import { ogDefaults, site, waLink } from "@/lib/site";
 
 export const metadata: Metadata = {
   // `absolute` because the layout template would otherwise append
@@ -16,6 +16,15 @@ export const metadata: Metadata = {
   },
   description:
     "Handmade gift boxes for birthdays, anniversaries, nikah and Eid. Every box made to order in Karachi with one hand-made piece inside. From Rs 900, COD, nationwide delivery.",
+  // Without this the page inherited the home page's og:title, so every
+  // share of /shop was captioned as the home page. Twitter's tags fall
+  // back to these, so there is no separate `twitter` block to keep.
+  openGraph: {
+    ...ogDefaults,
+    title: "Gift Boxes in Pakistan | Handmade & Personalised Gift Boxes Online",
+    description:
+      "Handmade gift boxes for birthdays, anniversaries, nikah and Eid. Every box made to order in Karachi with one hand-made piece inside. From Rs 900, COD, nationwide delivery.",
+  },
 };
 
 export default function ShopPage() {

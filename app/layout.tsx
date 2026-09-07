@@ -7,7 +7,7 @@ import AmbientField from "@/components/AmbientField";
 import RibbonSpine from "@/components/RibbonSpine";
 import SmoothScroll from "@/components/SmoothScroll";
 import { priceRangeSchema } from "@/lib/pricing";
-import { site } from "@/lib/site";
+import { ogDefaults, site } from "@/lib/site";
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
@@ -43,9 +43,9 @@ export const metadata: Metadata = {
   // page source. Keywords belong in the headings and the copy, where
   // they already are.
   openGraph: {
-    type: "website",
-    locale: "en_PK",
-    siteName: "HeartMade Craft",
+    // type / locale / siteName come from lib/site.ts so every route can
+    // spread the same three — see the note on `ogDefaults` there.
+    ...ogDefaults,
     // Kept in step with the title and description above — this is what
     // shows when the link is pasted into WhatsApp or Instagram.
     title: "Handmade Gift Boxes in Karachi | Delivered Across Pakistan",

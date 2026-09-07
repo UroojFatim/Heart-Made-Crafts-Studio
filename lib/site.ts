@@ -59,6 +59,22 @@ export const site = {
   },
 } as const;
 
+/**
+ * og:type, og:locale and og:site_name — the three that should be on
+ * every page.
+ *
+ * They cannot simply live in the root layout and be inherited. Next
+ * merges metadata SHALLOWLY: a route that exports its own `openGraph`
+ * replaces the parent object outright rather than extending it, so any
+ * page that sets an og:title silently drops these three. Spread this
+ * into every page-level `openGraph` and they survive.
+ */
+export const ogDefaults = {
+  type: "website",
+  locale: "en_PK",
+  siteName: site.name,
+} as const;
+
 /** Builds a wa.me link with a pre-filled message. */
 export function waLink(message: string) {
   return `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(message)}`;

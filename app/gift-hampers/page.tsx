@@ -4,7 +4,7 @@ import ProductCard from "@/components/ProductCard";
 import Reveal from "@/components/Reveal";
 import { products } from "@/lib/products";
 import { boxRange, hamperRange } from "@/lib/pricing";
-import { site, waLink } from "@/lib/site";
+import { ogDefaults, site, waLink } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: {
@@ -13,6 +13,12 @@ export const metadata: Metadata = {
   },
   description:
     "Handmade gift hampers and gift baskets, made to order in Karachi. Chocolate, snack, fruit and new-baby hampers with a hand-made piece in every one. COD, delivery across Pakistan.",
+  openGraph: {
+    ...ogDefaults,
+    title: "Gift Hampers & Baskets in Pakistan | Handmade Hampers from Karachi",
+    description:
+      "Handmade gift hampers and gift baskets, made to order in Karachi. Chocolate, snack, fruit and new-baby hampers with a hand-made piece in every one. COD, delivery across Pakistan.",
+  },
 };
 
 /**

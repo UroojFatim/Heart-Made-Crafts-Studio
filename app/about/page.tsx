@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import BrandFilm from "@/components/BrandFilm";
 import Reveal from "@/components/Reveal";
-import { site, waLink } from "@/lib/site";
+import { ogDefaults, site, waLink } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: {
@@ -11,6 +11,12 @@ export const metadata: Metadata = {
   },
   description:
     "Inside a handmade gift studio in Karachi — who makes the boxes, the five steps every one goes through, the materials we use, and why we cap the week at eight orders.",
+  openGraph: {
+    ...ogDefaults,
+    title: "How We Make Every Gift Box by Hand | HeartMade Craft, Karachi",
+    description:
+      "Inside a handmade gift studio in Karachi — who makes the boxes, the five steps every one goes through, the materials we use, and why we cap the week at eight orders.",
+  },
 };
 
 /**
@@ -292,7 +298,7 @@ export default function AboutPage() {
         <div className="shell">
           <Reveal>
             <h2 className="display max-w-[18ch] text-[clamp(2rem,4.6vw,3.2rem)]">
-              And four things we don&rsquo;t do.
+              And three things we don&rsquo;t do.
             </h2>
           </Reveal>
 

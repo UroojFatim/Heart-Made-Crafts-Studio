@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import Accordion from "@/components/Accordion";
 import Reveal from "@/components/Reveal";
 import { cities, getCity } from "@/lib/delivery";
-import { site, waLink } from "@/lib/site";
+import { ogDefaults, site, waLink } from "@/lib/site";
 
 type Params = { params: Promise<{ city: string }> };
 
@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   return {
     title: { absolute: c.title },
     description: c.description,
-    openGraph: { title: c.title, description: c.description },
+    openGraph: { ...ogDefaults, title: c.title, description: c.description },
   };
 }
 
