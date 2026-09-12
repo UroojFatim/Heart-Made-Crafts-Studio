@@ -196,7 +196,8 @@ export const products: Product[] = [
 
   // Occasion Birthday
 
-    {
+  // 1
+  {
     slug: "the-blush-glow-birthday-box",
     name: "The Blush Glow Birthday Box",
     tagline: "Made to make their special day feel a little more magical.",
@@ -232,6 +233,80 @@ export const products: Product[] = [
     leadTimeDays: [3, 5],
     palette: { box: "#F3E2DA", lid: "#E6CABE", ribbon: "#C4695E", glow: "#FFEADB" },
   },
+
+  // 2
+  {
+    slug: "the-midnight-memories-birthday-box",
+    name: "The Midnight Memories Birthday Box",
+    tagline: "A thoughtful birthday surprise made of style, memories and little luxuries.",
+    description:
+      "A premium personalized birthday gift box thoughtfully curated for someone special. The elegant black presentation features a personalized photo collage with warm fairy lights, a stylish striped shirt, classic wristwatch, leather-style wallet, fragrance, roses and assorted chocolates. Every detail is arranged to turn a birthday gift into a memorable experience.",
+
+    photos: [
+      {
+        id: "the-midnight-memories-birthday-box-1",
+        alt:
+        "Open black birthday gift box featuring a personalized illuminated photo collage, striped shirt, wristwatch, wallet, fragrance, roses and assorted chocolates."
+      },
+      {
+        id: "the-midnight-memories-birthday-box-02",
+        alt:
+        "Angled view of an open luxury birthday gift hamper with personalized photo collage, striped shirt, watch, wallet, chocolates, fragrance and red roses."
+      },
+      {
+        id: "the-midnight-memories-birthday-box-03",
+        alt:
+        "Close-up angled view of a personalized black birthday gift box showing the striped shirt, leather-style wallet, wristwatch, chocolates, roses and fragrance."
+      },
+      {
+        id: "the-midnight-memories-birthday-box-04",
+        alt:
+          "Premium black personalized birthday gift box with gold Happy Birthday lettering and satin bow, photographed from a front three-quarter angle."
+      },
+    ],
+
+    reel: "https://www.instagram.com/reel/DdMS4RZMWi_/",
+
+    media: [],
+
+    occasions: ["birthday"],
+
+    tags: [
+      "box",
+      "for-him",
+      "personalized",
+      "premium",
+      "luxury",
+      "medium"
+    ],
+
+    handmade: "Personalized birthday message and photo memories",
+
+    includes: [
+      "Striped formal shirt",
+      "Classic wristwatch",
+      "Leather-style wallet",
+      "Fragrance",
+      "Red decorative roses",
+      "Cadbury Dairy Milk chocolates",
+      "Assorted chocolate bars",
+      "Personalized photo collage",
+      "Warm fairy lights",
+      "Gold Happy Birthday decoration",
+      "Black satin ribbon bow",
+      "Premium black gift box presentation",
+    ],
+
+    leadTimeDays: [3, 5],
+
+    palette: {
+      box: "#111111",
+      lid: "#0B0B0B",
+      ribbon: "#151515",
+      glow: "#FFE7A8"
+    },
+  },
+
 
 
   /* ─────────────────────────────────────────────────────────────
