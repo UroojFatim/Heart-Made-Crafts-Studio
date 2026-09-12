@@ -32,23 +32,40 @@ const TARGET_KB = 300;
 
 const args = process.argv.slice(2);
 const upload = !args.includes("--no-upload");
-const [input, id] = args.filter((a) => !a.startsWith("--"));
+
+// --alt "…" — the description, written here so it lands in the printed
+// block ready to paste, rather than being left as an empty string to
+// fill in later. Empty strings left to fill in later never get filled.
+const altFlag = args.indexOf("--alt");
+const alt = altFlag !== -1 ? (args[altFlag + 1] ?? "") : "";
+
+// The index holding --alt's value, or -1 when the flag is absent. Not
+// `altFlag + 1`: with no flag that is 0, which silently swallowed the
+// input file.
+const altValueAt = altFlag === -1 ? -1 : altFlag + 1;
+const positional = args.filter(
+  (a, i) => !a.startsWith("--") && i !== altValueAt,
+);
+const [input, id] = positional;
 
 if (!input || !id) {
   console.error(`
-  Usage: npm run photo -- <input-file> <id> [--no-upload]
+  Usage: npm run photo -- <input-file> <id> [--alt "…"] [--no-upload]
 
     <input-file>  the photo straight off your phone or camera
     <id>          the name it gets on the site, lowercase and hyphenated,
                   e.g. the-signature-box-01. This is what goes in the
                   \`photos\` array in lib/products.ts — no path, no
                   extension.
+    --alt         what is in the shot, in your words. Optional, but it
+                  is what Google Images reads and what a screen reader
+                  says out loud, so it is worth the extra few seconds.
 
   Several photos for one product? Give them numbered ids and list them
   in order; the first one is the card image.
 
-    npm run photo -- shot1.jpg the-signature-box-01
-    npm run photo -- shot2.jpg the-signature-box-02
+    npm run photo -- shot1.jpg the-signature-box-01 --alt "Closed, ribbon tied"
+    npm run photo -- shot2.jpg the-signature-box-02 --alt "Open, chocolates in rows"
 `);
   process.exit(1);
 }
@@ -96,15 +113,30 @@ if (upload) {
   console.log(`\n  Skipped upload. The file is at:\n    ${out}`);
 }
 
+// Escape for a double-quoted TS string, so a description containing a
+// quote or a backslash pastes in as written instead of breaking the file.
+const altLiteral = alt.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+
 console.log(`
   ── Paste into lib/products.ts ──────────────────────────────────
 
-    photos: ["${id}"],
+    photos: [
+      { id: "${id}", alt: "${altLiteral}" },
+    ],
 
-  Already have photos on that product? Add the id to the array instead,
-  in the order you want them shown:
+  Already have photos on that product? Add this line to the array
+  instead, in the order you want them shown — the first entry is the
+  card image, so lead with your best shot.
+${
+  alt
+    ? ""
+    : `
+  ⚠ No description. Fill in \`alt\` before you commit: it is what Google
+    Images reads and what a screen reader says out loud, and it is the
+    only place the details of this shot ever get written down.
 
-    photos: ["the-signature-box-01", "${id}"],
-
-  The first id is the card image, so lead with your best shot.
-`);
+    Describe the photograph, not the product:
+      ✗ "The Signature Box"
+      ✓ "Open, chocolates in rows beside the calligraphy card"
+`
+}`);
