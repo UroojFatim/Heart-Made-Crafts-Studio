@@ -4,10 +4,10 @@
  * ══════════════════════════════════════════════════════════════════
  *
  * TO ADD A PRODUCT
- *   1. Drop the video in  public/videos/
+ *   1. `npm run photo -- <file> <id>` for each photograph.
  *   2. Copy any entry below, change the fields, done.
  *
- * THE THREE FIELDS THAT MATTER
+ * THE FIELDS THAT MATTER
  *
  *   occasions   Where it shows up. An array of occasion slugs, or the
  *               string "all" for pieces that suit every occasion.
@@ -19,11 +19,15 @@
  *               product isn't in are simply ignored, so it's safe to
  *               list everything that applies.
  *
- *   media       Videos, in order. First one is used on the grid.
+ *   photos      Photographs, in order, by id. First one is the card
+ *               image, so put the best shot first. This is what the
+ *               whole catalogue runs on — grids and product pages.
+ *
+ *   media       Clips. These play on the HOME PAGE ONLY. Everywhere
+ *               else a product shows its photograph, because a grid of
+ *               autoplaying video was what was making the site slow.
  *                 playback: "hover"  → still frame until hovered/tapped
  *                 playback: "auto"   → plays muted on loop straight away
- *               On the product page every video plays with sound when
- *               clicked, regardless of this setting.
  *
  *   featured    `featured: true` puts it on the home page and in the
  *               "everything" grid on /shop. Omit it and the product is
@@ -32,14 +36,15 @@
  *               Keep roughly eight featured; let the rest live inside
  *               their occasions.
  *
- * NO VIDEO YET? Leave `media: []`. The card falls back to the drawn
- * SVG box in that product's palette — the site stays presentable while
- * you shoot.
+ * NO PHOTO YET? Leave `photos` out. The product falls back to the
+ * still frame of its clip, and if there is no clip either, to the drawn
+ * SVG box in its palette. The site stays presentable while you shoot.
  *
  * Products carry no price field. Price BANDS live in lib/pricing.ts
  * and are shown on /shop; the exact figure is quoted on WhatsApp.
  */
 
+import { photoUrl, posterUrl } from "./media";
 import type { OccasionSlug } from "./occasions";
 import type { Palette } from "./palette";
 
@@ -70,11 +75,83 @@ export type Media = {
   published?: string;
 };
 
+export type Photo = {
+  /**
+   * File name under /photos with no extension, e.g.
+   * "the-signature-box-01". `npm run photo` prints it for you.
+   */
+  id: string;
+  /**
+   * What is actually in the shot, in your words.
+   *
+   * This is the one field worth slowing down for. It does three jobs at
+   * once: a screen reader reads it aloud, Google Images reads it to
+   * decide what the picture is of, and it is what shows if the image
+   * ever fails to load.
+   *
+   * Describe the photograph, not the product:
+   *
+   *   ✗ "The Signature Box"
+   *   ✓ "The box open, chocolates in rows, a hand-painted name plaque
+   *      resting on the lid"
+   *
+   * The product name is already on the page in the heading — repeating
+   * it here tells Google nothing it did not know, while the real
+   * description is the only place the details ever get written down.
+   *
+   * Optional. Leave it off and the name and tagline stand in, which is
+   * enough to be valid but not enough to win anything.
+   */
+  alt?: string;
+};
+
 export type Product = {
   slug: string;
   name: string;
   tagline: string;
   description: string;
+  /**
+   * Still photographs. These are what the catalogue actually shows:
+   * every grid card, and the whole product-page gallery.
+   *
+   *   photos: [
+   *     { id: "the-signature-box-01", alt: "Closed, ribbon tied, the
+   *       painted name plaque facing up" },
+   *     { id: "the-signature-box-02", alt: "Open, chocolates in rows
+   *       beside the calligraphy card" },
+   *   ],
+   *
+   * First one is the card image, so put the best shot first. Add as
+   * many as you like — everything after the first becomes a thumbnail
+   * on the product page.
+   *
+   * Leave it out and the product falls back to the still frame from its
+   * clip, and then to the drawn SVG box. Nothing breaks while you are
+   * still shooting — the page just gets plainer.
+   */
+  photos?: Photo[];
+  /**
+   * This product's reel on Instagram.
+   *
+   * Paste the link straight from Instagram's "Copy link" — the
+   * `?igsh=…` tracking tail is stripped for you in lib/site.ts.
+   *
+   *   reel: "https://www.instagram.com/reel/C8xYz1AbCdE/",
+   *
+   * It shows as a link under the gallery on the product page. Leave it
+   * out and no link appears; an unreadable one is treated the same way,
+   * because a dead Instagram button is worse than none.
+   *
+   * A different reel per product is the point — link the reel that is
+   * actually about this box, not the profile.
+   */
+  reel?: string;
+  /**
+   * Clips. These play on the **home page only**. A grid of autoplaying
+   * video was the single biggest thing slowing the site down, and it
+   * cost more in load time than it won in atmosphere. Everywhere else a
+   * product shows its photograph.
+   */
   media: Media[];
   occasions: OccasionSlug[] | "all";
   tags: string[];
@@ -380,6 +457,42 @@ export const products: Product[] = [
 
 export function getProduct(slug: string) {
   return products.find((p) => p.slug === slug);
+}
+
+/** One still image: where to load it from, and what to call it. */
+export type Still = { src: string; alt: string };
+
+/**
+ * Every still a product can show, best first.
+ *
+ * Three sources, in order:
+ *
+ *   1. Real photographs from `photos` — what you want.
+ *   2. The poster frame of each clip. Not as good as a photograph, but
+ *      it is a real picture of the real box and it already exists for
+ *      every clip, so no product has to sit empty while you shoot.
+ *   3. Nothing — the caller draws the SVG box instead.
+ *
+ * The fallback is the reason the catalogue could switch from video to
+ * photographs in one commit without waiting on a photo shoot.
+ */
+export function stillsFor(product: Product): Still[] {
+  if (product.photos?.length) {
+    return product.photos.map((photo) => ({
+      src: photoUrl(photo.id),
+      // Her description if she wrote one. The fallback is deliberately
+      // plain: it is valid and says something true, but it describes
+      // the product rather than the picture, which is exactly what a
+      // written `alt` is for.
+      alt: photo.alt?.trim() || `${product.name} — ${product.tagline}`,
+    }));
+  }
+  return product.media.map((m) => ({ src: posterUrl(m.id), alt: m.alt }));
+}
+
+/** The single image that represents a product — card, share, schema. */
+export function coverFor(product: Product): Still | null {
+  return stillsFor(product)[0] ?? null;
 }
 
 export function isInOccasion(product: Product, slug: OccasionSlug) {

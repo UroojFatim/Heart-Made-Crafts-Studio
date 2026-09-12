@@ -1,13 +1,29 @@
 import Link from "next/link";
 import type { Product } from "@/lib/products";
 import ProductMedia from "./ProductMedia";
+import ProductStill from "./ProductStill";
 
+/**
+ * A product in a grid.
+ *
+ * By default the card shows a **photograph**. Pass `motion` and it
+ * shows the clip instead — and only the home page does that.
+ *
+ * The default matters more than the prop. Video is opt-in now, so a
+ * grid added anywhere later is light unless somebody deliberately makes
+ * it heavy. That is the reverse of how this started: seven autoplaying
+ * clips across the catalogue, roughly 24 MB, most of it downloaded by
+ * people who only wanted to see what a box looks like.
+ */
 export default function ProductCard({
   product,
   index = 0,
+  motion = false,
 }: {
   product: Product;
   index?: number;
+  /** Play the clip rather than show the photo. Home page only. */
+  motion?: boolean;
 }) {
   return (
     <Link
@@ -32,13 +48,22 @@ export default function ProductCard({
         />
 
         <div className="relative h-full w-full">
-          <ProductMedia
-            media={product.media}
-            palette={product.palette}
-            id={product.slug}
-            variant={index}
-            className="h-full w-full object-cover"
-          />
+          {motion ? (
+            <ProductMedia
+              media={product.media}
+              palette={product.palette}
+              id={product.slug}
+              variant={index}
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <ProductStill
+              product={product}
+              variant={index}
+              priority={index === 0}
+              className="h-full w-full object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
+            />
+          )}
         </div>
 
         {/* Lead time, hung like a tag. Prices are quoted on WhatsApp,

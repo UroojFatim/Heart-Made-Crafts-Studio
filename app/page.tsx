@@ -5,6 +5,7 @@ import Marquee from "@/components/Marquee";
 import Reveal from "@/components/Reveal";
 import Reviews from "@/components/Reviews";
 import ProductCard from "@/components/ProductCard";
+import { absolutePosterUrl, absoluteVideoUrl } from "@/lib/media";
 import { occasions } from "@/lib/occasions";
 import { featuredProducts, productsForOccasion, type Product } from "@/lib/products";
 import { priceFloor } from "@/lib/pricing";
@@ -26,6 +27,46 @@ export default function Home() {
       <HowItWorks />
       <Reviews />
       <HomeFAQ />
+
+      {/*
+        VideoObject, one per clip on this page.
+
+        This markup lives here because this is where the clips now
+        play. It used to sit on the product pages and it moved with
+        them — schema describes what is on the page, and a VideoObject
+        on a page with no video is a claim Google checks, does not
+        find, and declines to reward.
+
+        `contentUrl` points at our own file on our own domain, which is
+        what lets a gift-box clip earn a video result for
+        heartmadecrafts.studio rather than for somebody else's
+        platform. `uploadDate` is emitted only when a clip carries a
+        `published` date in lib/products.ts; Google treats it as
+        required for a video result, so a clip without one is indexed
+        and never featured. Nothing is invented here: no date, no
+        field.
+      */}
+      {featured.flatMap((p) =>
+        p.media.map((m) => (
+          <script
+            key={`${p.slug}-${m.id}`}
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "VideoObject",
+                name: m.alt,
+                description: `${p.name} — ${p.tagline} ${p.handmade}.`,
+                thumbnailUrl: absolutePosterUrl(m.id, site.url),
+                contentUrl: absoluteVideoUrl(m.id, site.url),
+                ...(m.published ? { uploadDate: m.published } : {}),
+                publisher: { "@id": `${site.url}/#business` },
+                isFamilyFriendly: true,
+              }),
+            }}
+          />
+        )),
+      )}
     </>
   );
 }
@@ -287,7 +328,10 @@ function Featured({ products: list }: { products: Product[] }) {
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {list.map((p, i) => (
             <Reveal key={p.slug} delay={i * 90} className="h-full">
-              <ProductCard product={p} index={i} />
+              {/* The one place video still plays. Four cards, so at
+                  most four clips, and only the ones marked "auto"
+                  start on their own. */}
+              <ProductCard product={p} index={i} motion />
             </Reveal>
           ))}
         </div>

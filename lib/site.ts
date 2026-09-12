@@ -80,6 +80,33 @@ export function waLink(message: string) {
   return `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(message)}`;
 }
 
+/**
+ * Cleans up an Instagram reel link.
+ *
+ * Paste whatever Instagram's "Copy link" gives you. It hands you
+ * something like:
+ *
+ *   https://www.instagram.com/reel/C8xYz1AbCdE/?igsh=MzRlODBiNWFlZA==
+ *
+ * That trailing `?igsh=` is a share-tracking token tied to the account
+ * that copied it. It works, but it does not belong in the repository:
+ * it is noise in every diff, and it follows whoever clicks the link.
+ * This keeps the shortcode and rebuilds the canonical URL.
+ *
+ * Accepts a reel, a post (/p/), or a bare shortcode. Returns null for
+ * anything it cannot read, and the caller then renders no link at all —
+ * a broken Instagram link is worse than no button.
+ */
+export function reelLink(input: string): string | null {
+  const value = input.trim();
+  if (!value) return null;
+
+  const fromUrl = value.match(/instagram\.com\/(?:reel|reels|p)\/([\w-]+)/i);
+  const code = fromUrl ? fromUrl[1] : /^[\w-]+$/.test(value) ? value : null;
+
+  return code ? `https://www.instagram.com/reel/${code}/` : null;
+}
+
 export const nav = [
   // /shop is the gift boxes hub now, not just an occasions index — its
   // H1 and title say so, and the nav has to agree.

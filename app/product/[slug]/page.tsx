@@ -5,10 +5,9 @@ import ProductCard from "@/components/ProductCard";
 import ProductGallery from "@/components/ProductGallery";
 import Reveal from "@/components/Reveal";
 import { getOccasion, occasions } from "@/lib/occasions";
-import { absolutePosterUrl, absoluteVideoUrl } from "@/lib/media";
-import { getProduct, isInOccasion, products } from "@/lib/products";
+import { getProduct, isInOccasion, products, stillsFor } from "@/lib/products";
 import { priceFloor } from "@/lib/pricing";
-import { ogDefaults, site, waLink } from "@/lib/site";
+import { ogDefaults, reelLink, site, waLink } from "@/lib/site";
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -52,6 +51,9 @@ export default async function ProductPage({ params }: Params) {
     )
     .slice(0, 3);
 
+  // null when the product has no reel, or the link cannot be read.
+  const reel = product.reel ? reelLink(product.reel) : null;
+
   const orderMessage =
     `Assalam o alaikum! Mujhe "${product.name}" ke bare mein poochna tha.\n\n` +
     `Kis ke liye: \nOccasion: \nBudget: \nName jo likhwana hai: \nKab chahiye: \nDelivery city: `;
@@ -73,11 +75,59 @@ export default async function ProductPage({ params }: Params) {
           {/* ── Gallery ──────────────────────────────────────── */}
           <Reveal variant="scale" className="lg:sticky lg:top-28 lg:self-start">
             <ProductGallery
-              media={product.media}
+              stills={stillsFor(product)}
               palette={product.palette}
               id={`hero-${product.slug}`}
               variant={products.indexOf(product)}
             />
+
+            {/*
+              The reel.
+
+              This sits directly under the gallery because it fills the
+              gap the video left: somebody who wants to see the box
+              move, rather than sit still, now has somewhere to go. It
+              is a link rather than an embed on purpose — an Instagram
+              embed loads their scripts and iframes on every product
+              page, which is the weight we just finished removing.
+
+              No `reel` on the product, or one that cannot be read,
+              renders nothing at all.
+            */}
+            {reel && (
+              <a
+                href={reel}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group mt-4 flex items-center justify-between gap-4 border border-paper-3 px-5 py-4 transition-colors duration-500 hover:border-rose"
+              >
+                <span className="flex items-center gap-3">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" className="shrink-0 text-rose">
+                    <rect x="2.5" y="2.5" width="19" height="19" rx="5.5" stroke="currentColor" strokeWidth="1.6" />
+                    <circle cx="12" cy="12" r="4.2" stroke="currentColor" strokeWidth="1.6" />
+                    <circle cx="17.6" cy="6.4" r="1.2" fill="currentColor" />
+                  </svg>
+                  <span>
+                    <span className="block text-[0.9rem] text-ink">
+                      Watch this one being made
+                    </span>
+                    <span className="block text-[0.78rem] text-ink-3">
+                      On Instagram, @{site.instagram}
+                    </span>
+                  </span>
+                </span>
+                <svg
+                  width="16"
+                  height="10"
+                  viewBox="0 0 16 10"
+                  fill="none"
+                  aria-hidden="true"
+                  className="shrink-0 transition-transform duration-600 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-1.5"
+                >
+                  <path d="M0 5h14M10 1l4 4-4 4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </a>
+            )}
 
             <dl className="mt-6 grid grid-cols-2 gap-px border border-paper-3 bg-paper-3 sm:grid-cols-3">
               {[
@@ -229,36 +279,15 @@ export default async function ProductPage({ params }: Params) {
       )}
 
       {/*
-        VideoObject, one per clip.
+        No VideoObject here any more.
 
-        This is what lets a gift-box video earn a video result for
-        heartmadecrafts.studio rather than for somebody else's platform —
-        `contentUrl` points at our own file on our own domain.
-
-        `uploadDate` is only emitted when the clip has a `published` date
-        in lib/products.ts. Google treats it as required for a video
-        result, so a clip without one still validates but will not be
-        featured. Nothing here is invented: no date, no field.
+        It used to sit on this page, and it had to go when the clips
+        did. Schema describes what is actually on the page: a
+        VideoObject on a page with no video is a claim Google checks and
+        does not find, and pages that make it lose the video result they
+        were asking for anyway. The markup moved to the home page, which
+        is where the clips now play.
       */}
-      {product.media.map((m) => (
-        <script
-          key={m.id}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "VideoObject",
-              name: m.alt,
-              description: `${product.name} — ${product.tagline} ${product.handmade}.`,
-              thumbnailUrl: absolutePosterUrl(m.id, site.url),
-              contentUrl: absoluteVideoUrl(m.id, site.url),
-              ...(m.published ? { uploadDate: m.published } : {}),
-              publisher: { "@id": `${site.url}/#business` },
-              isFamilyFriendly: true,
-            }),
-          }}
-        />
-      ))}
     </>
   );
 }

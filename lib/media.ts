@@ -24,8 +24,19 @@
 /** "" = serve from public/videos/. A URL = serve from that host. */
 const HOST = "https://media.heartmadecrafts.studio";
 
-/** Where the files sit, under the host or under public/. */
+/** Where the clips sit, under the host or under public/. */
 const DIR = "/videos";
+
+/**
+ * Where still photographs sit.
+ *
+ * Separate from /videos on purpose. A photo and a clip can share a
+ * subject but they are different files with different lifetimes — you
+ * will re-shoot photos far more often than clips — and keeping them
+ * apart means `the-signature-box` can be a photo id and a clip id at
+ * the same time without one overwriting the other.
+ */
+const PHOTOS = "/photos";
 
 /**
  * The video file for a media id.
@@ -62,4 +73,35 @@ export function absoluteVideoUrl(id: string, siteUrl: string) {
 
 export function absolutePosterUrl(id: string, siteUrl: string) {
   return HOST ? posterUrl(id) : `${siteUrl}${posterUrl(id)}`;
+}
+
+/**
+ * A still photograph.
+ *
+ * Photos are what the catalogue runs on — every grid, and the product
+ * page gallery. Video now appears on the home page only, because seven
+ * autoplaying clips was costing more in load time than it was winning
+ * in atmosphere.
+ *
+ * `npm run photo` writes these at 1600px wide, which is enough for a
+ * full-width product shot on a laptop and still well under 300 KB.
+ */
+export function photoUrl(id: string) {
+  return `${HOST}${PHOTOS}/${id}.jpg`;
+}
+
+export function absolutePhotoUrl(id: string, siteUrl: string) {
+  return HOST ? photoUrl(id) : `${siteUrl}${photoUrl(id)}`;
+}
+
+/**
+ * Make any URL from this file absolute.
+ *
+ * While HOST is set every URL here is already absolute and this does
+ * nothing. It exists for the case where HOST goes back to "" — the
+ * sitemap and schema.org both reject a site-relative path, and this is
+ * what stops that switch from quietly emitting invalid ones.
+ */
+export function absolute(url: string, siteUrl: string) {
+  return url.startsWith("http") ? url : `${siteUrl}${url}`;
 }
