@@ -63,7 +63,22 @@ export type Media = {
    * "auto"  — plays muted on loop in view. Two or three per page at the
    *           very most; each one is a video download on a phone.
    */
+  /**
+   * File name with no extension, e.g. "the-signature-box".
+   *
+   * The video is <id>.mp4 and the poster is <id>.jpg — one id, so the
+   * two can never drift apart the way separately typed paths did. The
+   * URLs are built in lib/media.ts, which is also the one place that
+   * knows whether they come from public/ or from the R2 bucket.
+   */
+  id: string;
+  /**
+   * "hover" — still frame until hovered. Right for anything in a grid.
+   * "auto"  — plays muted on loop in view. Two or three per page at the
+   *           very most; each one is a video download on a phone.
+   */
   playback: "hover" | "auto";
+  /** Describe it for screen readers, and for Google Images. */
   /** Describe it for screen readers, and for Google Images. */
   alt: string;
   /**
@@ -184,6 +199,7 @@ export const products: Product[] = [
       "Hand-wrapped, hand-tied, built to whatever size you want. Works for almost any occasion, which is why it's the thing people order when they can't decide.",
     media: [
       { id: "the-chocolate-bouquet", playback: "auto", alt: "A bouquet of wrapped chocolates being turned in the light" },
+      { id: "the-chocolate-bouquet", playback: "auto", alt: "A bouquet of wrapped chocolates being turned in the light" },
     ],
     occasions: "all",
     tags: ["bouquet", "for-her", "for-him", "for-kids", "small", "gentle", "playful"],
@@ -206,6 +222,7 @@ export const products: Product[] = [
     description:
       "You send the words. They come back in ink on cotton paper, lettered by hand and sealed with wax. People order these for things a hamper would be wrong for.",
     media: [
+      { id: "the-card-on-its-own", playback: "hover", alt: "The Hand made card with pictures" },
       { id: "the-card-on-its-own", playback: "hover", alt: "The Hand made card with pictures" },
     ],
     occasions: ["sorry"],
@@ -233,6 +250,7 @@ export const products: Product[] = [
       "The box most people mean when they say they want a gift box. Big enough to feel generous, restrained enough not to look like a pile of things. Contents built around a short brief from you.",
     media: [
       { id: "the-signature-box", playback: "auto", alt: "The Signature Box being packed and tied" },
+      { id: "the-signature-box", playback: "auto", alt: "The Signature Box being packed and tied" },
     ],
     occasions: ["birthday", "anniversary", "congratulations"],
     tags: ["box", "for-him", "statement", "new-job", "graduation"],
@@ -257,6 +275,7 @@ export const products: Product[] = [
     description:
       "One parcel for every year, each individually wrapped and hand-numbered so they open in an order you choose. Tell us the age and the budget and we'll tell you honestly what fits.",
     media: [
+      { id: "the-countdown", playback: "hover", alt: "The Countdown box being prepared" },
       { id: "the-countdown", playback: "hover", alt: "The Countdown box being prepared" },
     ],
     occasions: ["birthday"],
@@ -285,6 +304,7 @@ export const products: Product[] = [
       "Built around a hand-lettered timeline — the dates that actually mattered this year, written out. Most people send six or seven; we letter them onto a single card that sits on top when the lid comes off.",
     media: [
       { id: "the-anniversary-box", playback: "hover", alt: "The Anniversary Box being packed and tied" },
+      { id: "the-anniversary-box", playback: "hover", alt: "The Anniversary Box being packed and tied" },
     ],
     occasions: ["anniversary", "nikah-wedding"],
     tags: ["box", "for-couple", "for-her", "for-him", "statement"],
@@ -311,6 +331,7 @@ export const products: Product[] = [
     description:
       "Deliberately unshowy. A hand-lettered card doing the actual work, and just enough around it that it doesn't arrive empty-handed. We'll help you word it if you want.",
     media: [
+      { id: "the-quite-sorry", playback: "hover", alt: "The Quiet Sorry box being prepared" },
       { id: "the-quite-sorry", playback: "hover", alt: "The Quiet Sorry box being prepared" },
     ],
     occasions: ["sorry"],
@@ -383,6 +404,7 @@ export const products: Product[] = [
     description:
       "For the in-laws, the cousins, or a whole office at once. Green and gold if you want it traditional, or we'll match whatever you have in mind.",
     media: [
+      { id: "eid-bouquet", playback: "hover", alt: "The Eid Bouquet being packed and tied" },
       { id: "eid-bouquet", playback: "hover", alt: "The Eid Bouquet being packed and tied" },
     ],
     occasions: ["eid"],
