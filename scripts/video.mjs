@@ -13,7 +13,7 @@
  * files in the R2 dashboard by hand.
  */
 import { execFileSync } from "node:child_process";
-import { mkdtempSync, statSync } from "node:fs";
+import { existsSync, mkdtempSync, statSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
@@ -41,6 +41,24 @@ if (!input || !id) {
 if (!/^[a-z0-9-]+$/.test(id)) {
   console.error(`  ✗ "${id}" — ids are lowercase letters, digits and hyphens.`);
   console.error(`    The id becomes a URL, so anything else will bite later.`);
+  process.exit(1);
+}
+
+// Check the file before handing it to ffmpeg, whose failure is forty
+// lines of build configuration followed by a stack trace. The usual
+// cause is punctuation in the file name: PowerShell reads ( ) [ ] as
+// syntax, so clip(1).mp4 arrives here as "clip".
+if (!existsSync(input)) {
+  console.error(`\n  \u2717 No file at:\n      ${input}\n`);
+  if (/[()[\]{}&^!% ]/.test(input) || !/\.\w+$/.test(input)) {
+    console.error(
+      `  That path looks cut short or has punctuation in it. PowerShell\n` +
+      `  treats ( ) [ ] & ^ ! % and spaces as syntax, so a name like\n` +
+      `  clip(1).mp4 arrives here as clip.\n\n` +
+      `  Easiest fix: rename the file so it is plain — clip-1.mp4 —\n` +
+      `  then run the command again.\n`,
+    );
+  }
   process.exit(1);
 }
 

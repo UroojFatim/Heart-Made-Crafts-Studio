@@ -3,7 +3,8 @@
  * One command per photograph: resize, compress, upload to R2, and print
  * the line to paste into lib/products.ts.
  *
- *   npm run photo -- ~/Desktop/DSC_0041.jpg the-signature-box
+ *   npm run photo -- ~/Desktop/DSC_0041.jpg the-signature-box-01 \
+ *     --alt "Closed, ribbon tied, the painted name plaque facing up"
  *
  * Photographs are what the catalogue runs on — every grid card and the
  * whole product-page gallery — so this is the script you will reach for
@@ -19,7 +20,7 @@
  * dashboard by hand.
  */
 import { execFileSync } from "node:child_process";
-import { mkdtempSync, statSync } from "node:fs";
+import { existsSync, mkdtempSync, statSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
@@ -33,18 +34,31 @@ const TARGET_KB = 300;
 const args = process.argv.slice(2);
 const upload = !args.includes("--no-upload");
 
-// --alt "…" — the description, written here so it lands in the printed
+// --alt … — the description, written here so it lands in the printed
 // block ready to paste, rather than being left as an empty string to
 // fill in later. Empty strings left to fill in later never get filled.
+//
+// Everything after --alt is taken as the description, up to the next
+// --flag or the end. That is not laziness: `npm run` on Windows strips
+// the quotes off arguments, so a quoted sentence arrives as a dozen
+// separate words. Reading only the next one would keep "Top-down" and
+// silently bin the rest of the sentence.
 const altFlag = args.indexOf("--alt");
-const alt = altFlag !== -1 ? (args[altFlag + 1] ?? "") : "";
+let altEnd = altFlag;
+const altWords = [];
+if (altFlag !== -1) {
+  for (let i = altFlag + 1; i < args.length && !args[i].startsWith("--"); i++) {
+    altWords.push(args[i]);
+    altEnd = i;
+  }
+}
+const alt = altWords.join(" ");
 
-// The index holding --alt's value, or -1 when the flag is absent. Not
-// `altFlag + 1`: with no flag that is 0, which silently swallowed the
-// input file.
-const altValueAt = altFlag === -1 ? -1 : altFlag + 1;
+// Positional args are everything that is not a flag and not part of
+// the description. The `altFlag !== -1` guard matters: without it the
+// range test is true from index 0 and swallows the input file.
 const positional = args.filter(
-  (a, i) => !a.startsWith("--") && i !== altValueAt,
+  (a, i) => !a.startsWith("--") && !(altFlag !== -1 && i > altFlag && i <= altEnd),
 );
 const [input, id] = positional;
 
@@ -73,6 +87,27 @@ if (!input || !id) {
 if (!/^[a-z0-9-]+$/.test(id)) {
   console.error(`  ✗ "${id}" — ids are lowercase letters, digits and hyphens.`);
   console.error(`    The id becomes a URL, so anything else will bite later.`);
+  process.exit(1);
+}
+
+// Check the file before handing it to ffmpeg, whose failure is forty
+// lines of build configuration followed by a stack trace.
+//
+// The usual cause is punctuation in the file name. PowerShell reads
+// ( ) [ ] as syntax, so box1(1).jpeg reaches us as "box1" with the
+// rest eaten — which looks like the script is broken when it is the
+// shell that rewrote the argument.
+if (!existsSync(input)) {
+  console.error(`\n  ✗ No file at:\n      ${input}\n`);
+  if (/[()[\]{}&^!% ]/.test(input) || !/\.\w+$/.test(input)) {
+    console.error(
+      `  That path looks cut short or has punctuation in it. PowerShell\n` +
+      `  treats ( ) [ ] & ^ ! % and spaces as syntax, so a name like\n` +
+      `  box1(1).jpeg arrives here as box1.\n\n` +
+      `  Easiest fix: rename the file so it is plain — box1-1.jpeg —\n` +
+      `  then run the command again.\n`,
+    );
+  }
   process.exit(1);
 }
 

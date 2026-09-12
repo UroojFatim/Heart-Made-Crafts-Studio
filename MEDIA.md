@@ -69,6 +69,20 @@ exist somewhere on the page.
 `alt` is optional. Leave it off and the product name and tagline stand
 in: valid, but it wins nothing.
 
+### On Windows: file names
+
+Rename the file to something plain before you run this — `box1-1.jpeg`,
+not `box1(1).jpeg`.
+
+PowerShell reads `( ) [ ] & ^ ! %` and spaces as syntax, so
+`box1(1).jpeg` reaches the script as `box1` and ffmpeg reports a file
+that does not exist. The script now catches this and tells you, but
+renaming is one second and avoids the whole class of problem.
+
+The description does not need quotes — `npm run` strips them on
+Windows anyway, so everything after `--alt` is read as the sentence,
+up to the next `--flag`. Quotes are still fine where they survive.
+
 ### What to shoot
 
 Portrait, roughly 4:5 — that is the shape of the card, and anything
@@ -113,6 +127,53 @@ happens on screen; the line above is.
 **`published` matters more than it looks.** Google will index a video
 without an upload date but will not give it a video result. The script
 stamps today's date for you — keep it.
+
+---
+
+## Deleting a photo or a clip
+
+**Order matters. Code first, bucket second.**
+
+1. Remove the entry from `lib/products.ts` — the `{ id: "…" }` line
+   from `photos`, or the block from `media`.
+2. `npm run dev` and check the product page still looks right.
+3. Commit and push.
+4. *Then* delete the file from R2.
+
+Do it the other way round and the site spends the gap pointing at a
+file that no longer exists: a broken image on the card, and a sitemap
+telling Google to fetch a 404.
+
+### Deleting the file
+
+Dashboard: **R2 → heartmade-media → photos/** (or `videos/`), tick the
+file, **Delete**.
+
+Or from the project folder:
+
+```bash
+npx wrangler r2 object delete heartmade-media/photos/<id>.jpg --remote
+```
+
+A clip is two files — delete both, or the poster is orphaned:
+
+```bash
+npx wrangler r2 object delete heartmade-media/videos/<id>.mp4 --remote
+npx wrangler r2 object delete heartmade-media/videos/<id>.jpg --remote
+```
+
+**There is no undo.** The bucket keeps no version history, so a deleted
+file is gone unless you still have the original on your laptop. Keep
+the originals.
+
+### Replacing rather than deleting
+
+If the point is a better shot of the same thing, do not delete and
+re-upload under the same name — Cloudflare caches hard at the edge and
+visitors keep getting the old picture for a long time.
+
+Give the new file a new id, point `lib/products.ts` at it, and delete
+the old one a week later once nothing is asking for it.
 
 ---
 

@@ -192,6 +192,48 @@ export type Product = {
 };
 
 export const products: Product[] = [
+
+
+  // Occasion Birthday
+
+    {
+    slug: "the-blush-glow-birthday-box",
+    name: "The Blush Glow Birthday Box",
+    tagline: "Made to make their special day feel a little more magical.",
+    description:
+      "A beautifully curated pink birthday gift box designed around the feeling of celebration. Soft fairy lights, chocolates, elegant gold-tone accessories, delicate decorative details and a romantic blush-pink presentation come together to create a gift that feels personal, thoughtful and unforgettable.",
+    photos: [
+      { id: "the-birthday-box-01-01", alt: "Premium customized pink gift box with fairy lights, chocolates, gold-tone jewelry, decorative flower and elegant handmade details, photographed from a front three-quarter angle." },
+      { id: "the-birthday-box-01-02", alt: "Top-down view of an open customized pink gift box filled with chocolates, gold-tone jewelry, decorative flower, pink filler and handmade gifting details." },
+      { id: "the-birthday-box-01-03", alt: "Low-angle photograph of an open pink customized gift box showing its layered arrangement, fairy lights, chocolates, jewelry and decorative details." },
+      { id: "the-birthday-box-01-04", alt: "Close-up of chocolates, gold-tone jewelry, decorative yellow flower and pink filler inside a customized gift box with warm fairy-light illumination." },
+    ],
+    reel: "https://www.instagram.com/reel/Db8gjgIsDcR/",
+    media: [],
+    occasions: ["birthday"],
+    tags: ["box", "for-her", "small"],
+    handmade: "Hand-lettered card in your words",
+    includes: [
+      "2 pairs of gold-tone earrings",
+      "Gold-tone ring",
+      "Gold-tone chain",
+      "2 Gold-tone bracelet/chain accessories",
+      "Gold-tone bangles/churiyan",
+      "Pink bangles/churiyan",
+      "Gold-tone necklace",
+      "Decorative flower clature",
+      "Cadbury Dairy Milk Silk Roast Almond",
+      "Dark Fantasy Choco Fills",
+      "Cherry chocolate/snack",
+      "Warm fairy lights",
+      "Personalized birthday box decoration",
+      "Pink decorative filler",
+    ],
+    leadTimeDays: [3, 5],
+    palette: { box: "#F3E2DA", lid: "#E6CABE", ribbon: "#C4695E", glow: "#FFEADB" },
+  },
+
+
   /* ─────────────────────────────────────────────────────────────
      UNIVERSAL — suits every occasion
      ───────────────────────────────────────────────────────────── */
@@ -353,52 +395,6 @@ export const products: Product[] = [
   },
 
   /* ─────────────────────────────────────────────────────────────
-     ENGAGEMENT
-     ───────────────────────────────────────────────────────────── */
-  // {
-  //   slug: "mangni-trays",
-  //   name: "Mangni & Trousseau Trays",
-  //   tagline: "For the trays that get carried in.",
-  //   description:
-  //     "Coordinated trays hand-painted so the set reads as one thing rather than nine separate purchases. Book at least two weeks out; engagement season fills early.",
-  //   media: [],
-  //   occasions: ["nikah-wedding"],
-  //   tags: ["hamper", "for-couple", "for-her", "mangni", "trousseau", "statement"],
-  //   handmade: "Hand-painted tray detailing and name plaques",
-  //   includes: [
-  //     "Set of coordinated trays",
-  //     "Hand-painted detailing throughout",
-  //     "Name plaques for the couple",
-  //     "Fresh floral work",
-  //     "Fabric draping and lights",
-  //     "Delivered set-up ready",
-  //   ],
-  //   leadTimeDays: [10, 14],
-  //   palette: { box: "#F1E7D5", lid: "#E3D3B8", ribbon: "#B78B4B", glow: "#FFF3D6" },
-  // },
-
-  // {
-  //   slug: "proposal-box",
-  //   name: "The Proposal Box",
-  //   tagline: "One box, one question.",
-  //   description:
-  //     "Built for the moment itself — a ring seat, lights, and a hand-lettered card with the words you've been practising. We'll keep it a secret from whoever you tell us to.",
-  //   media: [],
-  //   occasions: ["nikah-wedding"],
-  //   tags: ["box", "for-her", "for-him", "proposal", "statement"],
-  //   handmade: "Hand-lettered card and painted lid",
-  //   includes: [
-  //     "Deep box with a fitted ring seat",
-  //     "Hand-painted lid",
-  //     "Hand-lettered card",
-  //     "Preserved florals and lights",
-  //     "Wax-sealed",
-  //   ],
-  //   leadTimeDays: [4, 6],
-  //   palette: { box: "#F6E3E0", lid: "#E8CAC6", ribbon: "#C4695E", glow: "#FFECE8" },
-  // },
-
-  /* ─────────────────────────────────────────────────────────────
      EID
      ───────────────────────────────────────────────────────────── */
   {
@@ -425,56 +421,6 @@ export const products: Product[] = [
     palette: { box: "#E4EDE6", lid: "#CEDBD2", ribbon: "#5E8C6A", glow: "#EAFBEF" },
   },
 
-  /* ─────────────────────────────────────────────────────────────
-     CONGRATULATIONS
-     ───────────────────────────────────────────────────────────── */
-  // {
-  //   slug: "milestone-box",
-  //   name: "The Milestone Box",
-  //   tagline: "For news that deserves more than a text.",
-  //   description:
-  //     "Built around the actual reason — a degree, a first job, a new home, a new baby. The handmade piece changes with it, so it never reads as a generic well-done.",
-  //   media: [],
-  //   occasions: ["congratulations", "graduation", "new-baby"],
-  //   tags: [
-  //     "box", "keepsake", "for-her", "for-him", "for-family",
-  //     "new-job", "graduation", "new-baby", "new-home", "statement",
-  //   ],
-  //   handmade: "Hand-painted keepsake marking the milestone",
-  //   includes: [
-  //     "Hand-painted keepsake with the date",
-  //     "Hand-lettered card",
-  //     "Curated items suited to the occasion",
-  //     "Preserved florals",
-  //     "Wax-sealed box",
-  //   ],
-  //   leadTimeDays: [3, 5],
-  //   palette: { box: "#E7E2F0", lid: "#D5CEE4", ribbon: "#7A6BA8", glow: "#F2EDFF" },
-  // },
-
-  /* ─────────────────────────────────────────────────────────────
-     FESTIVALS
-     ───────────────────────────────────────────────────────────── */
-  // {
-  //   slug: "valentines-box",
-  //   name: "The 14 February Box",
-  //   tagline: "Not another red teddy.",
-  //   description:
-  //     "Dusty rose rather than pillar-box red, and built around something written by hand. Slots are limited every year — book by the first week of February.",
-  //   media: [],
-  //   occasions: ["valentine"],
-  //   tags: ["box", "bouquet", "for-her", "for-him", "small", "statement"],
-  //   handmade: "Handwritten letter, not a printed card",
-  //   includes: [
-  //     "Handwritten letter on cotton paper",
-  //     "Preserved rose arrangement",
-  //     "Chocolates",
-  //     "Candle and lights",
-  //     "Wax-sealed presentation box",
-  //   ],
-  //   leadTimeDays: [3, 5],
-  //   palette: { box: "#F6E3E0", lid: "#E8CAC6", ribbon: "#C4695E", glow: "#FFECE8" },
-  // },
 ];
 
 /* ──────────────────────────────────────────────────────────────────
