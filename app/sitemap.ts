@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { cities } from "@/lib/delivery";
 import { absolute, absolutePosterUrl, absoluteVideoUrl } from "@/lib/media";
 import { occasions } from "@/lib/occasions";
-import { featuredProducts, products, stillsFor } from "@/lib/products";
+import { homeProducts, products, stillsFor } from "@/lib/products";
 import { site } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -13,14 +13,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
    *
    * A video sitemap entry names the page a visitor can watch the video
    * on, not the file's own address. The clips play on the home page and
-   * nowhere else now, so every entry hangs off "/" — the same four
-   * featured products the page renders, in the same order.
+   * nowhere else now, so every entry hangs off "/" — the same products
+   * the page renders, in the same order.
    *
    * Listing them against the product pages, where they used to be,
    * would point Google at pages that no longer contain a video.
    */
-  const homeVideos = featuredProducts()
-    .slice(0, 4)
+  const homeVideos = homeProducts()
     .flatMap((p) =>
       p.media.map((m) => ({
         title: `${p.name} — ${p.tagline}`,

@@ -63,22 +63,7 @@ export type Media = {
    * "auto"  — plays muted on loop in view. Two or three per page at the
    *           very most; each one is a video download on a phone.
    */
-  /**
-   * File name with no extension, e.g. "the-signature-box".
-   *
-   * The video is <id>.mp4 and the poster is <id>.jpg — one id, so the
-   * two can never drift apart the way separately typed paths did. The
-   * URLs are built in lib/media.ts, which is also the one place that
-   * knows whether they come from public/ or from the R2 bucket.
-   */
-  id: string;
-  /**
-   * "hover" — still frame until hovered. Right for anything in a grid.
-   * "auto"  — plays muted on loop in view. Two or three per page at the
-   *           very most; each one is a video download on a phone.
-   */
   playback: "hover" | "auto";
-  /** Describe it for screen readers, and for Google Images. */
   /** Describe it for screen readers, and for Google Images. */
   alt: string;
   /**
@@ -180,6 +165,25 @@ export type Product = {
    * out front and let the rest live inside their occasions.
    */
   featured?: boolean;
+  /**
+   * Home page only. Kept out of /shop, out of every occasion page, out
+   * of /gift-hampers and out of "others for the same occasion".
+   *
+   * This is the holding pen for the seven products that still lead with
+   * video. They look right on the home page, where video belongs, and
+   * wrong in a photo grid next to properly shot products. Rather than
+   * show a video card among photo cards, they sit out of the catalogue
+   * until each one has its own photographs.
+   *
+   * **Removing the flag is the whole migration.** Shoot the photos, add
+   * `photos: [...]`, delete this line, and the product rejoins every
+   * grid it is tagged for. Nothing else to change.
+   *
+   * The product keeps its own page and its place in the sitemap either
+   * way — the home page card links to it, so it has to exist, and it is
+   * a real product with real copy that Google should still index.
+   */
+  homeOnly?: boolean;
   /** The handmade piece — the thing no competitor can copy. */
   handmade: string;
   includes: string[];
@@ -199,11 +203,11 @@ export const products: Product[] = [
       "Hand-wrapped, hand-tied, built to whatever size you want. Works for almost any occasion, which is why it's the thing people order when they can't decide.",
     media: [
       { id: "the-chocolate-bouquet", playback: "auto", alt: "A bouquet of wrapped chocolates being turned in the light" },
-      { id: "the-chocolate-bouquet", playback: "auto", alt: "A bouquet of wrapped chocolates being turned in the light" },
     ],
     occasions: "all",
     tags: ["bouquet", "for-her", "for-him", "for-kids", "small", "gentle", "playful"],
     featured: true,
+    homeOnly: true,
     handmade: "Hand-lettered tag, wrapped and tied by hand",
     includes: [
       "Imported chocolates, arranged as blooms",
@@ -223,11 +227,11 @@ export const products: Product[] = [
       "You send the words. They come back in ink on cotton paper, lettered by hand and sealed with wax. People order these for things a hamper would be wrong for.",
     media: [
       { id: "the-card-on-its-own", playback: "hover", alt: "The Hand made card with pictures" },
-      { id: "the-card-on-its-own", playback: "hover", alt: "The Hand made card with pictures" },
     ],
     occasions: ["sorry"],
     tags: ["card", "for-her", "for-him", "small", "gentle", "serious"],
     featured: true,
+    homeOnly: true,
     handmade: "Entirely — this is only handmade work",
     includes: [
       "Hand-lettered calligraphy card",
@@ -250,11 +254,11 @@ export const products: Product[] = [
       "The box most people mean when they say they want a gift box. Big enough to feel generous, restrained enough not to look like a pile of things. Contents built around a short brief from you.",
     media: [
       { id: "the-signature-box", playback: "auto", alt: "The Signature Box being packed and tied" },
-      { id: "the-signature-box", playback: "auto", alt: "The Signature Box being packed and tied" },
     ],
     occasions: ["birthday", "anniversary", "congratulations"],
     tags: ["box", "for-him", "statement", "new-job", "graduation"],
     featured: true,
+    homeOnly: true,
     handmade: "Hand-painted name plaque + calligraphy card",
     includes: [
       "Hand-painted wooden name plaque",
@@ -276,11 +280,11 @@ export const products: Product[] = [
       "One parcel for every year, each individually wrapped and hand-numbered so they open in an order you choose. Tell us the age and the budget and we'll tell you honestly what fits.",
     media: [
       { id: "the-countdown", playback: "hover", alt: "The Countdown box being prepared" },
-      { id: "the-countdown", playback: "hover", alt: "The Countdown box being prepared" },
     ],
     occasions: ["birthday"],
     tags: ["box", "hamper", "for-her", "for-him", "for-kids", "statement"],
     featured: true,
+    homeOnly: true,
     handmade: "Numbered hand-lettered tags for every parcel",
     includes: [
       "One small wrapped gift per year",
@@ -304,11 +308,11 @@ export const products: Product[] = [
       "Built around a hand-lettered timeline — the dates that actually mattered this year, written out. Most people send six or seven; we letter them onto a single card that sits on top when the lid comes off.",
     media: [
       { id: "the-anniversary-box", playback: "hover", alt: "The Anniversary Box being packed and tied" },
-      { id: "the-anniversary-box", playback: "hover", alt: "The Anniversary Box being packed and tied" },
     ],
     occasions: ["anniversary", "nikah-wedding"],
     tags: ["box", "for-couple", "for-her", "for-him", "statement"],
     featured: true,
+    homeOnly: true,
     handmade: "Hand-lettered timeline of your year",
     includes: [
       "Hand-lettered timeline card of your year together",
@@ -332,11 +336,11 @@ export const products: Product[] = [
       "Deliberately unshowy. A hand-lettered card doing the actual work, and just enough around it that it doesn't arrive empty-handed. We'll help you word it if you want.",
     media: [
       { id: "the-quite-sorry", playback: "hover", alt: "The Quiet Sorry box being prepared" },
-      { id: "the-quite-sorry", playback: "hover", alt: "The Quiet Sorry box being prepared" },
     ],
     occasions: ["sorry"],
     tags: ["box", "card", "for-her", "for-him", "small", "gentle", "serious"],
     featured: true,
+    homeOnly: true,
     handmade: "Handwritten card in your words",
     includes: [
       "Hand-lettered card, wax-sealed",
@@ -405,11 +409,11 @@ export const products: Product[] = [
       "For the in-laws, the cousins, or a whole office at once. Green and gold if you want it traditional, or we'll match whatever you have in mind.",
     media: [
       { id: "eid-bouquet", playback: "hover", alt: "The Eid Bouquet being packed and tied" },
-      { id: "eid-bouquet", playback: "hover", alt: "The Eid Bouquet being packed and tied" },
     ],
     occasions: ["eid"],
     tags: ["box", "hamper", "for-her", "for-him", "for-kids", "for-family", "single", "set", "bulk"],
     featured: true,
+    homeOnly: true,
     handmade: "Hand-lettered Eid Mubarak card per box",
     includes: [
       "Hand-lettered card in each box",
@@ -521,9 +525,35 @@ export function isInOccasion(product: Product, slug: OccasionSlug) {
   return product.occasions === "all" || product.occasions.includes(slug);
 }
 
+/**
+ * The catalogue: every product that belongs in a grid.
+ *
+ * One rule, in one place — `homeOnly` products are excluded. /shop,
+ * the occasion pages, /gift-hampers and "others for the same occasion"
+ * all read from here, so a product cannot leak back into one of them
+ * by being added to a grid somebody forgot to update.
+ */
+export function catalogueProducts() {
+  return products.filter((p) => !p.homeOnly);
+}
+
+/**
+ * The home page grid.
+ *
+ * The `homeOnly` products lead, because they are the ones with video
+ * and video is what the home page is for. Featured products follow.
+ * No cap: the home page shows what it is given.
+ */
+export function homeProducts() {
+  return [
+    ...products.filter((p) => p.homeOnly),
+    ...products.filter((p) => !p.homeOnly && p.featured),
+  ];
+}
+
 /** Everything tagged with this occasion — featured or not. */
 export function productsForOccasion(slug: OccasionSlug) {
-  return products.filter((p) => isInOccasion(p, slug));
+  return catalogueProducts().filter((p) => isInOccasion(p, slug));
 }
 
 /**

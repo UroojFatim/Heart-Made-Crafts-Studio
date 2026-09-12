@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import ProductCard from "@/components/ProductCard";
 import Reveal from "@/components/Reveal";
-import { products } from "@/lib/products";
+import { catalogueProducts } from "@/lib/products";
 import { boxRange, hamperRange } from "@/lib/pricing";
 import { ogDefaults, site, waLink } from "@/lib/site";
 
@@ -103,7 +103,7 @@ const comparison = [
 export default function GiftHampersPage() {
   // Two today. As more get tagged `hamper` in lib/products.ts they
   // appear here automatically — nothing below needs touching.
-  const hampers = products.filter((p) => p.tags.includes("hamper"));
+  const hampers = catalogueProducts().filter((p) => p.tags.includes("hamper"));
 
   return (
     <>

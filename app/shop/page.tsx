@@ -3,7 +3,7 @@ import Link from "next/link";
 import FilteredGrid from "@/components/FilteredGrid";
 import Reveal from "@/components/Reveal";
 import { occasions, shopFilters } from "@/lib/occasions";
-import { products } from "@/lib/products";
+import { catalogueProducts } from "@/lib/products";
 import { priceBands } from "@/lib/pricing";
 import { ogDefaults, site, waLink } from "@/lib/site";
 
@@ -28,6 +28,11 @@ export const metadata: Metadata = {
 };
 
 export default function ShopPage() {
+  // The catalogue, minus anything marked `homeOnly`. Read once so the
+  // grid and the ItemList schema can never disagree about what is
+  // actually on the page.
+  const listed = catalogueProducts();
+
   return (
     <>
       {/* ── Intro ──────────────────────────────────────────────── */}
@@ -120,7 +125,7 @@ export default function ShopPage() {
           people land on from "gift boxes pakistan", so it should be the
           whole catalogue. */}
       <section className="shell mt-12">
-        <FilteredGrid products={products} filters={shopFilters} />
+        <FilteredGrid products={listed} filters={shopFilters} />
       </section>
 
       {/* ── What's inside ──────────────────────────────────────── */}
@@ -320,16 +325,22 @@ export default function ShopPage() {
               "Handmade gift boxes and hampers, made to order in Karachi and delivered across Pakistan.",
             url: `${site.url}/shop`,
             isPartOf: { "@type": "WebSite", name: site.name, url: site.url },
-            mainEntity: {
-              "@type": "ItemList",
-              numberOfItems: products.length,
-              itemListElement: products.map((p, i) => ({
-                "@type": "ListItem",
-                position: i + 1,
-                name: p.name,
-                url: `${site.url}/product/${p.slug}`,
-              })),
-            },
+            // Only when there is something to list. An ItemList
+            // declaring zero items is a worse signal than no ItemList
+            // at all — it tells Google the page is empty rather than
+            // letting the page's own copy speak for it.
+            ...(listed.length > 0 && {
+              mainEntity: {
+                "@type": "ItemList",
+                numberOfItems: listed.length,
+                itemListElement: listed.map((p, i) => ({
+                  "@type": "ListItem",
+                  position: i + 1,
+                  name: p.name,
+                  url: `${site.url}/product/${p.slug}`,
+                })),
+              },
+            }),
           }),
         }}
       />

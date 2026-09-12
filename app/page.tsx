@@ -7,15 +7,16 @@ import Reviews from "@/components/Reviews";
 import ProductCard from "@/components/ProductCard";
 import { absolutePosterUrl, absoluteVideoUrl } from "@/lib/media";
 import { occasions } from "@/lib/occasions";
-import { featuredProducts, productsForOccasion, type Product } from "@/lib/products";
+import { homeProducts, productsForOccasion, type Product } from "@/lib/products";
 import { priceFloor } from "@/lib/pricing";
 import { site, waLink } from "@/lib/site";
 
 export default function Home() {
-  // Home shows the first four featured pieces. Mark a product
-  // `featured: true` in lib/products.ts to put it in the running;
-  // order follows the order of that file.
-  const featured = featuredProducts().slice(0, 4);
+  // The home page grid: the `homeOnly` products first — the ones that
+  // still lead with video — then anything marked `featured`. No slice:
+  // these seven are deliberately all here and nowhere else, so cutting
+  // the list would hide products that have no other page to appear on.
+  const featured = homeProducts();
 
   return (
     <>

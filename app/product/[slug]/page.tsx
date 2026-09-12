@@ -5,7 +5,7 @@ import ProductCard from "@/components/ProductCard";
 import ProductGallery from "@/components/ProductGallery";
 import Reveal from "@/components/Reveal";
 import { getOccasion, occasions } from "@/lib/occasions";
-import { getProduct, isInOccasion, products, stillsFor } from "@/lib/products";
+import { catalogueProducts, getProduct, isInOccasion, products, stillsFor } from "@/lib/products";
 import { priceFloor } from "@/lib/pricing";
 import { ogDefaults, reelLink, site, waLink } from "@/lib/site";
 
@@ -43,7 +43,9 @@ export default async function ProductPage({ params }: Params) {
           .map((s) => getOccasion(s))
           .filter((o): o is NonNullable<typeof o> => Boolean(o));
 
-  const related = products
+  // From the catalogue only, so a home-only product never surfaces
+  // here as a side door back into the grids.
+  const related = catalogueProducts()
     .filter(
       (p) =>
         p.slug !== product.slug &&
