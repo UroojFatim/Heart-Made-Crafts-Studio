@@ -14,8 +14,9 @@
  * PHOTOS  →  public/photos/, shipped with the site.
  *
  *   You add photographs constantly, so the thing that matters is how
- *   little ceremony each one costs: run `npm run photo`, the file lands
- *   in the folder, commit. No upload, no dashboard, no waiting.
+ *   little ceremony each one costs: drop the file in public/photos/,
+ *   write its name in lib/products.ts, commit. No upload, no dashboard,
+ *   no command, no waiting.
  *
  *   They are small — around 200 KB each — so git carries them without
  *   complaint, and serving them from the site's own domain is the
@@ -72,13 +73,16 @@ export function posterUrl(id: string) {
 /**
  * A still photograph.
  *
- * Photos are what the catalogue runs on — every grid card, and the
- * whole product-page gallery. `npm run photo` writes them into
- * public/photos/ at 1600px wide, which is enough for a full-width shot
- * on a laptop and still well under 300 KB.
+ * `file` is the file name exactly as it sits in public/photos/,
+ * extension and all — "box-01.jpeg", "box-02.png". No extension is
+ * added or assumed.
+ *
+ * That is deliberate. Drop a photo in the folder, copy its name into
+ * lib/products.ts, done. Nothing to convert, nothing to run, and no
+ * rule to remember beyond "write the name you can see".
  */
-export function photoUrl(id: string) {
-  return `${PHOTO_HOST}${PHOTO_DIR}/${id}.jpg`;
+export function photoUrl(file: string) {
+  return `${PHOTO_HOST}${PHOTO_DIR}/${file}`;
 }
 
 /**
@@ -96,8 +100,8 @@ export function absolutePosterUrl(id: string, siteUrl: string) {
   return absolute(posterUrl(id), siteUrl);
 }
 
-export function absolutePhotoUrl(id: string, siteUrl: string) {
-  return absolute(photoUrl(id), siteUrl);
+export function absolutePhotoUrl(file: string, siteUrl: string) {
+  return absolute(photoUrl(file), siteUrl);
 }
 
 /**
