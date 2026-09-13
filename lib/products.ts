@@ -411,7 +411,7 @@ export const products: Product[] = [
 
 
   // Multi-occasion products
-  
+
   // 1
   {
     slug: "the-classic-gentleman-gift-box",
@@ -443,7 +443,7 @@ export const products: Product[] = [
       },
     ],
 
-    reel: "",
+    reel: "https://www.instagram.com/reel/DcEoFGYS9Fa/",
     media: [],
 
     occasions: ["birthday", "anniversary", "congratulations", "nikah-wedding", "eid", "valentine", "graduation"],
