@@ -80,17 +80,21 @@ export type Photo = {
   /**
    * The file name in public/photos/.
    *
-   *   id: "box-01.jpeg"  ->  public/photos/box-01.jpeg
-   *   id: "box-01.png"   ->  public/photos/box-01.png
-   *   id: "box-01"       ->  public/photos/box-01.jpg   (.jpg assumed)
+   *   id: "box-01.jpeg"   ->  public/photos/box-01.jpeg
+   *   id: "box-01.png"    ->  public/photos/box-01.png
+   *   id: "box-01"        ->  public/photos/box-01.jpg   (.jpg assumed)
    *
    * Write the extension unless the file really is a .jpg. Nothing is
-   * converted and nothing is guessed beyond that one default — whatever
+   * converted and nothing is guessed beyond that one default: whatever
    * you drop in the folder is what gets served.
    *
-   * Capital letters count. Windows ignores them, the server does not,
-   * so shot.JPG and shot.jpg are different files in production even
-   * though they look identical on your laptop.
+   * Two things the folder cares about:
+   *
+   *   - Capital letters count. Windows ignores them, the server does
+   *     not, so shot.JPG and shot.jpg are different files in production
+   *     even though they look identical on your laptop.
+   *   - Keep each file under about 300 KB, or the card gets slow on a
+   *     phone — which is most of your visitors.
    *
    * If a photo does not appear, this name and the name in the folder
    * differ somewhere. That is the only thing that can be wrong.
@@ -263,17 +267,17 @@ export const products: Product[] = [
       {
         id: "the-midnight-memories-birthday-box-01.jpeg",
         alt:
-        "Open black birthday gift box featuring a personalized illuminated photo collage, striped shirt, wristwatch, wallet, fragrance, roses and assorted chocolates."
+          "Open black birthday gift box featuring a personalized illuminated photo collage, striped shirt, wristwatch, wallet, fragrance, roses and assorted chocolates."
       },
       {
         id: "the-midnight-memories-birthday-box-02.jpeg",
         alt:
-        "Angled view of an open luxury birthday gift hamper with personalized photo collage, striped shirt, watch, wallet, chocolates, fragrance and red roses."
+          "Angled view of an open luxury birthday gift hamper with personalized photo collage, striped shirt, watch, wallet, chocolates, fragrance and red roses."
       },
       {
         id: "the-midnight-memories-birthday-box-03.jpeg",
         alt:
-        "Close-up angled view of a personalized black birthday gift box showing the striped shirt, leather-style wallet, wristwatch, chocolates, roses and fragrance."
+          "Close-up angled view of a personalized black birthday gift box showing the striped shirt, leather-style wallet, wristwatch, chocolates, roses and fragrance."
       },
       {
         id: "the-midnight-memories-birthday-box-04.jpeg",
@@ -294,7 +298,7 @@ export const products: Product[] = [
       "personalized",
       "premium",
       "luxury",
-      "medium"
+      "small"
     ],
 
     handmade: "Personalized birthday message and photo memories",
@@ -321,6 +325,161 @@ export const products: Product[] = [
       lid: "#0B0B0B",
       ribbon: "#151515",
       glow: "#FFE7A8"
+    },
+  },
+
+  // 3
+  {
+    slug: "the-blush-love-birthday-box",
+    name: "The Blush Love Birthday Box",
+    tagline: "A little box of love, made just for her.",
+
+    description:
+      "A beautifully curated blush-pink birthday gift box filled with thoughtful little surprises. Delicate gold-tone jewelry, chocolates, a soft plushie, decorative flowers, a handwritten-style message card and warm fairy lights come together in a romantic presentation designed to make her birthday feel extra special.",
+
+    photos: [
+      {
+        id: "the-blush-love-birthday-box-01.png",
+        alt:
+          "Premium customized blush-pink birthday gift box with warm fairy lights, gold-tone jewelry, chocolates, plushie, decorative flower and personalized handmade details, photographed from a front three-quarter angle."
+      },
+      {
+        id: "the-blush-love-birthday-box-02.png",
+        alt:
+          "Top-down view of an open blush-pink birthday gift box showing gold-tone jewelry, chocolates, plushie, decorative flower, ribbons and personalized gifting details."
+      },
+      {
+        id: "the-blush-love-birthday-box-03.png",
+        alt:
+          "Low-angle photograph of an open blush-pink birthday gift box showing its layered arrangement, fairy lights, jewelry, chocolates, plushie and decorative details."
+      },
+      {
+        id: "the-blush-love-birthday-box-04.png",
+        alt:
+          "Close-up photograph highlighting the gold-tone jewelry, chocolates, soft plushie, handmade heart card, decorative flower and satin ribbon details inside the birthday gift box."
+      },
+    ],
+
+    reel: "https://www.instagram.com/reel/DcG0MIvMq1I/",
+
+    media: [],
+
+    occasions: ["birthday"],
+
+    tags: [
+      "box",
+      "for-her",
+      "birthday",
+      "romantic",
+      "cute",
+      "personalized",
+      "small"
+    ],
+
+    handmade: "Handmade birthday message card and personalized box decoration",
+
+    includes: [
+      "Butterfly earrings — 1 pair",
+      "Gold-tone pendant necklace — 2",
+      "Gold-tone bracelet/chain accessory — 1",
+      "Hershey's chocolate bar — 1",
+      "Soft plushie — 1",
+      "Decorative red flower — 1",
+      "White patterned mini gift pouch — 1",
+      "Handmade heart-shaped 'For You' card — 1",
+      "Additional small handmade message card",
+      "Red satin ribbon decoration",
+      "Warm fairy lights",
+      "Personalized birthday box decoration",
+      "Pink decorative filler",
+    ],
+
+    leadTimeDays: [3, 5],
+
+    palette: {
+      box: "#F3D9DC",
+      lid: "#EBC6D0",
+      ribbon: "#B92F45",
+      glow: "#FFE4C7"
+    },
+  },
+
+
+
+
+
+
+
+  // Multi-occasion products
+
+  // 1
+  {
+    slug: "the-classic-gentleman-gift-box",
+    name: "The Classic Gentleman Gift Box",
+    tagline: "A timeless gift filled with style, fragrance and thoughtful little details.",
+    description:
+      "A thoughtfully curated premium gift box for him, combining everyday style with elegant finishing touches. A classic neutral-toned shirt, black wristwatch, fragrances, chocolates and delicate cream roses are arranged inside a sophisticated black gift box with soft neutral filler. The combination of masculine essentials and handcrafted details makes it a beautiful choice for birthdays, anniversaries and special moments.",
+
+    photos: [
+      {
+        id: "the-classic-gentleman-gift-box-01.jpg",
+        alt:
+          "Premium black gift box for him featuring a neutral-toned shirt, black wristwatch, fragrances, chocolate and cream roses, photographed from a front three-quarter angle."
+      },
+      {
+        id: "the-classic-gentleman-gift-box-02.jpg",
+        alt:
+          "Top-down view of an open black men's gift box showing a folded neutral shirt, black wristwatch, GIO and Bellavita White Oud fragrances, chocolate and cream roses."
+      },
+      {
+        id: "the-classic-gentleman-gift-box-03.jpg",
+        alt:
+          "Angled side view of an open luxury men's gift box with a neutral shirt, fragrances, black watch, chocolate and cream decorative roses arranged inside."
+      },
+      {
+        id: "the-classic-gentleman-gift-box-04.jpg",
+        alt:
+          "Close-up of a premium men's gift box highlighting the neutral shirt fabric, GIO and Bellavita White Oud fragrances, black wristwatch and cream roses."
+      },
+    ],
+
+    reel: "https://www.instagram.com/reel/DcEoFGYS9Fa/",
+    media: [],
+
+    occasions: ["birthday", "anniversary", "congratulations", "nikah-wedding", "eid", "valentine", "graduation"],
+
+    tags: [
+      "box",
+      "for-him",
+      "premium",
+      "luxury",
+      "mens-gift",
+      "birthday",
+      "small"
+    ],
+
+    handmade:
+      "Thoughtfully arranged by hand with a personalized gifting presentation",
+
+    includes: [
+      "Neutral-toned formal shirt",
+      "Classic black wristwatch",
+      "GIO fragrance",
+      "Bellavita White Oud fragrance",
+      "KitKat chocolate",
+      "3 cream decorative roses",
+      "Soft neutral decorative filler",
+      "Black satin ribbon",
+      "Premium black gift box presentation",
+    ],
+
+    leadTimeDays: [3, 5],
+
+    palette: {
+      box: "#111111",
+      lid: "#0B0B0B",
+      ribbon: "#151515",
+      glow: "#E8CFAE",
     },
   },
 
