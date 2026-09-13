@@ -28,27 +28,39 @@ files that did not exist.
 
 ## Adding a photograph
 
-This is the one you will do most often.
+No command, no processing, no format to convert to.
 
-```bash
-npm run photo -- C:\Users\you\Pictures\DSC_0041.jpg the-signature-box-01 ^
-  --alt "Closed, ribbon tied, the painted name plaque facing up"
-```
-
-It resizes to 1600px wide, compresses to roughly 200 KB, writes the file
-into `public/photos/`, and prints the line to paste into
-`lib/products.ts`:
+1. Put the file in **`public/photos/`**
+2. Copy its name — the whole name, extension and all — into
+   `lib/products.ts`
+3. Commit
 
 ```ts
 photos: [
-  { id: "the-signature-box-01", alt: "Closed, ribbon tied, the painted name plaque facing up" },
-  { id: "the-signature-box-02", alt: "Open, chocolates in rows beside the calligraphy card" },
+  { file: "the-birthday-box-01.jpeg", alt: "Closed, ribbon tied, the painted name plaque facing up" },
+  { file: "the-birthday-box-02.png",  alt: "Open, chocolates in rows beside the calligraphy card" },
 ],
 ```
 
+`.jpeg`, `.jpg`, `.png`, `.webp` — whatever you have. Nothing is
+assumed and nothing is added: the name in `products.ts` has to match
+the name in the folder exactly.
+
 **The first entry is the card image**, so lead with your best shot. The
-rest become the thumbnails on the product page. Add as many as you
-like — one line each.
+rest become thumbnails on the product page. Add as many as you like.
+
+### Two things the folder cares about
+
+**Keep each file under about 300 KB.** Straight off a phone a photo is
+3–5 MB, which is roughly twenty times what a card needs and slow on
+mobile data. Anything exported from Canva, Lightroom, Photoshop or a
+phone's own editor is usually already fine. If a file is much larger,
+export it again at about 1600px wide before dropping it in.
+
+**Capital letters count.** Windows ignores them; the server does not.
+`shot.JPG` and `shot.jpg` are different files in production even though
+they look identical on your laptop. Safest habit: lowercase names
+throughout.
 
 ### Writing `alt`
 
@@ -59,39 +71,31 @@ picture is of, and it shows if the image ever fails to load.
 **Describe the photograph, not the product.**
 
 ```
-✗ "The Signature Box"
-✓ "Open, chocolates in rows beside the calligraphy card"
+x   "The Signature Box"
+ok  "Open, chocolates in rows beside the calligraphy card"
 ```
 
-The product name is already in the heading above the picture. Repeating
-it tells Google nothing it did not already know, while the actual
-description is the only place these details ever get written down —
-and details are what long searches match on. Somebody typing "gift box
-with name plaque karachi" can only find you if the words *name plaque*
-exist somewhere on the page.
+The product name is already in the heading above the picture.
+Repeating it tells Google nothing it did not already know, while the
+actual description is the only place these details ever get written
+down — and details are what long searches match on. Somebody typing
+"gift box with name plaque karachi" can only find you if the words
+*name plaque* exist somewhere on the page.
 
 `alt` is optional. Leave it off and the product name and tagline stand
 in: valid, but it wins nothing.
-
-### On Windows: file names
-
-Rename the file to something plain before you run this — `box1-1.jpeg`,
-not `box1(1).jpeg`.
-
-PowerShell reads `( ) [ ] & ^ ! %` and spaces as syntax, so
-`box1(1).jpeg` reaches the script as `box1` and ffmpeg reports a file
-that does not exist. The script now catches this and tells you, but
-renaming is one second and avoids the whole class of problem.
-
-The description does not need quotes — `npm run` strips them on
-Windows anyway, so everything after `--alt` is read as the sentence,
-up to the next `--flag`. Quotes are still fine where they survive.
 
 ### What to shoot
 
 Portrait, roughly 4:5 — that is the shape of the card, and anything
 else gets cropped. Shoot more than you need and pick later; adding a
 line to the array is a one-line change.
+
+### If a photo does not appear
+
+The name in `products.ts` and the name in the folder differ somewhere.
+That is the only thing that can be wrong. Check the extension first
+(`.jpeg` is not `.jpg`), then capital letters, then spelling.
 
 ---
 
@@ -123,6 +127,33 @@ playback: "hover"   // still frame until hovered
 playback: "auto"    // plays muted on loop in view
 ```
 
+### If the compression is hurting the picture
+
+The script trades quality for size, and the trade is adjustable. In
+`scripts/video.mjs`:
+
+```
+-crf 26      lower number = better picture, bigger file
+             22 is noticeably cleaner, roughly 1.5x the size
+             18 is close to the original, roughly 3x
+
+scale=1080   the width it downscales to. Raise it to 1280 for detail
+             work, or delete the whole -vf line to keep the original.
+```
+
+**Or skip the script entirely.** Compress the clip however you like —
+your phone's own export, CapCut, Handbrake — then upload two files to
+**R2 → heartmade-media → videos/** by hand:
+
+```
+<id>.mp4     the clip
+<id>.jpg     one frame from it, as the poster
+```
+
+Both files, always. Without a poster the browser downloads the start of
+the video just to draw one frame. Keep the clip under about 5 MB so it
+still starts quickly on mobile data.
+
 **Write `alt` properly.** It is read aloud to anyone using a screen
 reader, it is what Google reads, and it is the `description` on the
 video's schema. "The Signature Box" is not a description of what
@@ -153,8 +184,8 @@ broken image on the card, and a sitemap sending Google to a 404.
 
 ### Deleting a photo
 
-Delete the file from `public/photos/` like any other file, and commit.
-That is all — no dashboard, no command.
+Delete the file from `public/photos/`, remove its line from
+`lib/products.ts`, commit. That is all — no dashboard, no command.
 
 ### Deleting a clip
 
@@ -216,14 +247,18 @@ weight this whole change just removed.
 
 ## Requirements
 
-- **ffmpeg** on PATH. Both scripts use it. `winget install ffmpeg`.
-- **wrangler**, for `npm run video` only — photos need nothing. First
-  time: `npx wrangler login`, which opens a browser and authorises this
-  machine. There is no API token to copy and nothing secret kept in a
-  file.
+Photos need nothing at all — no tool, no login, no command.
 
-`npm run video` takes `--no-upload` if you would rather place the clip
-in the dashboard by hand. `npm run photo` never uploads anything.
+`npm run video` is the only script left, and it needs:
+
+- **ffmpeg** on PATH. `winget install ffmpeg`.
+- **wrangler**. First time: `npx wrangler login`, which opens a browser
+  and authorises this machine. No API token to copy, nothing secret in
+  a file.
+
+It takes `--no-upload` if you would rather compress the clip and put it
+in the R2 dashboard by hand — or skip the script entirely and upload
+your own file, see below.
 
 ---
 
@@ -236,7 +271,8 @@ in the dashboard by hand. `npm run photo` never uploads anything.
 that sells the thing in them, which is the plainest possible signal to
 Google Images.
 
-There is no upload step. Run the command, the file is there, commit it.
+There is no upload step and no command. Drop the file in the folder,
+name it in `lib/products.ts`, commit.
 
 This works because photos are small: about 200 KB each, so a hundred of
 them is 20 MB and git does not notice. Adding one does mean a deploy,
@@ -278,7 +314,7 @@ not match the file name. It is almost always the second one.
 
 ## Naming, and why there are no folders
 
-Files are flat: `public/photos/the-signature-box-01.jpg`. There is no
+Files are flat: `public/photos/the-signature-box-01.jpeg`. There is no
 `photos/birthday/` and there should not be.
 
 **A product often belongs to several occasions.** The chocolate bouquet
