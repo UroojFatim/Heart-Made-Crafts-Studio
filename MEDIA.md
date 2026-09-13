@@ -2,6 +2,9 @@
 
 **Photographs run the catalogue. Video runs the home page.**
 
+**Photos live in the repo. Video lives in the bucket.** Small and
+frequent ships with the site; large and rare goes to Cloudflare.
+
 That split is the whole design, and it was a performance decision. The
 site used to play a clip in every product card on every page — seven
 clips, roughly 24 MB, most of it downloaded by people who only wanted
@@ -11,11 +14,11 @@ to see what a box looks like. Now a grid card costs one image of about
 Everything is addressed by a bare **id** — `the-signature-box` — and
 `lib/media.ts` turns that id into a URL:
 
-| | |
-|---|---|
-| Photo | `/photos/<id>.jpg` |
-| Video | `/videos/<id>.mp4` |
-| Its poster | `/videos/<id>.jpg` |
+| | Served from | Path |
+|---|---|---|
+| Photo | the site itself | `public/photos/<id>.jpg` |
+| Video | Cloudflare R2 | `videos/<id>.mp4` |
+| Its poster | Cloudflare R2 | `videos/<id>.jpg` |
 
 Products never store a URL, only ids. One id cannot drift from itself,
 which is what fixed the old bug where four products pointed at poster
@@ -32,8 +35,9 @@ npm run photo -- C:\Users\you\Pictures\DSC_0041.jpg the-signature-box-01 ^
   --alt "Closed, ribbon tied, the painted name plaque facing up"
 ```
 
-It resizes to 1600px wide, compresses to roughly 200 KB, uploads to R2,
-and prints the line to paste into `lib/products.ts`:
+It resizes to 1600px wide, compresses to roughly 200 KB, writes the file
+into `public/photos/`, and prints the line to paste into
+`lib/products.ts`:
 
 ```ts
 photos: [
@@ -132,39 +136,41 @@ stamps today's date for you — keep it.
 
 ## Deleting a photo or a clip
 
-**Order matters. Code first, bucket second.**
+**Take it out of the code first.**
 
 1. Remove the entry from `lib/products.ts` — the `{ id: "…" }` line
    from `photos`, or the block from `media`.
 2. `npm run dev` and check the product page still looks right.
-3. Commit and push.
-4. *Then* delete the file from R2.
+3. Commit.
 
-Do it the other way round and the site spends the gap pointing at a
-file that no longer exists: a broken image on the card, and a sitemap
-telling Google to fetch a 404.
+For a photo, deleting the file in the same commit is fine: the code and
+the file go together, so the site is never pointing at a gap.
 
-### Deleting the file
+A clip is different, because it lives somewhere else. Push first, and
+delete from R2 only once the new build is live — do it the other way
+round and the site spends the gap asking for a file that is gone: a
+broken image on the card, and a sitemap sending Google to a 404.
 
-Dashboard: **R2 → heartmade-media → photos/** (or `videos/`), tick the
-file, **Delete**.
+### Deleting a photo
 
-Or from the project folder:
+Delete the file from `public/photos/` like any other file, and commit.
+That is all — no dashboard, no command.
 
-```bash
-npx wrangler r2 object delete heartmade-media/photos/<id>.jpg --remote
-```
+### Deleting a clip
 
-A clip is two files — delete both, or the poster is orphaned:
+Dashboard: **R2 → heartmade-media → videos/**, tick the file,
+**Delete**. Or from the project folder — a clip is two files, so delete
+both or the poster is orphaned:
 
 ```bash
 npx wrangler r2 object delete heartmade-media/videos/<id>.mp4 --remote
 npx wrangler r2 object delete heartmade-media/videos/<id>.jpg --remote
 ```
 
-**There is no undo.** The bucket keeps no version history, so a deleted
-file is gone unless you still have the original on your laptop. Keep
-the originals.
+**A deleted clip has no undo** — the bucket keeps no version history.
+A deleted photo is recoverable from git history, but only if it was
+committed first. Either way: keep your originals in a folder of their
+own, outside the project.
 
 ### Replacing rather than deleting
 
@@ -211,16 +217,33 @@ weight this whole change just removed.
 ## Requirements
 
 - **ffmpeg** on PATH. Both scripts use it. `winget install ffmpeg`.
-- **wrangler** for the upload. First time only: `npx wrangler login`,
-  which opens a browser and authorises this machine. There is no API
-  token to copy and nothing secret kept in a file.
+- **wrangler**, for `npm run video` only — photos need nothing. First
+  time: `npx wrangler login`, which opens a browser and authorises this
+  machine. There is no API token to copy and nothing secret kept in a
+  file.
 
-Pass `--no-upload` to either script to skip R2 and place the files in
-the dashboard by hand. The script prints where it left them.
+`npm run video` takes `--no-upload` if you would rather place the clip
+in the dashboard by hand. `npm run photo` never uploads anything.
 
 ---
 
 ## Where the files live
+
+### Photos: in the repo
+
+`public/photos/`. They ship with the site and Vercel serves them from
+`www.heartmadecrafts.studio/photos/…` — the same domain as the page
+that sells the thing in them, which is the plainest possible signal to
+Google Images.
+
+There is no upload step. Run the command, the file is there, commit it.
+
+This works because photos are small: about 200 KB each, so a hundred of
+them is 20 MB and git does not notice. Adding one does mean a deploy,
+which is the trade — but a deploy is a push, and you were pushing
+anyway.
+
+### Video: in the bucket
 
 | | |
 |---|---|
@@ -228,30 +251,34 @@ the dashboard by hand. The script prints where it left them.
 | Public domain | `media.heartmadecrafts.studio` |
 | Bandwidth | free, forever, whatever the traffic |
 
-`public/videos/` is gone, and it should stay gone. Media in git is the
-one mistake that cannot be undone later: git keeps every version of
-every binary forever, so a file you delete next month still sits in the
-history, in every clone, on every deploy.
+Clips are 3–5 MB each, and **git keeps every version of a binary
+forever** — delete one next month and it still sits in the history, in
+every clone, on every deploy. Seven clips re-shot a few times each
+would bloat the repository permanently and there is no undoing it.
 
-A new photo or clip goes to the bucket, never into `public/`. The only
-things in `public/` are small and permanent: the logo, the signature,
-the process shots.
+They also change rarely, so the upload step costs almost nothing in
+practice. That is the whole reason for the split: it is not that
+buckets are better, it is that the two kinds of file have completely
+different habits.
 
-If something fails to load, open its URL in a browser first:
+### If something fails to load
+
+Open its URL in a browser first:
 
 ```
-https://media.heartmadecrafts.studio/photos/<id>.jpg
+https://www.heartmadecrafts.studio/photos/<id>.jpg    # photo
+https://media.heartmadecrafts.studio/videos/<id>.mp4  # clip
 ```
 
-A 404 there means the file is missing from the bucket, or the id in
-`lib/products.ts` does not match the file name. It is almost always the
-second one.
+A 404 means the file is missing, or the id in `lib/products.ts` does
+not match the file name. It is almost always the second one.
+
 
 ---
 
 ## Naming, and why there are no folders
 
-Files are flat: `photos/the-signature-box-01.jpg`. There is no
+Files are flat: `public/photos/the-signature-box-01.jpg`. There is no
 `photos/birthday/` and there should not be.
 
 **A product often belongs to several occasions.** The chocolate bouquet
@@ -308,8 +335,10 @@ beat a video still every time, so replace them as you shoot.
 ## What the SEO depends on
 
 - **Photographs are listed in `sitemap.xml`** against the product page
-  that sells the thing in them. That is how a picture that is not on a
-  big platform gets found in Google Images.
+  that sells the thing in them, with absolute URLs on the site's own
+  domain. That is how a picture that is not on a big platform gets
+  found in Google Images, and sharing an origin with the page is the
+  clearest version of that signal.
 - **`VideoObject` sits on the home page**, because that is where the
   clips play. It used to be on the product pages and it moved with
   them. Schema describes what is on the page; a VideoObject on a page

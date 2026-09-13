@@ -4,7 +4,8 @@
  * ══════════════════════════════════════════════════════════════════
  *
  * TO ADD A PRODUCT
- *   1. `npm run photo -- <file> <id>` for each photograph.
+ *   1. `npm run photo -- <file> <id> --alt …` for each photograph.
+ *      It writes straight into public/photos/ — no upload step.
  *   2. Copy any entry below, change the fields, done.
  *
  * THE FIELDS THAT MATTER
@@ -156,13 +157,15 @@ export type Product = {
   occasions: OccasionSlug[] | "all";
   tags: string[];
   /**
-   * Show it on the home page and in the "everything" grid on /shop.
+   * Put it on the HOME PAGE. That is all this does.
    *
-   * Leave it off and the product still gets its own page, still appears
-   * inside every occasion you've tagged it with, still responds to
-   * filters, and still goes in the sitemap for Google. It just doesn't
-   * crowd the front of the shop. That's the point — keep about eight
-   * out front and let the rest live inside their occasions.
+   * It does not control /shop — /shop lists the whole catalogue, so a
+   * product appears there simply by existing and not being `homeOnly`.
+   *
+   * Leave `featured` off and the product is still completely live: its
+   * own page, /shop, every occasion you tagged it with, the filters,
+   * the sitemap. It just isn't on the front page. Keep the home page
+   * to a handful and let the rest live in the shop and the occasions.
    */
   featured?: boolean;
   /**
