@@ -404,83 +404,161 @@ export const products: Product[] = [
     },
   },
 
+  // 4
+  {
+    slug: "the-pink-love-birthday-chocolate-box",
+    name: "The Pink Love Birthday Chocolate Box",
+    tagline: "A sweet little surprise wrapped in love and made for their special day.",
+
+    description:
+      "A charming pink customized birthday gift box filled with a delicious selection of chocolates and finished with a soft satin ribbon. The box features a beautiful 'Happy Birthday' design on the closed lid, while the open presentation reveals a heartfelt 'LOVE' message along with neatly arranged chocolates including Kinder Bueno, Mars, Snickers, KitKat, Raffaello and Ferrero Rocher. A simple, sweet and thoughtful gift designed to make birthdays feel extra special.",
+
+    photos: [
+      {
+        id: "the-pink-love-birthday-chocolate-box-01.jpg",
+        alt:
+          "Open pastel-pink customized birthday gift box featuring a 'LOVE' message inside the lid and neatly arranged Kinder Bueno, Mars, Snickers, KitKat, Raffaello and Ferrero Rocher chocolates."
+      },
+      {
+        id: "the-pink-love-birthday-chocolate-box-02.jpg",
+        alt:
+          "Closed pastel-pink customized birthday chocolate gift box with a 'Happy Birthday' lid design and soft pink satin ribbon bow, photographed from a front three-quarter angle."
+      },
+      {
+        id: "the-pink-love-birthday-chocolate-box-03.jpg",
+        alt:
+          "Front three-quarter photograph of the open pastel-pink birthday chocolate gift box showing the LOVE message, assorted chocolates and elegant pink satin ribbon."
+      },
+      {
+        id: "the-pink-love-birthday-chocolate-box-04.jpg",
+        alt:
+          "Close-up photograph of the open pink chocolate gift box highlighting the 'LOVE' lid design, assorted branded chocolates, soft pink box finish and satin ribbon details."
+      },
+    ],
+
+    reel: "https://www.instagram.com/reel/DcYfMrSO8GH/",
+
+    media: [],
+
+    occasions: ["birthday"],
+
+    tags: [
+      "box",
+      "for-her",
+      "for-him",
+      "birthday",
+      "chocolate",
+      "romantic",
+      "cute",
+      "personalized",
+      "small"
+    ],
+
+    handmade:
+      "Personalized birthday and love-themed box decoration with handmade ribbon finishing",
+
+    includes: [
+      "Kinder Bueno chocolate",
+      "Mars chocolate bars",
+      "Snickers chocolate bars",
+      "KitKat chocolate bars",
+      "Ferrero Rocher chocolates",
+      "Raffaello chocolates",
+      "Pastel-pink customized gift box",
+      "Personalized 'Happy Birthday' lid design",
+      "LOVE message inside the lid",
+      "Soft pink satin ribbon bow",
+      "Neatly arranged chocolate filling",
+      "Personalized birthday gift presentation",
+    ],
+
+    leadTimeDays: [3, 5],
+
+    palette: {
+      box: "#E9A9B9",
+      lid: "#E79CAF",
+      ribbon: "#F3B6C5",
+      glow: "#FFE8E1"
+    },
+  },
+
   // Sorry
 
-// 2
-{
-  slug: "the-sorry-meri-jaan-love-box",
-  name: "The Sorry Meri Jaan Love Box",
-  tagline: "A heartfelt little surprise to turn an apology into something unforgettable.",
+  // 2
+  {
+    slug: "the-sorry-meri-jaan-love-box",
+    name: "The Sorry Meri Jaan Love Box",
+    tagline: "A heartfelt little surprise to turn an apology into something unforgettable.",
 
-  description:
-    "A romantic black gift box thoughtfully arranged for those moments when words alone are not enough. The box features a handmade 'SORRY MERI JAAN' banner, warm fairy lights, deep red roses, wrapped surprises with satin ribbons, a personalized photo keychain, a heartfelt message card and carefully arranged gift details. Every element is presented by hand to create a warm, emotional and memorable apology gift for someone special.",
+    description:
+      "A romantic black gift box thoughtfully arranged for those moments when words alone are not enough. The box features a handmade 'SORRY MERI JAAN' banner, warm fairy lights, deep red roses, wrapped surprises with satin ribbons, a personalized photo keychain, a heartfelt message card and carefully arranged gift details. Every element is presented by hand to create a warm, emotional and memorable apology gift for someone special.",
 
-  photos: [
-    {
-      id: "the-sorry-meri-jaan-love-box-01.jpg",
-      alt:
-        "Premium open black romantic apology gift box featuring a handmade 'SORRY MERI JAAN' banner, red roses, wrapped gifts, personalized photo keychain, heartfelt message card and warm fairy lights, photographed from a front three-quarter angle."
+    photos: [
+      {
+        id: "the-sorry-meri-jaan-love-box-01.jpg",
+        alt:
+          "Premium open black romantic apology gift box featuring a handmade 'SORRY MERI JAAN' banner, red roses, wrapped gifts, personalized photo keychain, heartfelt message card and warm fairy lights, photographed from a front three-quarter angle."
+      },
+      {
+        id: "the-sorry-meri-jaan-love-box-02.jpg",
+        alt:
+          "Top-down view of an open black 'SORRY MERI JAAN' romantic gift box showing red roses, wrapped surprises, personalized photo keychain, handwritten-style message card, decorative ribbons and warm fairy lights."
+      },
+      {
+        id: "the-sorry-meri-jaan-love-box-03.jpg",
+        alt:
+          "Low-angle side photograph of an open black apology gift box with a 'SORRY MERI JAAN' banner, layered gift arrangement, red roses, ribbon-wrapped presents and glowing fairy lights."
+      },
+      {
+        id: "the-sorry-meri-jaan-love-box-04.jpg",
+        alt:
+          "Close-up photograph highlighting the red roses, personalized photo keychain, heartfelt message card, satin ribbon details, wrapped gifts and warm fairy-light glow inside the 'SORRY MERI JAAN' gift box."
+      },
+    ],
+
+    reel: "https://www.instagram.com/reel/DdO45JhMoa8/",
+    media: [],
+
+    occasions: ["sorry"],
+
+    tags: [
+      "box",
+      "for-him",
+      "gentle",
+      "serious",
+      "romantic",
+      "apology",
+      "personalized",
+      "handmade",
+      "small"
+    ],
+
+    handmade:
+      "Handmade 'SORRY MERI JAAN' banner and personalized heartfelt message presentation",
+
+    includes: [
+      "Premium T-Shirt",
+      "Fragrance/body spray",
+      "Personalized photo keychain",
+      "Red decorative rose bouquet",
+      "Handwritten-style heartfelt message card",
+      "Premium black gift box",
+      "Handmade 'SORRY MERI JAAN' banner",
+      "Warm fairy lights",
+      "Wrapped gift surprises with satin ribbon bows",
+      "Decorative shredded paper filler",
+      "Romantic ribbon decorations",
+    ],
+
+    leadTimeDays: [3, 5],
+
+    palette: {
+      box: "#111111",
+      lid: "#0B0B0B",
+      ribbon: "#C92F45",
+      glow: "#FFE7A8",
     },
-    {
-      id: "the-sorry-meri-jaan-love-box-02.jpg",
-      alt:
-        "Top-down view of an open black 'SORRY MERI JAAN' romantic gift box showing red roses, wrapped surprises, personalized photo keychain, handwritten-style message card, decorative ribbons and warm fairy lights."
-    },
-    {
-      id: "the-sorry-meri-jaan-love-box-03.jpg",
-      alt:
-        "Low-angle side photograph of an open black apology gift box with a 'SORRY MERI JAAN' banner, layered gift arrangement, red roses, ribbon-wrapped presents and glowing fairy lights."
-    },
-    {
-      id: "the-sorry-meri-jaan-love-box-04.jpg",
-      alt:
-        "Close-up photograph highlighting the red roses, personalized photo keychain, heartfelt message card, satin ribbon details, wrapped gifts and warm fairy-light glow inside the 'SORRY MERI JAAN' gift box."
-    },
-  ],
-
-  reel: "https://www.instagram.com/reel/DcEoFGYS9Fa/",
-  media: [],
-
-  occasions: ["sorry"],
-
-  tags: [
-    "box",
-    "for-him",
-    "gentle",
-    "serious",
-    "romantic",
-    "apology",
-    "personalized",
-    "handmade",
-    "small"
-  ],
-
-  handmade:
-    "Handmade 'SORRY MERI JAAN' banner and personalized heartfelt message presentation",
-
-  includes: [
-    "Premium black gift box",
-    "Handmade 'SORRY MERI JAAN' banner",
-    "Red decorative rose bouquet",
-    "Wrapped gift surprises with satin ribbon bows",
-    "Fragrance/body spray",
-    "Personalized photo keychain",
-    "Handwritten-style heartfelt message card",
-    "Warm fairy lights",
-    "Decorative shredded paper filler",
-    "Romantic ribbon decorations",
-    "Personalized romantic gift presentation",
-  ],
-
-  leadTimeDays: [3, 5],
-
-  palette: {
-    box: "#111111",
-    lid: "#0B0B0B",
-    ribbon: "#C92F45",
-    glow: "#FFE7A8",
   },
-},
 
 
   // Multi-occasion products
