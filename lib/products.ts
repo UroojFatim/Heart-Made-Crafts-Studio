@@ -404,10 +404,83 @@ export const products: Product[] = [
     },
   },
 
+  // Sorry
 
+// 2
+{
+  slug: "the-sorry-meri-jaan-love-box",
+  name: "The Sorry Meri Jaan Love Box",
+  tagline: "A heartfelt little surprise to turn an apology into something unforgettable.",
 
+  description:
+    "A romantic black gift box thoughtfully arranged for those moments when words alone are not enough. The box features a handmade 'SORRY MERI JAAN' banner, warm fairy lights, deep red roses, wrapped surprises with satin ribbons, a personalized photo keychain, a heartfelt message card and carefully arranged gift details. Every element is presented by hand to create a warm, emotional and memorable apology gift for someone special.",
 
+  photos: [
+    {
+      id: "the-sorry-meri-jaan-love-box-01.jpg",
+      alt:
+        "Premium open black romantic apology gift box featuring a handmade 'SORRY MERI JAAN' banner, red roses, wrapped gifts, personalized photo keychain, heartfelt message card and warm fairy lights, photographed from a front three-quarter angle."
+    },
+    {
+      id: "the-sorry-meri-jaan-love-box-02.jpg",
+      alt:
+        "Top-down view of an open black 'SORRY MERI JAAN' romantic gift box showing red roses, wrapped surprises, personalized photo keychain, handwritten-style message card, decorative ribbons and warm fairy lights."
+    },
+    {
+      id: "the-sorry-meri-jaan-love-box-03.jpg",
+      alt:
+        "Low-angle side photograph of an open black apology gift box with a 'SORRY MERI JAAN' banner, layered gift arrangement, red roses, ribbon-wrapped presents and glowing fairy lights."
+    },
+    {
+      id: "the-sorry-meri-jaan-love-box-04.jpg",
+      alt:
+        "Close-up photograph highlighting the red roses, personalized photo keychain, heartfelt message card, satin ribbon details, wrapped gifts and warm fairy-light glow inside the 'SORRY MERI JAAN' gift box."
+    },
+  ],
 
+  reel: "https://www.instagram.com/reel/DcEoFGYS9Fa/",
+  media: [],
+
+  occasions: ["sorry"],
+
+  tags: [
+    "box",
+    "for-him",
+    "gentle",
+    "serious",
+    "romantic",
+    "apology",
+    "personalized",
+    "handmade",
+    "small"
+  ],
+
+  handmade:
+    "Handmade 'SORRY MERI JAAN' banner and personalized heartfelt message presentation",
+
+  includes: [
+    "Premium black gift box",
+    "Handmade 'SORRY MERI JAAN' banner",
+    "Red decorative rose bouquet",
+    "Wrapped gift surprises with satin ribbon bows",
+    "Fragrance/body spray",
+    "Personalized photo keychain",
+    "Handwritten-style heartfelt message card",
+    "Warm fairy lights",
+    "Decorative shredded paper filler",
+    "Romantic ribbon decorations",
+    "Personalized romantic gift presentation",
+  ],
+
+  leadTimeDays: [3, 5],
+
+  palette: {
+    box: "#111111",
+    lid: "#0B0B0B",
+    ribbon: "#C92F45",
+    glow: "#FFE7A8",
+  },
+},
 
 
   // Multi-occasion products
@@ -482,6 +555,7 @@ export const products: Product[] = [
       glow: "#E8CFAE",
     },
   },
+
 
 
 
